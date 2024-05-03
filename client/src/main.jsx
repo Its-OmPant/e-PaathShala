@@ -10,6 +10,7 @@ import AboutPage from "./pages/AboutPage.jsx";
 import ContactUsPage from "./pages/ContactUsPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 import {
 	Route,
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
 			<Route path="/about" element={<AboutPage />} />
 			<Route path="/contact" element={<ContactUsPage />} />
 			<Route path="/login" element={<LoginPage />} />
+			<Route path="/register" element={<RegisterPage />} />
 		</Route>,
 	])
 );

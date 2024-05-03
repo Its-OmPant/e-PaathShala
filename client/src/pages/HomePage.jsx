@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+
+// nextUI Components
 import { Button, Image } from "@nextui-org/react";
 
 //components
@@ -36,9 +39,11 @@ function HomePage() {
 						<p className="text-lg text-right">
 							a place where learning meets technology
 						</p>
-						<Button className="bg-green-700 shadow-md w-full rounded-md px-4 py-2 text-white my-8 text-lg">
-							Get Started
-						</Button>
+						<Link to="/login">
+							<Button className="bg-green-700 shadow-md w-full rounded-md px-4 py-2 text-white my-8 text-lg">
+								Get Started
+							</Button>
+						</Link>
 					</div>
 				</div>
 				<div id="right" className="w-1/2 flex justify-center p-2">
@@ -218,13 +223,19 @@ function HomePage() {
 					</div>
 				</div>
 
-				<div className="bg-cyan-100 h-60 mt-44 rounded-md relative flex flex-col justify-center items-center">
-					<h2 className="text-3xl text-center">
+				<div className="bg-gradient-to-r from-teal-500 via-purple-500 to-pink-500 h-60 mt-44 rounded-md relative flex flex-col justify-center items-center">
+					<h2 className="text-4xl text-center text-white font-bold tracking-wide ">
 						Ready to be more productive with ePaathShala?{" "}
 					</h2>
-					<Button className="rounded-md bg-blue-700 px-6 py-2 text-white my-6">
-						Get Started
-					</Button>
+
+					<Link to="/login">
+						<Button
+							color="warning"
+							variant="ghost"
+							className="rounded-md  px-6 py-2 text-white my-6">
+							Get Started
+						</Button>
+					</Link>
 					<img
 						src={standing}
 						alt=""
