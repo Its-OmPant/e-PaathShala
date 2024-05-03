@@ -4,11 +4,21 @@ import { Link } from "react-router-dom";
 // NextUI Components
 import { Input, Button } from "@nextui-org/react";
 import { CheckboxGroup, Checkbox } from "@nextui-org/react";
+import {
+	Modal,
+	ModalContent,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	useDisclosure,
+} from "@nextui-org/react";
 
 // Images
 import RegisterImage from "../assets/register.svg";
 
 function RegisterPage() {
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
 	return (
 		<div className="w-screen h-screen flex justify-between">
 			{/* left */}
@@ -62,9 +72,59 @@ function RegisterPage() {
 						<Checkbox value="remember-me">Remember Me</Checkbox>
 						<Checkbox value="agree-to-TnC">
 							Agree to{" "}
-							<Link className="text-blue-700 underline">
+							<Link
+								onClick={onOpen}
+								varient="light"
+								className="text-blue-700 underline">
 								Terms and Conditions
 							</Link>
+							<Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+								<ModalContent>
+									{(onClose) => (
+										<>
+											<ModalHeader className="flex flex-col gap-1 text-red-800">
+												Terms And Conditions
+											</ModalHeader>
+											<ModalBody>
+												<p>
+													1) Lorem ipsum dolor sit amet, consectetur adipisicing
+													elit.
+												</p>
+												<p>
+													2) Lorem ipsum dolor sit amet consectetur adipisicing
+													elit. Possimus vitae omnis quae!
+												</p>
+												<p>
+													3) Lorem, ipsum dolor sit amet consectetur adipisicing
+													elit. Soluta, ipsa temporibus eius dicta sint nemo.
+												</p>
+												<p>
+													4) . Soluta, ipsa temporibus eius dicta sint nemo.
+												</p>
+												<p>
+													5) . Soluta, ipsa temporibus eius dicta sint nemo.
+													Lorem, ipsum dolor.
+												</p>
+												<p>
+													6) . Lorem ipsum dolor sit amet.Soluta, ipsa
+													temporibus eius dicta sint nemo.
+												</p>
+											</ModalBody>
+											<ModalFooter>
+												<Button
+													color="danger"
+													variant="light"
+													onPress={onClose}>
+													Dismiss
+												</Button>
+												<Button color="primary" onPress={onClose}>
+													Agree
+												</Button>
+											</ModalFooter>
+										</>
+									)}
+								</ModalContent>
+							</Modal>
 						</Checkbox>
 					</CheckboxGroup>
 
