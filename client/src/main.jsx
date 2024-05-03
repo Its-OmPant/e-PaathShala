@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { NextUIProvider } from "@nextui-org/react";
 import Layout from "./Layout.jsx";
 import "./index.css";
 
@@ -30,6 +31,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router}></RouterProvider>
+		<NextUIProvider>
+			<RouterProvider router={router}></RouterProvider>
+		</NextUIProvider>
 	</React.StrictMode>
 );

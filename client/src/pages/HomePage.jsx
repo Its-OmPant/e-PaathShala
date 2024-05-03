@@ -1,3 +1,5 @@
+import { Button, Image } from "@nextui-org/react";
+
 //components
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -28,19 +30,19 @@ function HomePage() {
 				<div id="left" className="w-1/2 flex justify-center">
 					<div>
 						<h3 className="text-xl my-4">Hii, Welcome to</h3>
-						<h1 className="text-8xl my-6 text-blue-900 font-extrabold">
+						<h1 className="text-8xl my-6 text-sky-500 font-extrabold">
 							ePaathShala
 						</h1>
 						<p className="text-lg text-right">
 							a place where learning meets technology
 						</p>
-						<button className="bg-green-700 shadow-md w-full rounded-md px-4 py-2 text-white my-8">
+						<Button className="bg-green-700 shadow-md w-full rounded-md px-4 py-2 text-white my-8 text-lg">
 							Get Started
-						</button>
+						</Button>
 					</div>
 				</div>
-				<div id="right" className="w-1/2 flex justify-center">
-					<img src={Home} alt="Welcome Image" className="w-[90%]" />
+				<div id="right" className="w-1/2 flex justify-center p-2">
+					<Image src={Home} alt="Welcome Image" className="w-[90%]" />
 				</div>
 			</div>
 			{/* hero section end */}
@@ -98,7 +100,7 @@ function HomePage() {
 
 				<div id="feature1" className="w-full flex justify-center my-4">
 					<div id="left" className="w-1/2 flex justify-center">
-						<img src={f1} alt="feature 1" className="w-4/5 rounded-md" />
+						<Image src={f1} alt="feature 1" className="w-4/5 rounded-md" />
 					</div>
 
 					<div id="right" className="w-1/3 flex flex-col justify-center">
@@ -122,14 +124,18 @@ function HomePage() {
 							schedule it to post later,
 						</p>
 					</div>
-					<div id="right" className="w-1/2 flex justify-center">
-						<img src={f2} alt="feature 2" className="w-2/5 rounded-md" />
+					<div id="right" className="w-1/2 flex justify-end">
+						<img
+							src={f2}
+							alt="feature 2"
+							className="w-2/5 rounded-md justify-end"
+						/>
 					</div>
 				</div>
 
 				<div id="feature3" className="w-full flex justify-center my-4">
 					<div id="left" className="w-1/2 flex justify-center">
-						<img src={f3} alt="feature 3" className="w-4/5 rounded-md" />
+						<Image src={f3} alt="feature 3" className="w-4/5 rounded-md" />
 					</div>
 
 					<div id="right" className="w-1/3 flex flex-col justify-center">
@@ -216,9 +222,9 @@ function HomePage() {
 					<h2 className="text-3xl text-center">
 						Ready to be more productive with ePaathShala?{" "}
 					</h2>
-					<button className="rounded-md bg-blue-700 px-6 py-2 text-white my-4">
+					<Button className="rounded-md bg-blue-700 px-6 py-2 text-white my-6">
 						Get Started
-					</button>
+					</Button>
 					<img
 						src={standing}
 						alt=""

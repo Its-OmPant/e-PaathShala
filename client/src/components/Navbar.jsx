@@ -1,4 +1,5 @@
 import { FaSchool } from "react-icons/fa6";
+import { NavLink } from "react-router-dom";
 function Navbar() {
 	return (
 		<div className="mx-8 my-4 bg-blue-900 p-4 rounded-md text-white flex justify-between text-lg">
@@ -6,10 +7,15 @@ function Navbar() {
 				ePaathShala
 				<FaSchool />
 			</h3>
-			<div className="flex gap-6 mr-10">
-				<h3>About</h3>
-				<h3>Contact Us</h3>
-				<h3>Login</h3>
+			<div className="flex  items-center gap-10 mr-10">
+				<NavLink to="/">Home</NavLink>
+				<NavLink to="/about">About</NavLink>
+				<NavLink to="/contact">Contact Us</NavLink>
+				<NavLink
+					to="/login"
+					className="rounded-md px-3 bg-pink-700 py-1 text-white">
+					Login
+				</NavLink>
 			</div>
 		</div>
 	);
