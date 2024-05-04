@@ -2,10 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const adminSchema = new Schema(
 	{
-		username: {
+		fullName: {
 			type: String,
 			required: true,
-			unique: true,
 		},
 		email: {
 			type: String,
@@ -21,8 +20,15 @@ const adminSchema = new Schema(
 			required: true,
 			unique: true,
 		},
+		role: {
+			type: String,
+			default: "Admin",
+		},
+		profileImage: {
+			type: String,
+		},
 	},
 	{ timestamps: true }
 );
 
-const Admin = new mongoose.model("admin", adminSchema);
+export const Admin = new mongoose.model("admin", adminSchema);
