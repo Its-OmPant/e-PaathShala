@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import jwt from "jsonwebtoken";
 
 const adminSchema = new Schema(
 	{
@@ -30,5 +31,17 @@ const adminSchema = new Schema(
 	},
 	{ timestamps: true }
 );
+
+adminSchema.methods.generateToken = async function () {
+	return jwt.sign(
+		{
+			_id: this._id,
+		},
+		process.env.JWT_TOKEN_SECRET_KEY,
+		{
+			expiresIn: process.env.JWT_TOKEN_EXPIRY,
+		}
+	);
+};
 
 export const Admin = new mongoose.model("admin", adminSchema);

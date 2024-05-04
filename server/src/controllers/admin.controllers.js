@@ -49,4 +49,37 @@ const adminRegister = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(201, createdAdmin, "Admin created successfully"));
 });
 
-export { adminRegister };
+const adminLogin = asyncHandler(async (req, res) => {
+	const { email, password } = req.body;
+
+	if (!email || !password) {
+		throw new ApiError(400, "All fields are required");
+	}
+
+	const admin = await Admin.findOne({ email });
+
+	if (!admin) {
+		throw new ApiError(404, "Email doesn't exist");
+	}
+
+	if (admin.password !== password) {
+		throw new ApiError(400, "Incorrect Password");
+	}
+
+	const token = await admin.generateToken();
+
+	res.status(200).json(
+		new ApiResponse(
+			200,
+			{
+				fullName: admin.fullName,
+				email: admin.email,
+				schoolName: admin.schoolName,
+				profileImage: admin.profileImage,
+				token,
+			},
+			"Logged In Successfully"
+		)
+	);
+});
+export { adminRegister, adminLogin };
