@@ -17,7 +17,7 @@ function ContactUsPage() {
 						<Input
 							color="primary"
 							type="text"
-							label="Username"
+							label="Your Name"
 							isRequired
 							description="Enter Your Fullname "
 							className="my-4"
@@ -25,7 +25,7 @@ function ContactUsPage() {
 						<Input
 							color="primary"
 							type="email"
-							label="Email"
+							label="Your Email ID"
 							isRequired
 							description="Enter Your Email ID "
 							className="my-4"
@@ -33,7 +33,7 @@ function ContactUsPage() {
 						<Textarea
 							color="primary"
 							variant="flat"
-							label="Description"
+							label="Message / Query"
 							isRequired
 							description="Enter a concise description of your message/query."
 							className="my-4"

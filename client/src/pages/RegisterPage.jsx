@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // NextUI Components
 import { Input, Button } from "@nextui-org/react";
@@ -17,7 +18,85 @@ import {
 import RegisterImage from "../assets/register.svg";
 
 function RegisterPage() {
+	const toastOptions = {
+		pauseOnHover: false,
+		autoClose: 2000,
+		closeOnClick: true,
+	};
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const navigator = useNavigate();
+
+	const [formData, setFormData] = useState({
+		fullName: "",
+		email: "",
+		schoolName: "",
+		password: "",
+		confirmPassword: "",
+	});
+
+	const [tnc, setTnc] = useState(false);
+
+	const handleInput = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const submitFormData = async (e) => {
+		e.preventDefault();
+		if (
+			!formData.fullName ||
+			!formData.email ||
+			!formData.schoolName ||
+			!formData.password ||
+			!formData.confirmPassword
+		) {
+			toast.error("All Fields are required!", toastOptions);
+			return;
+		}
+
+		if (!tnc) {
+			toast.error("Agree to Terms and Conditions", toastOptions);
+			return;
+		}
+
+		if (formData.password !== formData.confirmPassword) {
+			toast.error("Password do not match", toastOptions);
+			return;
+		}
+
+		// hitting the API
+		try {
+			const response = await fetch(
+				"http://localhost:8000/api/v1/admin/register",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(formData),
+				}
+			);
+
+			if (response.ok) {
+				const data = await response.json();
+				toast.success(
+					data?.message || "Admin Created Successfully",
+					toastOptions
+				);
+				navigator("/login");
+			} else {
+				const errData = await response.json();
+				toast.error(errData.message, toastOptions);
+				throw "Can't Register, Some Error Occured";
+			}
+		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
+			console.log("Error :: ", error);
+		}
+	};
+
+	const toggleCheckbox = (e) => {
+		setTnc(e.target.checked);
+	};
 
 	return (
 		<div className="w-screen h-screen flex justify-between">
@@ -31,6 +110,9 @@ function RegisterPage() {
 						color="primary"
 						className="w-full my-4"
 						isRequired
+						name="fullName"
+						value={formData.fullName}
+						onChange={handleInput}
 					/>
 					<Input
 						size="sm"
@@ -39,6 +121,9 @@ function RegisterPage() {
 						color="primary"
 						className="w-full my-4"
 						isRequired
+						name="schoolName"
+						value={formData.schoolName}
+						onChange={handleInput}
 					/>
 					<Input
 						size="sm"
@@ -47,6 +132,9 @@ function RegisterPage() {
 						color="primary"
 						className="w-full my-4"
 						isRequired
+						name="email"
+						value={formData.email}
+						onChange={handleInput}
 					/>
 					<Input
 						size="sm"
@@ -55,6 +143,9 @@ function RegisterPage() {
 						color="primary"
 						className="w-full my-4"
 						isRequired
+						name="password"
+						value={formData.password}
+						onChange={handleInput}
 					/>
 					<Input
 						size="sm"
@@ -63,14 +154,18 @@ function RegisterPage() {
 						color="primary"
 						className="w-full my-4"
 						isRequired
+						name="confirmPassword"
+						value={formData.confirmPassword}
+						onChange={handleInput}
 					/>
+
 					<CheckboxGroup
 						className="mt-6"
 						orientation="horizontal"
 						color="secondary"
-						defaultValue={["buenos-aires", "san-francisco"]}>
+						defaultValue={[false, false]}>
 						<Checkbox value="remember-me">Remember Me</Checkbox>
-						<Checkbox value="agree-to-TnC">
+						<Checkbox name="tnc" onChange={toggleCheckbox}>
 							Agree to{" "}
 							<Link
 								onClick={onOpen}
@@ -129,7 +224,7 @@ function RegisterPage() {
 					</CheckboxGroup>
 
 					<Button
-						type="submit"
+						onClick={submitFormData}
 						color="primary"
 						varient="solid"
 						radius="sm"

@@ -9,7 +9,9 @@ const verifyJWT = async (req, res, next) => {
 			.trim();
 
 		if (!reqToken) {
-			throw new ApiError(400, "Unauthorized HTTP Request");
+			return res
+				.status(400)
+				.json(new ApiError(400, "Unauthorized HTTP Request", false));
 		}
 
 		const decryptedToken = jwt.verify(

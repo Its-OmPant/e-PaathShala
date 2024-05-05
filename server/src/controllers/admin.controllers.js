@@ -9,19 +9,25 @@ const adminRegister = asyncHandler(async (req, res) => {
 	const { fullName, email, password, schoolName } = req.body;
 
 	if (!fullName || !email || !password || !schoolName) {
-		throw new ApiError(400, "All Fields are required");
+		return res
+			.status(400)
+			.json(new ApiError(400, "All Fields are required", false));
 	}
 
 	const isEmailExists = await Admin.findOne({ email });
 
 	if (isEmailExists) {
-		throw new ApiError(400, "Email Already Exists");
+		return res
+			.status(400)
+			.json(new ApiError(400, "Email Already Exists", false));
 	}
 
 	const isSchoolExists = await Admin.findOne({ schoolName });
 
 	if (isSchoolExists) {
-		throw new ApiError(400, "School Name Already Exists");
+		return res
+			.status(404)
+			.json(new ApiError(404, "School Name Already Exists", false));
 	}
 
 	let profileImageLocalPath;
@@ -42,7 +48,11 @@ const adminRegister = asyncHandler(async (req, res) => {
 	const createdAdmin = await Admin.findById(admin?._id).select("-password");
 
 	if (!createdAdmin) {
-		throw new ApiError(500, "Something went wrong while registrating admin");
+		return res
+			.status(500)
+			.json(
+				new ApiError(500, "Something went wrong while registering admin", false)
+			);
 	}
 	return res
 		.status(200)
@@ -53,17 +63,21 @@ const adminLogin = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 
 	if (!email || !password) {
-		throw new ApiError(400, "All fields are required");
+		return res
+			.status(400)
+			.json(new ApiError(400, "All fields are required", false));
 	}
 
 	const admin = await Admin.findOne({ email });
 
 	if (!admin) {
-		throw new ApiError(404, "Email doesn't exist");
+		return res
+			.status(404)
+			.json(new ApiError(404, "Email doesn't Exist", false));
 	}
 
 	if (admin.password !== password) {
-		throw new ApiError(400, "Incorrect Password");
+		return res.status(400).json(new ApiError(400, "Incorrect Password", false));
 	}
 
 	const token = await admin.generateToken();
