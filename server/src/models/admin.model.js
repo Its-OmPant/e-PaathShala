@@ -27,6 +27,7 @@ const adminSchema = new Schema(
 		},
 		profileImage: {
 			type: String,
+			default: "",
 		},
 	},
 	{ timestamps: true }
@@ -36,6 +37,7 @@ adminSchema.methods.generateToken = async function () {
 	return jwt.sign(
 		{
 			_id: this._id,
+			role: this.role,
 		},
 		process.env.JWT_TOKEN_SECRET_KEY,
 		{
