@@ -12,6 +12,13 @@ import LoginPage from "./pages/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 
+// Internal Admin Pages
+import InternalAdminRegisterPage from "./pages/InternalAdminPages/InternalAdminRegisterPage.jsx";
+
+import InternalAdminLoginPage from "./pages/InternalAdminPages/InternalAdminLoginPage.jsx";
+
+import InternalAdminDashboard from "./pages/InternalAdminPages/InternalAdminDashboard.jsx";
+
 import {
 	Route,
 	RouterProvider,
@@ -27,6 +34,20 @@ const router = createBrowserRouter(
 			<Route path="/contact" element={<ContactUsPage />} />
 			<Route path="/login" element={<LoginPage />} />
 			<Route path="/register" element={<RegisterPage />} />
+
+			{/* Internal Admin Routes */}
+			<Route
+				path="/internal/admin/register"
+				element={<InternalAdminRegisterPage />}
+			/>
+			<Route
+				path="/internal/admin/login"
+				element={<InternalAdminLoginPage />}
+			/>
+			<Route
+				path="/internal/admin/dashboard"
+				element={<InternalAdminDashboard />}
+			/>
 		</Route>,
 	])
 );
