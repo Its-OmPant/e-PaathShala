@@ -39,7 +39,7 @@ function HomePage() {
 						<p className="text-lg text-right">
 							a place where learning meets technology
 						</p>
-						<Link to="/login">
+						<Link to="/get-started">
 							<Button className="bg-green-700 shadow-md w-full rounded-md px-4 py-2 text-white my-8 text-lg">
 								Get Started
 							</Button>
@@ -228,7 +228,7 @@ function HomePage() {
 						Ready to be more productive with ePaathShala?{" "}
 					</h2>
 
-					<Link to="/login">
+					<Link to="/get-started">
 						<Button
 							color="warning"
 							variant="ghost"

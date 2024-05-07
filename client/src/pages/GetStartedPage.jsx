@@ -17,7 +17,7 @@ import {
 // Images
 import RegisterImage from "../assets/register.svg";
 
-function RegisterPage() {
+function GetStartedPage() {
 	const toastOptions = {
 		pauseOnHover: false,
 		autoClose: 2000,
@@ -64,34 +64,34 @@ function RegisterPage() {
 		}
 
 		// hitting the API
-		try {
-			const response = await fetch(
-				"http://localhost:8000/api/v1/admin/register",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(formData),
-				}
-			);
+		// try {
+		// 	const response = await fetch(
+		// 		"http://localhost:8000/api/v1/admin/register",
+		// 		{
+		// 			method: "POST",
+		// 			headers: {
+		// 				"Content-Type": "application/json",
+		// 			},
+		// 			body: JSON.stringify(formData),
+		// 		}
+		// 	);
 
-			if (response.ok) {
-				const data = await response.json();
-				toast.success(
-					data?.message || "Admin Created Successfully",
-					toastOptions
-				);
-				navigator("/login");
-			} else {
-				const errData = await response.json();
-				toast.error(errData.message, toastOptions);
-				throw "Can't Register, Some Error Occured";
-			}
-		} catch (error) {
-			toast.error("Something Unexpected Occured", toastOptions);
-			console.log("Error :: ", error);
-		}
+		// 	if (response.ok) {
+		// 		const data = await response.json();
+		// 		toast.success(
+		// 			data?.message || "Admin Created Successfully",
+		// 			toastOptions
+		// 		);
+		// 		navigator("/login");
+		// 	} else {
+		// 		const errData = await response.json();
+		// 		toast.error(errData.message, toastOptions);
+		// 		throw "Can't Register, Some Error Occured";
+		// 	}
+		// } catch (error) {
+		// 	toast.error("Something Unexpected Occured", toastOptions);
+		// 	console.log("Error :: ", error);
+		// }
 	};
 
 	const toggleCheckbox = (e) => {
@@ -229,24 +229,27 @@ function RegisterPage() {
 						varient="solid"
 						radius="sm"
 						className="my-6 w-full">
-						Register{" "}
+						Submit
 					</Button>
 				</form>
 			</div>
 			{/* right */}
 			<div className="w-2/5 bg-sky-800 flex flex-col items-center gap-4 justify-center">
-				<h2 className="text-3xl text-white font-bold">Admin Registration </h2>
-				<h3 className="text-white/85 mb-16">
-					Create your own school / college account by registering as an admin
+				<h2 className="text-3xl text-white font-bold">Create Account</h2>
+				<h3 className="text-white/90 mb-16 px-4 text-center">
+					Fill Up all the necessary details and carefully read all Terms and
+					Conditions, We will create an account for you and get back to u as
+					soon as Possible
 				</h3>
 				<img src={RegisterImage} alt="Registration Image" className="w-4/5" />
-				<p className="text-white px-3 text-sm text-center text-white/80 absolute bottom-5">
-					Note: registrations / sign up is for admin only If you are a Student /
-					Faculty,Login with your creadentials provided by college
+				<p className=" px-3 text-sm text-center text-yellow-300 absolute bottom-5">
+					Note: Account Creation / Registrations is for Schools / Colleges only.
+					If you are a Student / Faculty, Please contact your college to ask for
+					credentials
 				</p>
 			</div>
 		</div>
 	);
 }
 
-export default RegisterPage;
+export default GetStartedPage;

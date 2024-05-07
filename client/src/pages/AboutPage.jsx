@@ -4,6 +4,8 @@ import AboutImage from "../assets/about.jpg";
 import Navbar from "../components/Navbar.jsx";
 import { Button } from "@nextui-org/react";
 
+import { Link } from "react-router-dom";
+
 function AboutPage() {
 	return (
 		<div className="min-h-screen bg-slate-300 py-2">
@@ -17,23 +19,30 @@ function AboutPage() {
 					<h2 className="my-4 text-3xl text-blue-900 font-bold text-center">
 						About Us
 					</h2>
-					<p className="tracking-wider px-4 text-lg my-4">
+					<p className="tracking-wider px-4 text-lg my-4 text-justify">
 						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae
 						nemo ipsam aliquid? Dolorem autem perspiciatis saepe excepturi et!
 						Quae, mollitia officia reprehenderit, tenetur adipisci vitae
 						pariatur inventore distinctio illo ut nam deleniti aperiam ab
 						perspiciatis. At ratione minus optio facilis animi corporis ipsam
-						sed. Quo eum sequi quos necessitatibus iste iusto! Dolores
-						consequatur perferendis id tempore quia consectetur quisquam quasi
-						nemo doloremque ratione possimus dolor quis iusto, accusamus tempora
-						suscipit architecto sint! Voluptatibus, natus? Molestiae ad culpa
-						expedita dignissimos iure.
+						sed.
 					</p>
-					<Button
-						variant="solid"
-						className="my-4 w-1/2 text-md bg-yellow-400 rounded-sm">
-						Get Started
-					</Button>
+					<p className="tracking-wider px-4 text-lg my-4 text-justify">
+						Quo eum sequi quos necessitatibus iste iusto! Dolores consequatur
+						perferendis ratione possimus dolor quis iusto, accusamus tempora
+						suscipit architecto sint! Voluptatibus, natus? Molestiae ad culpa
+						expedita dignissimos iure Lorem ipsum dolor sit amet consectetur
+						adipisicing elit. Vel beatae qui illum, quas perspiciatis reiciendis
+						perferendis sit. Qui, enim! Eveniet minus, porro ducimus neque
+						eligendi quibusdam expedita provident ipsum corporis.
+					</p>
+					<Link to="/get-started">
+						<Button
+							variant="solid"
+							className="my-4 w-full text-md bg-yellow-400 rounded-sm">
+							Get Started
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</div>

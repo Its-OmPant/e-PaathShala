@@ -155,19 +155,12 @@ function LoginPage() {
 								Admin
 							</CustomRadio>
 						</RadioGroup>
-
-						<p className="text-md my-2 text-right text-slate-600">
-							don't have an account{" "}
-							<Link to="/register" className="text-blue-700 underline ">
-								Register Now!
-							</Link>
-						</p>
 						<Button
 							onClick={submitFormData}
 							variant="solid"
 							size="md"
 							radius="sm"
-							className="w-full bg-green-500 ">
+							className="w-full bg-green-500 mt-2">
 							Login
 						</Button>
 					</form>

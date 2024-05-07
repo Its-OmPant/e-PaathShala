@@ -58,7 +58,7 @@ function InternalAdminRegisterPage() {
 
 			// console.log(response);
 
-			const isErrorToastShown = false;
+			let isErrorToastShown = false;
 			if (response.ok) {
 				const data = await response.json();
 				// console.log(data);

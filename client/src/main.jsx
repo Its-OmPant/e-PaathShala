@@ -10,7 +10,7 @@ import AboutPage from "./pages/AboutPage.jsx";
 import ContactUsPage from "./pages/ContactUsPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
-import RegisterPage from "./pages/RegisterPage.jsx";
+import GetStartedPage from "./pages/GetStartedPage.jsx";
 
 // Internal Admin Pages
 import InternalAdminRegisterPage from "./pages/InternalAdminPages/InternalAdminRegisterPage.jsx";
@@ -18,6 +18,12 @@ import InternalAdminRegisterPage from "./pages/InternalAdminPages/InternalAdminR
 import InternalAdminLoginPage from "./pages/InternalAdminPages/InternalAdminLoginPage.jsx";
 
 import InternalAdminDashboard from "./pages/InternalAdminPages/InternalAdminDashboard.jsx";
+
+import DashboardMain from "./pages/InternalAdminPages/DashboardMain.jsx";
+import DashboardNewRequest from "./pages/InternalAdminPages/DashboardNewRequest.jsx";
+
+import DashboardMessages from "./pages/InternalAdminPages/DashboardMessages.jsx";
+import DashboardSubscribersList from "./pages/InternalAdminPages/DashboardSubscribersList.jsx";
 
 import {
 	Route,
@@ -33,7 +39,7 @@ const router = createBrowserRouter(
 			<Route path="/about" element={<AboutPage />} />
 			<Route path="/contact" element={<ContactUsPage />} />
 			<Route path="/login" element={<LoginPage />} />
-			<Route path="/register" element={<RegisterPage />} />
+			<Route path="/get-started" element={<GetStartedPage />} />
 
 			{/* Internal Admin Routes */}
 			<Route
@@ -45,9 +51,13 @@ const router = createBrowserRouter(
 				element={<InternalAdminLoginPage />}
 			/>
 			<Route
-				path="/internal/admin/dashboard"
-				element={<InternalAdminDashboard />}
-			/>
+				path="/internal/admin/dashboard/"
+				element={<InternalAdminDashboard />}>
+				<Route path="" element={<DashboardMain />} />
+				<Route path="new-requests" element={<DashboardNewRequest />} />
+				<Route path="subscribers-list" element={<DashboardSubscribersList />} />
+				<Route path="messages" element={<DashboardMessages />} />
+			</Route>
 		</Route>,
 	])
 );
