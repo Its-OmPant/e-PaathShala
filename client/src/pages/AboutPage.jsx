@@ -20,21 +20,18 @@ function AboutPage() {
 						About Us
 					</h2>
 					<p className="tracking-wider px-4 text-lg my-4 text-justify">
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae
-						nemo ipsam aliquid? Dolorem autem perspiciatis saepe excepturi et!
-						Quae, mollitia officia reprehenderit, tenetur adipisci vitae
-						pariatur inventore distinctio illo ut nam deleniti aperiam ab
-						perspiciatis. At ratione minus optio facilis animi corporis ipsam
-						sed.
+						ePaathShala is an innovative e-learning and student management
+						system designed to streamline educational processes for
+						institutions, teachers, students, and parents. With cutting-edge
+						technology and user-friendly interfaces, ePaathShala aims to enhance
+						the learning experience while simplifying administrative tasks
 					</p>
 					<p className="tracking-wider px-4 text-lg my-4 text-justify">
-						Quo eum sequi quos necessitatibus iste iusto! Dolores consequatur
-						perferendis ratione possimus dolor quis iusto, accusamus tempora
-						suscipit architecto sint! Voluptatibus, natus? Molestiae ad culpa
-						expedita dignissimos iure Lorem ipsum dolor sit amet consectetur
-						adipisicing elit. Vel beatae qui illum, quas perspiciatis reiciendis
-						perferendis sit. Qui, enim! Eveniet minus, porro ducimus neque
-						eligendi quibusdam expedita provident ipsum corporis.
+						ePaathShala is more than just a software platform; it's a catalyst
+						for transforming education by leveraging technology to improve
+						outcomes, enhance engagement, and empower stakeholders in the
+						learning ecosystem. Join the ePaathShala revolution and unlock the
+						full potential of education in the digital age.
 					</p>
 					<Link to="/get-started">
 						<Button
