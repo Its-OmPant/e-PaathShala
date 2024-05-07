@@ -20,7 +20,7 @@ import RegisterImage from "../assets/register.svg";
 function GetStartedPage() {
 	const toastOptions = {
 		pauseOnHover: false,
-		autoClose: 2000,
+		autoClose: 3000,
 		closeOnClick: true,
 	};
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -30,8 +30,6 @@ function GetStartedPage() {
 		fullName: "",
 		email: "",
 		schoolName: "",
-		password: "",
-		confirmPassword: "",
 	});
 
 	const [tnc, setTnc] = useState(false);
@@ -42,13 +40,7 @@ function GetStartedPage() {
 
 	const submitFormData = async (e) => {
 		e.preventDefault();
-		if (
-			!formData.fullName ||
-			!formData.email ||
-			!formData.schoolName ||
-			!formData.password ||
-			!formData.confirmPassword
-		) {
+		if (!formData.fullName || !formData.email || !formData.schoolName) {
 			toast.error("All Fields are required!", toastOptions);
 			return;
 		}
@@ -58,40 +50,36 @@ function GetStartedPage() {
 			return;
 		}
 
-		if (formData.password !== formData.confirmPassword) {
-			toast.error("Password do not match", toastOptions);
-			return;
-		}
-
 		// hitting the API
-		// try {
-		// 	const response = await fetch(
-		// 		"http://localhost:8000/api/v1/admin/register",
-		// 		{
-		// 			method: "POST",
-		// 			headers: {
-		// 				"Content-Type": "application/json",
-		// 			},
-		// 			body: JSON.stringify(formData),
-		// 		}
-		// 	);
+		try {
+			const response = await fetch(
+				"http://localhost:8000/api/v1/internal/admin/subscription/add",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(formData),
+				}
+			);
 
-		// 	if (response.ok) {
-		// 		const data = await response.json();
-		// 		toast.success(
-		// 			data?.message || "Admin Created Successfully",
-		// 			toastOptions
-		// 		);
-		// 		navigator("/login");
-		// 	} else {
-		// 		const errData = await response.json();
-		// 		toast.error(errData.message, toastOptions);
-		// 		throw "Can't Register, Some Error Occured";
-		// 	}
-		// } catch (error) {
-		// 	toast.error("Something Unexpected Occured", toastOptions);
-		// 	console.log("Error :: ", error);
-		// }
+			let isErrorToastShown = false;
+			if (response.ok) {
+				const data = await response.json();
+				toast.success(data?.message, toastOptions);
+				navigator("/");
+			} else {
+				const errData = await response.json();
+				toast.error(errData.message, toastOptions);
+				isErrorToastShown = true;
+				throw "Can't Register, Some Error Occured";
+			}
+		} catch (error) {
+			if (!isErrorToastShown) {
+				toast.error("Something Unexpected Occured", toastOptions);
+			}
+			console.log("Error :: ", error);
+		}
 	};
 
 	const toggleCheckbox = (e) => {
@@ -136,35 +124,12 @@ function GetStartedPage() {
 						value={formData.email}
 						onChange={handleInput}
 					/>
-					<Input
-						size="sm"
-						type="password"
-						label="Password "
-						color="primary"
-						className="w-full my-4"
-						isRequired
-						name="password"
-						value={formData.password}
-						onChange={handleInput}
-					/>
-					<Input
-						size="sm"
-						type="password"
-						label="Confirm Password "
-						color="primary"
-						className="w-full my-4"
-						isRequired
-						name="confirmPassword"
-						value={formData.confirmPassword}
-						onChange={handleInput}
-					/>
 
 					<CheckboxGroup
 						className="mt-6"
 						orientation="horizontal"
 						color="secondary"
 						defaultValue={[false, false]}>
-						<Checkbox value="remember-me">Remember Me</Checkbox>
 						<Checkbox name="tnc" onChange={toggleCheckbox}>
 							Agree to{" "}
 							<Link
