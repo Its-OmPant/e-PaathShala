@@ -1,7 +1,9 @@
 import express from "express";
 
 import {
-	getListOfAllSubscriptions,
+	getAllContacts,
+	getAllSubscribers,
+	getListOfAllSubscriptionRequests,
 	mainAdminLogin,
 	mainAdminRegister,
 	newSchoolAdminRegister,
@@ -15,6 +17,9 @@ router.route("/login").post(mainAdminLogin);
 router.route("/create/adminAccount").post(newSchoolAdminRegister);
 
 router.route("/subscription/add").post(saveNewAdminToRegister);
-router.route("/subscription/all").get(getListOfAllSubscriptions);
+router.route("/subscriptionRequest/all").get(getListOfAllSubscriptionRequests);
+
+router.route("/contacts/all").get(getAllContacts);
+router.route("/subscribers/all").get(getAllSubscribers);
 
 export default router;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 // next UI components
@@ -41,39 +41,13 @@ function DashboardNewRequest() {
 		closeOnClick: true,
 	};
 
-	// to determine chip color
-	const statusColorMap = {
-		true: "success",
-		false: "danger",
-	};
-
 	const [data, setData] = useState([]);
-
-	// function to render custom column cell in table
-	const renderCell = React.useCallback((user, columnKey) => {
-		const cellValue = user[columnKey];
-
-		switch (columnKey) {
-			case "isRegistered":
-				return (
-					<Chip
-						className="capitalize"
-						color={statusColorMap[user.isRegistered]}
-						size="sm"
-						variant="flat">
-						{cellValue}
-					</Chip>
-				);
-			default:
-				return cellValue;
-		}
-	}, []);
 
 	// function to get list of subscription request
 	const getData = async () => {
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/subscription/all",
+				"http://localhost:8000/api/v1/internal/admin/subscriptionRequest/all",
 				{
 					method: "GET",
 				}
@@ -89,7 +63,6 @@ function DashboardNewRequest() {
 				}));
 				// console.log(newData);
 				setData(newData);
-				toast.success("Reloaded", toastOptions);
 			} else {
 				const errData = await response.json();
 				throw errData.message;
@@ -126,13 +99,22 @@ function DashboardNewRequest() {
 				toast.success(data.message, toastOptions);
 			} else {
 				const errData = await response.json();
-				throw errData.message;
+				return toast.error(errData.message, toastOptions);
 			}
 		} catch (error) {
 			toast.error("Something Unexpected Occured", toastOptions);
 			console.log("CustomError :: ", error);
 		}
 	};
+
+	const refresh = () => {
+		getData();
+		toast.success("Reloaded", toastOptions);
+	};
+
+	useEffect(() => {
+		getData();
+	}, []);
 
 	return (
 		<Card className="w-4/5 p-3">
@@ -141,7 +123,7 @@ function DashboardNewRequest() {
 					New Subscription Requests
 				</h3>
 				<Tooltip color="primary" content="Refresh">
-					<Button onClick={getData}>
+					<Button onClick={refresh}>
 						<MdOutlineRefresh />
 					</Button>
 				</Tooltip>

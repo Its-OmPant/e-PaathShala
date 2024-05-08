@@ -1,9 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { Input, Textarea, Button } from "@nextui-org/react";
 import ContactImage from "../assets/contact.png";
 
+import { toast } from "react-toastify";
+
 function ContactUsPage() {
+	const toastOptions = {
+		pauseOnHover: false,
+		autoClose: 2000,
+		closeOnClick: true,
+	};
+
+	const [formData, setFormData] = useState({
+		fullName: "",
+		email: "",
+		description: "",
+	});
+
+	const handleInputChange = (e) => {
+		setFormData({ ...formData, [e.target.name]: e.target.value });
+	};
+
+	const submitForm = async (e) => {
+		e.preventDefault();
+
+		if (!formData.fullName || !formData.email || !formData.description) {
+			toast.error("All Fields are required", toastOptions);
+			return;
+		}
+
+		// hitting API
+		try {
+			const response = await fetch("http://localhost:8000/api/v1/contact/add", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(formData),
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				toast.success(data.message, toastOptions);
+				setFormData({
+					fullName: "",
+					email: "",
+					description: "",
+				});
+			} else {
+				const errData = await response.json();
+				toast.error(errData.message, toastOptions);
+			}
+		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
+			console.log("CustomError :: ", error);
+		}
+	};
+
 	return (
 		<div className="min-h-screen bg-slate-300 py-2">
 			<Navbar />
@@ -17,10 +71,13 @@ function ContactUsPage() {
 						<Input
 							color="primary"
 							type="text"
-							label="Your Name"
+							label="Your Full Name"
 							isRequired
 							description="Enter Your Fullname "
 							className="my-4"
+							name="fullName"
+							value={formData.fullName}
+							onChange={handleInputChange}
 						/>
 						<Input
 							color="primary"
@@ -29,6 +86,9 @@ function ContactUsPage() {
 							isRequired
 							description="Enter Your Email ID "
 							className="my-4"
+							name="email"
+							value={formData.email}
+							onChange={handleInputChange}
 						/>
 						<Textarea
 							color="primary"
@@ -37,8 +97,12 @@ function ContactUsPage() {
 							isRequired
 							description="Enter a concise description of your message/query."
 							className="my-4"
+							name="description"
+							value={formData.description}
+							onChange={handleInputChange}
 						/>
 						<Button
+							onClick={submitForm}
 							variant="solid"
 							size="md"
 							radius="sm"

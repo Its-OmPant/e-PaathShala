@@ -2,6 +2,7 @@
 import { MainAdmin } from "../models/mainAdmin.model.js";
 import { Admin } from "../models/admin.model.js";
 import { Subscription } from "../models/subscription.model.js";
+import { Contact } from "../models/contactUs.model.js";
 
 // utilities
 // import { uploadOnCloudinary } from "../utils/Cloudinary.js";
@@ -198,7 +199,7 @@ const saveNewAdminToRegister = asyncHandler(async (req, res) => {
 		);
 });
 
-const getListOfAllSubscriptions = asyncHandler(async (req, res) => {
+const getListOfAllSubscriptionRequests = asyncHandler(async (req, res) => {
 	const data = await Subscription.find().select("-updatedAt");
 
 	if (!data) {
@@ -210,10 +211,38 @@ const getListOfAllSubscriptions = asyncHandler(async (req, res) => {
 	return res.status(200).json(new ApiResponse(200, data, null));
 });
 
+// controller to fetch all Contacts from contacts model
+const getAllContacts = asyncHandler(async (req, res) => {
+	const allContacts = await Contact.find();
+	if (!allContacts) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Failed to fetch data, Internal server Error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, allContacts, "Contact Fetched Successfully"));
+});
+
+// controller to fetch all admins from admin model
+const getAllSubscribers = asyncHandler(async (req, res) => {
+	const allAdmins = await Admin.find().select("-password -role -profileImage");
+	if (!allAdmins) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Failed to fetch data, Internal server Error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, allAdmins, "Contact Fetched Successfully"));
+});
+
 export {
 	mainAdminRegister,
 	mainAdminLogin,
 	newSchoolAdminRegister,
 	saveNewAdminToRegister,
-	getListOfAllSubscriptions,
+	getListOfAllSubscriptionRequests,
+	getAllContacts,
+	getAllSubscribers,
 };
