@@ -50,6 +50,7 @@ function GetStartedPage() {
 			return;
 		}
 
+		let isErrorToastShown = false;
 		// hitting the API
 		try {
 			const response = await fetch(
@@ -62,8 +63,6 @@ function GetStartedPage() {
 					body: JSON.stringify(formData),
 				}
 			);
-
-			let isErrorToastShown = false;
 			if (response.ok) {
 				const data = await response.json();
 				toast.success(data?.message, toastOptions);

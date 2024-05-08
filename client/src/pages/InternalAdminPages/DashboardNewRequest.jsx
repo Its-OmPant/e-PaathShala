@@ -1,19 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import { Avatar, Button } from "@nextui-org/react";
-
-import {
-	Table,
-	TableHeader,
-	TableBody,
-	TableColumn,
-	TableRow,
-	TableCell,
-	Tooltip,
-} from "@nextui-org/react";
 
 import {
 	Modal,
@@ -22,20 +13,26 @@ import {
 	ModalBody,
 	ModalFooter,
 	useDisclosure,
-	Checkbox,
+	Tooltip,
 	Input,
-	Link,
 	Chip,
 } from "@nextui-org/react";
 
 import { toast } from "react-toastify";
-import { FiEdit } from "react-icons/fi";
-import { MdDelete } from "react-icons/md";
-import { IoMdPersonAdd } from "react-icons/io";
 import { MdOutlineRefresh } from "react-icons/md";
+
+// images
+import NoFound from "../../assets/no_data.jpg";
 
 function DashboardNewRequest() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const navigator = useNavigate();
+
+	const [rowData, setRowData] = useState({
+		fullName: "",
+		email: "",
+		schoolName: "",
+	});
 
 	const toastOptions = {
 		position: "bottom-right",
@@ -67,31 +64,12 @@ function DashboardNewRequest() {
 						{cellValue}
 					</Chip>
 				);
-			case "actions":
-				return (
-					<div className="relative flex justify-between items-center">
-						<Tooltip content="Edit user">
-							<span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-								<FiEdit size="24" />
-							</span>
-						</Tooltip>
-						<Tooltip color="danger" content="Delete user">
-							<span className="text-lg text-danger cursor-pointer active:opacity-50">
-								<MdDelete size="24" />
-							</span>
-						</Tooltip>
-						<Tooltip color="warning" content="Add Admin">
-							<span className="text-lg text-warning cursor-pointer active:opacity-50">
-								<IoMdPersonAdd size="24" onClick={addToAdmin} />
-							</span>
-						</Tooltip>
-					</div>
-				);
 			default:
 				return cellValue;
 		}
 	}, []);
 
+	// function to get list of subscription request
 	const getData = async () => {
 		try {
 			const response = await fetch(
@@ -109,7 +87,7 @@ function DashboardNewRequest() {
 					key: d._id,
 					isRegistered: d.isRegistered.toString(),
 				}));
-				console.log(newData);
+				// console.log(newData);
 				setData(newData);
 				toast.success("Reloaded", toastOptions);
 			} else {
@@ -122,33 +100,39 @@ function DashboardNewRequest() {
 		}
 	};
 
-	const addToAdmin = async (e) => {
-		// Implement Add Admin functionality
+	// function to open a modal for a row
+	const openRequestRow = async (index) => {
+		const selectedRowData = data[index];
+		setRowData(selectedRowData);
+		onOpen();
 	};
 
-	// table columns
-	const columns = [
-		{
-			key: "fullName",
-			label: "NAME",
-		},
-		{
-			key: "email",
-			label: "Email ID",
-		},
-		{
-			key: "schoolName",
-			label: "School Name",
-		},
-		{
-			key: "isRegistered",
-			label: "Registered",
-		},
-		{
-			key: "actions",
-			label: "Actions",
-		},
-	];
+	const registerUser = async (e) => {
+		try {
+			const response = await fetch(
+				"http://localhost:8000/api/v1/internal/admin/create/AdminAccount",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(rowData),
+				}
+			);
+			console.log(response);
+			if (response.ok) {
+				const data = await response.json();
+				console.log(data);
+				toast.success(data.message, toastOptions);
+			} else {
+				const errData = await response.json();
+				throw errData.message;
+			}
+		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
+			console.log("CustomError :: ", error);
+		}
+	};
 
 	return (
 		<Card className="w-4/5 p-3">
@@ -156,84 +140,95 @@ function DashboardNewRequest() {
 				<h3 className="text-md font-semibold tracking-wide">
 					New Subscription Requests
 				</h3>
-				<div className="flex gap-3">
+				<Tooltip color="primary" content="Refresh">
 					<Button onClick={getData}>
 						<MdOutlineRefresh />
 					</Button>
-					<Button onClick={onOpen}>Add Admin</Button>
-					<Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
-						<ModalContent>
-							{(onClose) => (
-								<>
-									<ModalHeader className="flex flex-col gap-1">
-										Add Admin
-									</ModalHeader>
-									<ModalBody>
-										<Input
-											autoFocus
-											label="Full Name"
-											placeholder="Enter Full Name"
-											variant="bordered"
-										/>
-										<Input
-											autoFocus
-											label="Email"
-											placeholder="Enter your email"
-											variant="bordered"
-										/>
-										<Input
-											autoFocus
-											label="School Name"
-											placeholder="Enter School Name"
-											variant="bordered"
-										/>
-										<div className="flex py-2 px-1 justify-between">
-											<Checkbox
-												classNames={{
-													label: "text-small",
-												}}>
-												Remember me
-											</Checkbox>
-											<Link color="primary" href="#" size="sm">
-												Forgot password?
-											</Link>
-										</div>
-									</ModalBody>
-									<ModalFooter>
-										<Button color="danger" variant="flat" onPress={onClose}>
-											Close
-										</Button>
-										<Button color="primary" onPress={onClose}>
-											Sign in
-										</Button>
-									</ModalFooter>
-								</>
-							)}
-						</ModalContent>
-					</Modal>
-				</div>
+				</Tooltip>
+				<Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+					<ModalContent>
+						{(onClose) => (
+							<>
+								<ModalHeader className="flex flex-col gap-1">
+									Subscription Request
+								</ModalHeader>
+								<ModalBody>
+									<Input
+										autoFocus
+										label="Full Name"
+										placeholder="Enter Full Name"
+										variant="bordered"
+										value={rowData.fullName}
+										readOnly
+									/>
+									<Input
+										autoFocus
+										label="Email"
+										placeholder="Enter your email"
+										variant="bordered"
+										value={rowData.email}
+										readOnly
+									/>
+									<Input
+										autoFocus
+										label="School Name"
+										placeholder="Enter School Name"
+										variant="bordered"
+										value={rowData.schoolName}
+										readOnly
+									/>
+								</ModalBody>
+								<ModalFooter>
+									<Button color="danger" variant="flat" onPress={onClose}>
+										Close
+									</Button>
+									<Button color="primary" onPress={registerUser}>
+										Register User
+									</Button>
+								</ModalFooter>
+							</>
+						)}
+					</ModalContent>
+				</Modal>
 			</CardHeader>
-			<Divider className="h-1 my-1"></Divider>
+			<Divider className="h-1"></Divider>
 			<CardBody>
 				{data.length > 0 ? (
-					<Table removeWrapper aria-label="Table">
-						<TableHeader columns={columns}>
-							{(column) => (
-								<TableColumn key={column.key}>{column.label}</TableColumn>
-							)}
-						</TableHeader>
-						<TableBody items={data}>
-							{(item) => (
-								<TableRow key={item.key}>
-									{(columnKey) => (
-										<TableCell>{renderCell(item, columnKey)}</TableCell>
-									)}
-								</TableRow>
-							)}
-						</TableBody>
-					</Table>
+					<table>
+						<thead className="bg-slate-200 p-2 rounded-md">
+							<tr className="flex justify-between text-slate-700 p-2">
+								<td className="w-1/5">Name</td>
+								<td className="w-1/5">Email</td>
+								<td className="w-1/5">School Name</td>
+								<td className="w-1/5">Is registered</td>
+								<td className="w-1/5">Actions</td>
+							</tr>
+						</thead>
+						<tbody>
+							{data.map((d, index) => (
+								<tr
+									key={d.key}
+									className="flex justify-between text-slate-700 hover:bg-slate-100 py-2 px-2 my-2 rounded-md">
+									<td className="w-1/5">{d.fullName}</td>
+									<td className="w-1/5">{d.email}</td>
+									<td className="w-1/5">{d.schoolName}</td>
+									<td className="w-1/5">{d.isRegistered}</td>
+									<td className="w-1/5">
+										<button
+											onClick={() => openRequestRow(index)}
+											className="bg-green-200 px-4 rounded-lg">
+											Add
+										</button>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 				) : (
-					<h3>No Data Available..</h3>
+					<div className="flex flex-col justify-center h-full items-center">
+						<h2 className="text-xl text-red-500">No Data Available</h2>
+						<img src={NoFound} width={300} alt="No Data Available" />
+					</div>
 				)}
 			</CardBody>
 		</Card>

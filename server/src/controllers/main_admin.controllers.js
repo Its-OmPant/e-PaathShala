@@ -90,9 +90,9 @@ const mainAdminLogin = asyncHandler(async (req, res) => {
 
 // controller for new school admin creation
 const newSchoolAdminRegister = asyncHandler(async (req, res) => {
-	const { fullName, email, password, schoolName } = req.body;
+	const { fullName, email, schoolName } = req.body;
 
-	if (!fullName || !email || !password || !schoolName) {
+	if (!fullName || !email || !schoolName) {
 		return res
 			.status(400)
 			.json(new ApiError(400, "All Fields are required", false));
@@ -114,20 +114,10 @@ const newSchoolAdminRegister = asyncHandler(async (req, res) => {
 			.json(new ApiError(404, "School Name Already Exists", false));
 	}
 
-	// code for image upload (not using while registering)
-	// let profileImageLocalPath;
-	// if (req.file && req.file.path) {
-	// 	profileImageLocalPath = req.file.path;
-	// }
-
-	// const profileImageObj = await uploadOnCloudinary(profileImageLocalPath);
-
 	const admin = await Admin.create({
 		fullName,
 		email,
-		password,
 		schoolName,
-		// profileImage: profileImageObj?.url || "",
 	});
 
 	const createdAdmin = await Admin.findById(admin?._id).select("-password");

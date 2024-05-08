@@ -14,7 +14,7 @@ const adminSchema = new Schema(
 		},
 		password: {
 			type: String,
-			required: true,
+			default: "12345678",
 		},
 		schoolName: {
 			type: String,
