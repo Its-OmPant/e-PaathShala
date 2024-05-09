@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+
 // DB Models
 import { MainAdmin } from "../models/mainAdmin.model.js";
 import { Admin } from "../models/admin.model.js";
@@ -9,6 +11,7 @@ import { Contact } from "../models/contactUs.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { sendMail } from "../utils/Nodemailer.js";
 
 // controller for main admin registration
 const mainAdminRegister = asyncHandler(async (req, res) => {
@@ -134,6 +137,23 @@ const newSchoolAdminRegister = asyncHandler(async (req, res) => {
 				)
 			);
 	}
+
+	try {
+		let htmlTemplate = await fs.readFile("./public/email.html", "utf-8");
+
+		sendMail(email, {
+			from: process.env.EMAIL,
+			to: email,
+			subject: "EPAATHSHALA SUBSCRIPTION GRANTED",
+			html: htmlTemplate,
+		});
+	} catch (error) {
+		console.log(error);
+		return res
+			.status(500)
+			.json(new ApiError(500, "something Unexpected Occured", false));
+	}
+
 	return res
 		.status(200)
 		.json(new ApiResponse(201, createdAdmin, "Admin created successfully"));
