@@ -25,6 +25,11 @@ import DashboardNewRequest from "./pages/InternalAdminPages/DashboardNewRequest.
 import DashboardMessages from "./pages/InternalAdminPages/DashboardMessages.jsx";
 import DashboardSubscribersList from "./pages/InternalAdminPages/DashboardSubscribersList.jsx";
 
+// Admin Dashboard Pages
+
+import AdminDashboard from "./pages/AdminPages/AdminDashboard.jsx";
+import AdminHomePage from "./pages/AdminPages/AdminHomePage.jsx";
+
 import {
 	Route,
 	RouterProvider,
@@ -57,6 +62,11 @@ const router = createBrowserRouter(
 				<Route path="new-requests" element={<DashboardNewRequest />} />
 				<Route path="subscribers-list" element={<DashboardSubscribersList />} />
 				<Route path="messages" element={<DashboardMessages />} />
+			</Route>
+
+			{/* Admin Routes */}
+			<Route path="/admin" element={<AdminDashboard />}>
+				<Route path="" element={<AdminHomePage />} />
 			</Route>
 		</Route>,
 	])
