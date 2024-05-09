@@ -1,6 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+// redux related
+import { store } from "./app/store.js";
+import { Provider } from "react-redux";
+
 import { NextUIProvider } from "@nextui-org/react";
+
 import Layout from "./Layout.jsx";
 import "./index.css";
 
@@ -14,9 +20,7 @@ import GetStartedPage from "./pages/GetStartedPage.jsx";
 
 // Internal Admin Pages
 import InternalAdminRegisterPage from "./pages/InternalAdminPages/InternalAdminRegisterPage.jsx";
-
 import InternalAdminLoginPage from "./pages/InternalAdminPages/InternalAdminLoginPage.jsx";
-
 import InternalAdminDashboard from "./pages/InternalAdminPages/InternalAdminDashboard.jsx";
 
 import DashboardMain from "./pages/InternalAdminPages/DashboardMain.jsx";
@@ -73,7 +77,9 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<NextUIProvider>
-		<RouterProvider router={router}></RouterProvider>
-	</NextUIProvider>
+	<Provider store={store}>
+		<NextUIProvider>
+			<RouterProvider router={router}></RouterProvider>
+		</NextUIProvider>
+	</Provider>
 );

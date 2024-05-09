@@ -2,10 +2,21 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+// redux related
+import { useSelector, useDispatch } from "react-redux";
+
+// slice actions
+import {
+	setLoggedInUser,
+	storeTokenInLS,
+} from "../../features/auth/authSlice.js";
+
 // NextUI Components
 import { Input, Button } from "@nextui-org/react";
 
 function InternalAdminLoginPage() {
+	const dispatch = useDispatch();
+
 	const toastOptions = {
 		pauseOnHover: false,
 		autoClose: 2000,
@@ -52,22 +63,19 @@ function InternalAdminLoginPage() {
 
 			// console.log(response);
 
-			let isErrorToastShown = false;
 			if (response.ok) {
 				const data = await response.json();
-				// console.log(data);
+				console.log(data);
 				toast.success("Logged In Successfully", toastOptions);
+				dispatch(setLoggedInUser(data.data));
+				dispatch(storeTokenInLS(data.data.token));
 				navigator("/internal/admin/dashboard");
 			} else {
 				const errorData = await response.json();
-				toast.error(errorData.message, toastOptions);
-				isErrorToastShown = true;
-				throw errorData.message;
+				return toast.error(errorData.message, toastOptions);
 			}
 		} catch (error) {
-			if (!isErrorToastShown) {
-				toast.error("Something Unexpected Occured", toastOptions);
-			}
+			toast.error("Something Unexpected Occured", toastOptions);
 			console.log("CustomError :: ", error);
 		}
 	};
