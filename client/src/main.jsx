@@ -34,6 +34,12 @@ import DashboardSubscribersList from "./pages/InternalAdminPages/DashboardSubscr
 import AdminDashboard from "./pages/AdminPages/AdminDashboard.jsx";
 import AdminHomePage from "./pages/AdminPages/AdminHomePage.jsx";
 
+import DashBoardTab from "./pages/AdminPages/DashBoardTab.jsx";
+import StudentTab from "./pages/AdminPages/StudentTab.jsx";
+import TeacherTab from "./pages/AdminPages/TeacherTab.jsx";
+import CourseTab from "./pages/AdminPages/CourseTab.jsx";
+import NoticeTab from "./pages/AdminPages/NoticeTab.jsx";
+
 import {
 	Route,
 	RouterProvider,
@@ -71,6 +77,11 @@ const router = createBrowserRouter(
 			{/* Admin Routes */}
 			<Route path="/admin" element={<AdminDashboard />}>
 				<Route path="" element={<AdminHomePage />} />
+				<Route path="dashboard" element={<DashBoardTab />} />
+				<Route path="students" element={<StudentTab />} />
+				<Route path="teachers" element={<TeacherTab />} />
+				<Route path="courses" element={<CourseTab />} />
+				<Route path="notices" element={<NoticeTab />} />
 			</Route>
 		</Route>,
 	])

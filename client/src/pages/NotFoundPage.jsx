@@ -12,7 +12,9 @@ function NotFoundPage() {
 				<h3 className="text-xl font-bold my-3">
 					The page you are trying to access doesn't exist
 				</h3>
-				<Link className="text-center p-2 mt-8 ounded-md shadow-md bg-red-100">
+				<Link
+					to="/"
+					className="text-center p-2 mt-8 ounded-md shadow-md bg-red-100">
 					{" "}
 					Click to Go To Home Page
 				</Link>

@@ -1,37 +1,23 @@
-import React from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 
 import NotFoundPage from "../NotFoundPage.jsx";
 
 // redux related
-import { useSelector, useDispatch } from "react-redux";
-import { logOut } from "../../features/auth/authSlice.js";
+import { useSelector } from "react-redux";
 
 // next UI components
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 
 // icons
-import { MdLogout } from "react-icons/md";
-import { FaHome, FaSchool } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { MdDashboard } from "react-icons/md";
+import { FaAtlas, FaUserGraduate } from "react-icons/fa";
+import { FaChalkboardTeacher } from "react-icons/fa";
+import { FaBookAtlas, FaBookOpen } from "react-icons/fa6";
+import { AiFillNotification } from "react-icons/ai";
 
 function AdminDashboard() {
-	const toastOptions = {
-		pauseOnHover: false,
-		autoClose: 2000,
-		closeOnClick: true,
-	};
-
-	const navigate = useNavigate();
-	const dispatch = useDispatch();
 	const user = useSelector((state) => state.auth.user);
-
-	const logoutSession = (e) => {
-		dispatch(logOut());
-		toast.success("Logged out successfully", toastOptions);
-		navigate("/");
-	};
 
 	let content;
 
@@ -49,55 +35,47 @@ function AdminDashboard() {
 					<Divider className="h-1 rounded-md"></Divider>
 					<CardBody className="px-0">
 						<NavLink
-							to=""
-							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
-							<FaHome size={21} className="text-sky-800" />
-							Home
-						</NavLink>
-						<NavLink
 							to="dashboard"
 							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
-							<FaHome size={21} className="text-sky-800" />
+							<MdDashboard size={21} className="text-sky-800" />
 							Dashboard
 						</NavLink>
 
 						<NavLink
-							to=""
+							to="students"
 							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
-							<FaHome size={21} className="text-sky-800" />
+							<FaUserGraduate size={21} className="text-sky-800" />
 							Students
 						</NavLink>
 
 						<NavLink
-							to=""
+							to="teachers"
 							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
-							<FaHome size={21} className="text-sky-800" />
+							<FaChalkboardTeacher size={21} className="text-sky-800" />
 							Teachers
 						</NavLink>
 
 						<NavLink
-							to=""
+							to="courses"
 							className="bg-slate-200/80 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
-							<FaHome size={21} className="text-sky-800" />
+							<FaBookOpen size={21} className="text-sky-800" />
 							Courses
 						</NavLink>
 
 						<NavLink
-							to=""
+							to="notices"
 							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
-							<FaHome size={21} className="text-sky-800" />
+							<AiFillNotification size={21} className="text-sky-800" />
 							Notices
 						</NavLink>
-					</CardBody>
 
-					<Divider className="h-1 rounded-md"></Divider>
-					<CardFooter>
 						<NavLink
-							onClick={logoutSession}
-							className="flex items-center gap-3 text-red-600">
-							<MdLogout size={24} /> Logout
+							to="notices"
+							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							<FaBookAtlas size={21} className="text-sky-800" />
+							Digital Library
 						</NavLink>
-					</CardFooter>
+					</CardBody>
 				</Card>
 
 				{/* Right */}
