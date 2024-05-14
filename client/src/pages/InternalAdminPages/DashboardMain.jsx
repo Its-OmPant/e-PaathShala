@@ -9,7 +9,7 @@ import { Button } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
 
 function DashboardMain() {
-	const user = useSelector((state) => state.auth.loggedInUser);
+	const user = useSelector((state) => state.auth.user);
 
 	return (
 		<Card className="w-4/5 bg-blue-200">

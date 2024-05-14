@@ -90,6 +90,7 @@ const adminLogin = asyncHandler(async (req, res) => {
 				email: admin.email,
 				schoolName: admin.schoolName,
 				profileImage: admin.profileImage,
+				role: admin.role,
 				token,
 			},
 			"Logged In Successfully"

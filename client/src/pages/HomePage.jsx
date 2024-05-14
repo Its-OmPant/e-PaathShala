@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 
+// redux related
+import { useSelector } from "react-redux";
+
 // nextUI Components
 import { Button, Image } from "@nextui-org/react";
 
@@ -21,6 +24,8 @@ import { FaUserGraduate } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
 
 function HomePage() {
+	const user = useSelector((state) => state.auth.user);
+	const name = user ? user.fullName : "There";
 	return (
 		<div className="min-h-screen bg-slate-300 py-2">
 			{/* navbar */}
@@ -32,7 +37,7 @@ function HomePage() {
 				className="flex justify-center items-center  pt-32 pb-20 bg-white rounded-md mx-8">
 				<div id="left" className="w-1/2 flex justify-center">
 					<div>
-						<h3 className="text-xl my-4">Hii, Welcome to</h3>
+						<h3 className="text-xl my-4">Hii {name}, Welcome to</h3>
 						<h1 className="text-8xl my-6 text-sky-500 font-extrabold">
 							ePaathShala
 						</h1>

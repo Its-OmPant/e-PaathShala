@@ -26,7 +26,7 @@ function InternalAdminDashboard() {
 		closeOnClick: true,
 	};
 
-	const user = useSelector((state) => state.auth.loggedInUser);
+	const user = useSelector((state) => state.auth.user);
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();

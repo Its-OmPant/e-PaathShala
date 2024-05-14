@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+// redux related
+import { useDispatch } from "react-redux";
+import { setLoggedInUser } from "../features/auth/authSlice.js";
+
 // nextUI Components
 import { Input, Button } from "@nextui-org/react";
 import { RadioGroup, Radio, cn, Image } from "@nextui-org/react";
@@ -19,6 +23,7 @@ import { PiChalkboardTeacher } from "react-icons/pi";
 import { toast } from "react-toastify";
 
 function LoginPage() {
+	const dispatch = useDispatch();
 	const navigator = useNavigate();
 	const toastOptions = {
 		pauseOnHover: false,
@@ -77,7 +82,9 @@ function LoginPage() {
 				const data = await response.json();
 				// console.log(data);
 				toast.success("Logged In Successfully", toastOptions);
-				navigator("/");
+				const route = data.data.role;
+				dispatch(setLoggedInUser(data.data));
+				navigator(`/${route}`);
 			} else {
 				const errData = await response.json();
 				toast.error(errData?.message, toastOptions);

@@ -20,6 +20,7 @@ import NoFound from "../../assets/no_data.jpg";
 import { MdOutlineRefresh } from "react-icons/md";
 
 import { toast } from "react-toastify";
+
 function DashboardMessages() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -87,9 +88,7 @@ function DashboardMessages() {
 	return (
 		<Card className="w-4/5 p-3">
 			<CardHeader className="justify-between">
-				<h3 className="text-md font-semibold tracking-wide">
-					Dashboard Subscribers List
-				</h3>
+				<h3 className="text-md font-semibold tracking-wide">Messages List</h3>
 
 				<Tooltip color="primary" content="Refresh">
 					<Button onClick={refresh} color="primary">

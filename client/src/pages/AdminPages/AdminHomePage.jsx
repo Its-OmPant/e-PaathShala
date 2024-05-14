@@ -3,7 +3,7 @@ import React from "react";
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 
-function DashboardMain() {
+function AdminHomePage() {
 	return (
 		<Card className="w-4/5 bg-white">
 			<CardBody className="p-8 text-center justify-center">
@@ -18,4 +18,4 @@ function DashboardMain() {
 	);
 }
 
-export default DashboardMain;
+export default AdminHomePage;
