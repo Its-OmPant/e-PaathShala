@@ -43,6 +43,18 @@ import DigitalLibraryTab from "./pages/AdminPages/DigitalLibraryTab.jsx";
 
 import AddNewStudent from "./pages/AdminPages/AddNewStudent.jsx";
 
+// Student Dashboard Pages
+
+import StudentDashboard from "./pages/StudentPages/StudentDashboard.jsx";
+import StudentHomePage from "./pages/StudentPages/StudentHomePage.jsx";
+
+import StudentDashBoardTab from "./pages/StudentPages/StudentDashBoardTab.jsx";
+import StudentAttendanceTab from "./pages/StudentPages/StudentAttendanceTab.jsx";
+import StudentChatGroupsTab from "./pages/StudentPages/StudentChatGroupsTab.jsx";
+import StudentDigitalLibraryTab from "./pages/StudentPages/StudentDigitalLibraryTab.jsx";
+import StudentLiveClassTab from "./pages/StudentPages/StudentLiveClassTab.jsx";
+import StudentSubjectsTab from "./pages/StudentPages/StudentSubjectsTab.jsx";
+
 import {
 	Route,
 	RouterProvider,
@@ -90,6 +102,18 @@ const router = createBrowserRouter(
 				<Route path="courses" element={<CourseTab />} />
 				<Route path="notices" element={<NoticeTab />} />
 				<Route path="digital-library" element={<DigitalLibraryTab />} />
+			</Route>
+
+			{/* Student Routes */}
+
+			<Route path="/student" element={<StudentDashboard />}>
+				<Route path="" element={<StudentHomePage />} />
+				<Route path="dashboard" element={<StudentDashBoardTab />} />
+				<Route path="live-classes" element={<StudentLiveClassTab />} />
+				<Route path="chat-groups" element={<StudentChatGroupsTab />} />
+				<Route path="attendance" element={<StudentAttendanceTab />} />
+				<Route path="subjects" element={<StudentSubjectsTab />} />
+				<Route path="digital-library" element={<StudentDigitalLibraryTab />} />
 			</Route>
 		</Route>,
 	])
