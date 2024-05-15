@@ -33,7 +33,9 @@ function TabsNavbar({ tabName }) {
 	};
 	return (
 		<CardHeader className="flex justify-between">
-			{tabName}
+			<h1 className="text-lg font-bold text-slate-800 tracking-wide uppercase">
+				{tabName}
+			</h1>
 			<div className="flex items-center gap-4">
 				<User
 					name={user.fullName}

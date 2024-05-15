@@ -36,42 +36,66 @@ function AdminDashboard() {
 					<CardBody className="px-0">
 						<NavLink
 							to="dashboard"
-							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
 							<MdDashboard size={21} className="text-sky-800" />
 							Dashboard
 						</NavLink>
 
 						<NavLink
 							to="students"
-							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
 							<FaUserGraduate size={21} className="text-sky-800" />
 							Students
 						</NavLink>
 
 						<NavLink
 							to="teachers"
-							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
 							<FaChalkboardTeacher size={21} className="text-sky-800" />
 							Teachers
 						</NavLink>
 
 						<NavLink
 							to="courses"
-							className="bg-slate-200/80 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
 							<FaBookOpen size={21} className="text-sky-800" />
 							Courses
 						</NavLink>
 
 						<NavLink
 							to="notices"
-							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
 							<AiFillNotification size={21} className="text-sky-800" />
 							Notices
 						</NavLink>
 
 						<NavLink
-							to="notices"
-							className="bg-slate-200 hover:bg-slate-300/70 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">
+							to="digital-library"
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
 							<FaBookAtlas size={21} className="text-sky-800" />
 							Digital Library
 						</NavLink>
@@ -90,3 +114,5 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard;
+
+// className="hover:bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">

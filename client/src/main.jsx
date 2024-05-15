@@ -39,6 +39,9 @@ import StudentTab from "./pages/AdminPages/StudentTab.jsx";
 import TeacherTab from "./pages/AdminPages/TeacherTab.jsx";
 import CourseTab from "./pages/AdminPages/CourseTab.jsx";
 import NoticeTab from "./pages/AdminPages/NoticeTab.jsx";
+import DigitalLibraryTab from "./pages/AdminPages/DigitalLibraryTab.jsx";
+
+import AddNewStudent from "./pages/AdminPages/AddNewStudent.jsx";
 
 import {
 	Route,
@@ -78,10 +81,15 @@ const router = createBrowserRouter(
 			<Route path="/admin" element={<AdminDashboard />}>
 				<Route path="" element={<AdminHomePage />} />
 				<Route path="dashboard" element={<DashBoardTab />} />
-				<Route path="students" element={<StudentTab />} />
+				<Route path="students">
+					<Route path="" element={<StudentTab />} />
+					<Route path="add" element={<AddNewStudent />} />
+				</Route>
+				{/* <Route path="students/add" element={<AddNewStudent />} /> */}
 				<Route path="teachers" element={<TeacherTab />} />
 				<Route path="courses" element={<CourseTab />} />
 				<Route path="notices" element={<NoticeTab />} />
+				<Route path="digital-library" element={<DigitalLibraryTab />} />
 			</Route>
 		</Route>,
 	])

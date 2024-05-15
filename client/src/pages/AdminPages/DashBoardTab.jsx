@@ -12,7 +12,7 @@ import { today, getLocalTimeZone } from "@internationalized/date";
 
 function DashBoardTab() {
 	return (
-		<Card className="w-4/5 p-3">
+		<Card shadow="none" className="w-4/5 p-3 ">
 			<TabsNavbar tabName="Dashboard" />
 			<Divider></Divider>
 			<CardBody>
