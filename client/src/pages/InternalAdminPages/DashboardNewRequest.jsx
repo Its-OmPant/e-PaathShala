@@ -47,7 +47,9 @@ function DashboardNewRequest() {
 	const getData = async () => {
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/subscriptionRequest/all",
+				`${
+					import.meta.env.VITE_API_BASE_URL
+				}/internal/admin/subscriptionRequest/all`,
 				{
 					method: "GET",
 				}
@@ -83,7 +85,9 @@ function DashboardNewRequest() {
 	const registerUser = async (e) => {
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/create/AdminAccount",
+				`${
+					import.meta.env.VITE_API_BASE_URL
+				}/internal/admin/create/AdminAccount`,
 				{
 					method: "POST",
 					headers: {
@@ -173,12 +177,11 @@ function DashboardNewRequest() {
 					</ModalContent>
 				</Modal>
 			</CardHeader>
-			<Divider className="h-1"></Divider>
 			<CardBody>
 				{data.length > 0 ? (
 					<table>
-						<thead className="bg-slate-200 p-2 rounded-md">
-							<tr className="flex justify-between text-slate-700 p-2">
+						<thead>
+							<tr className="flex justify-between  p-2 bg-pink-300 rounded-md">
 								<td className="w-1/5">Name</td>
 								<td className="w-1/5">Email</td>
 								<td className="w-1/5">School Name</td>

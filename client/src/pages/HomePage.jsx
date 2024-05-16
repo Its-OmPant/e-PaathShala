@@ -25,7 +25,7 @@ import { FaCircleUser } from "react-icons/fa6";
 
 function HomePage() {
 	const user = useSelector((state) => state.auth.user);
-	const name = user ? user.fullName : "There";
+	const name = user ? user.fullName || user.adminName : "There";
 	return (
 		<div className="min-h-screen bg-slate-300 py-2">
 			{/* navbar */}

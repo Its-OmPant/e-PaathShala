@@ -21,15 +21,11 @@ import { FaUserShield } from "react-icons/fa6";
 import { PiStudentFill } from "react-icons/pi";
 import { PiChalkboardTeacher } from "react-icons/pi";
 import { toast } from "react-toastify";
+import { toastOptions } from "../Constants.js";
 
 function LoginPage() {
 	const dispatch = useDispatch();
 	const navigator = useNavigate();
-	const toastOptions = {
-		pauseOnHover: false,
-		autoClose: 2000,
-		closeOnClick: true,
-	};
 
 	const [formData, setFormData] = useState({
 		email: "",
@@ -68,7 +64,7 @@ function LoginPage() {
 		// hitting the api
 		try {
 			const response = await fetch(
-				`http://localhost:8000/api/v1/${accountType}/login`,
+				`${import.meta.env.VITE_API_BASE_URL}/${accountType}/login`,
 				{
 					method: "POST",
 					headers: {

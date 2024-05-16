@@ -23,7 +23,7 @@ import InternalAdminRegisterPage from "./pages/InternalAdminPages/InternalAdminR
 import InternalAdminLoginPage from "./pages/InternalAdminPages/InternalAdminLoginPage.jsx";
 import InternalAdminDashboard from "./pages/InternalAdminPages/InternalAdminDashboard.jsx";
 
-import DashboardMain from "./pages/InternalAdminPages/DashboardMain.jsx";
+import DashboardHomePage from "./pages/InternalAdminPages/DashboardHomePage.jsx";
 import DashboardNewRequest from "./pages/InternalAdminPages/DashboardNewRequest.jsx";
 
 import DashboardMessages from "./pages/InternalAdminPages/DashboardMessages.jsx";
@@ -83,7 +83,7 @@ const router = createBrowserRouter(
 			<Route
 				path="/internal/admin/dashboard/"
 				element={<InternalAdminDashboard />}>
-				<Route path="" element={<DashboardMain />} />
+				<Route path="" element={<DashboardHomePage />} />
 				<Route path="new-requests" element={<DashboardNewRequest />} />
 				<Route path="subscribers-list" element={<DashboardSubscribersList />} />
 				<Route path="messages" element={<DashboardMessages />} />

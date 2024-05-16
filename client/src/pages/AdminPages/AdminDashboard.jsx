@@ -1,13 +1,17 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
 import NotFoundPage from "../NotFoundPage.jsx";
+import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
 
 // redux related
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { logOut } from "../../features/auth/authSlice.js";
 
 // next UI components
-import { Card, CardHeader, CardBody } from "@nextui-org/card";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
+import { User, Button } from "@nextui-org/react";
 
 // icons
 import { MdDashboard } from "react-icons/md";
@@ -15,10 +19,18 @@ import { FaAtlas, FaUserGraduate } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaBookAtlas, FaBookOpen } from "react-icons/fa6";
 import { AiFillNotification } from "react-icons/ai";
+import { MdLogout } from "react-icons/md";
 
 function AdminDashboard() {
 	const user = useSelector((state) => state.auth.user);
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
+	const logoutSession = () => {
+		dispatch(logOut());
+		toast.success("Logged Out Successfully", toastOptions);
+		navigate("/");
+	};
 	let content;
 
 	if (user) {
@@ -100,6 +112,24 @@ function AdminDashboard() {
 							Digital Library
 						</NavLink>
 					</CardBody>
+					<CardFooter className="flex-col gap-3 items-start">
+						<User
+							className="justify-start gap-4 "
+							name={user.fullName}
+							description={user.email}
+							avatarProps={{
+								src: user.profileImage,
+							}}
+						/>
+						<Button
+							onClick={logoutSession}
+							color="danger"
+							variant="ghost"
+							className="w-full"
+							endContent={<MdLogout />}>
+							Logout
+						</Button>
+					</CardFooter>
 				</Card>
 
 				{/* Right */}
@@ -114,5 +144,3 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard;
-
-// className="hover:bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3">

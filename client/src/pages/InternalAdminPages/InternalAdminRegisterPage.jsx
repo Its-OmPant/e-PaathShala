@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
 
 // NextUI Components
 import { Input, Button } from "@nextui-org/react";
 
 function InternalAdminRegisterPage() {
-	const toastOptions = {
-		pauseOnHover: false,
-		autoClose: 2000,
-		closeOnClick: true,
-	};
-
 	const navigator = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -46,7 +41,7 @@ function InternalAdminRegisterPage() {
 		// hitting the Api
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/register",
+				`${import.meta.env.VITE_API_BASE_URL}/internal/admin/register`,
 				{
 					method: "POST",
 					headers: {

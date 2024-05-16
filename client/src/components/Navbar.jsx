@@ -27,7 +27,12 @@ function Navbar() {
 				<NavLink to="/contact">Contact Us</NavLink>
 				{user ? (
 					<>
-						<NavLink to={user.role}>Dashboard </NavLink>
+						{user.role != "mainAdmin" ? (
+							<NavLink to={user.role}>Dashboard </NavLink>
+						) : (
+							""
+						)}
+
 						<NavLink
 							onClick={logoutSession}
 							className="rounded-md px-3 bg-pink-700 py-1 text-white">

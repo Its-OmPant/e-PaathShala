@@ -4,14 +4,9 @@ import { Input, Textarea, Button } from "@nextui-org/react";
 import ContactImage from "../assets/contact.png";
 
 import { toast } from "react-toastify";
+import { toastOptions } from "../Constants.js";
 
 function ContactUsPage() {
-	const toastOptions = {
-		pauseOnHover: false,
-		autoClose: 2000,
-		closeOnClick: true,
-	};
-
 	const [formData, setFormData] = useState({
 		fullName: "",
 		email: "",
@@ -32,13 +27,16 @@ function ContactUsPage() {
 
 		// hitting API
 		try {
-			const response = await fetch("http://localhost:8000/api/v1/contact/add", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
-			});
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/contact/add`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(formData),
+				}
+			);
 
 			if (response.ok) {
 				const data = await response.json();

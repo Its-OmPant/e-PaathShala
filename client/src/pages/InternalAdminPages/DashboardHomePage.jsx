@@ -8,7 +8,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Button } from "@nextui-org/react";
 import { NavLink } from "react-router-dom";
 
-function DashboardMain() {
+function DashboardHomePage() {
 	const user = useSelector((state) => state.auth.user);
 
 	return (
@@ -34,4 +34,4 @@ function DashboardMain() {
 	);
 }
 
-export default DashboardMain;
+export default DashboardHomePage;

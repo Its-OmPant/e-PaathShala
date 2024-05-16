@@ -37,21 +37,19 @@ function DashboardMessages() {
 	const getData = async () => {
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/contacts/all",
+				`${import.meta.env.VITE_API_BASE_URL}/internal/admin/contacts/all`,
 				{
 					method: "GET",
 				}
 			);
 
-			// console.log(response);
 			if (response.ok) {
 				const data = await response.json();
-				// console.log(data);
 				const newData = data.data?.map((d) => ({
 					...d,
 					key: d._id,
 				}));
-				// console.log(newData);
+
 				setData(newData);
 			} else {
 				const errData = await response.json();
@@ -135,14 +133,11 @@ function DashboardMessages() {
 					</ModalContent>
 				</Modal>
 			</CardHeader>
-
-			<Divider className="h-1"></Divider>
-
 			<CardBody>
 				{data.length > 0 ? (
 					<table>
-						<thead className="bg-slate-200 p-2 rounded-md">
-							<tr className="flex justify-between text-slate-700 p-2">
+						<thead className="">
+							<tr className="flex justify-between text-slate-700 p-2 bg-teal-200 rounded-md">
 								<td className="w-1/4">Name</td>
 								<td className="w-1/4">Email</td>
 								<td className="w-1/4">Message</td>

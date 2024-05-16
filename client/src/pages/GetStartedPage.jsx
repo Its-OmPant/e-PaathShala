@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { toastOptions } from "../Constants.js";
 
 // NextUI Components
 import { Input, Button } from "@nextui-org/react";
@@ -18,11 +19,6 @@ import {
 import RegisterImage from "../assets/register.svg";
 
 function GetStartedPage() {
-	const toastOptions = {
-		pauseOnHover: false,
-		autoClose: 3000,
-		closeOnClick: true,
-	};
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const navigator = useNavigate();
 
@@ -54,7 +50,7 @@ function GetStartedPage() {
 		// hitting the API
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/subscription/add",
+				`${import.meta.env.VITE_API_BASE_URL}/internal/admin/subscription/add`,
 				{
 					method: "POST",
 					headers: {

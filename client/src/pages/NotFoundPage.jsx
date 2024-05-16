@@ -23,7 +23,7 @@ function NotFoundPage() {
 				<Image
 					src={NotFound}
 					width={700}
-					alt="NextUI Album Cover"
+					alt="Not Found Image"
 					className="m-5"
 				/>
 			</div>

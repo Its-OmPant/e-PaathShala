@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
 
 // redux related
 import { useDispatch } from "react-redux";
@@ -13,13 +14,6 @@ import { Input, Button } from "@nextui-org/react";
 
 function InternalAdminLoginPage() {
 	const dispatch = useDispatch();
-
-	const toastOptions = {
-		pauseOnHover: false,
-		autoClose: 2000,
-		closeOnClick: true,
-	};
-
 	const navigator = useNavigate();
 
 	const [formData, setFormData] = useState({
@@ -48,7 +42,7 @@ function InternalAdminLoginPage() {
 		// hitting the Api
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/v1/internal/admin/login",
+				`${import.meta.env.VITE_API_BASE_URL}/internal/admin/login`,
 				{
 					method: "POST",
 					headers: {
@@ -79,7 +73,9 @@ function InternalAdminLoginPage() {
 		<div className="w-screen h-screen flex justify-between">
 			{/* left */}
 			<div className="w-2/5 bg-purple-800 flex flex-col items-center gap-4 justify-center">
-				<h2 className="text-4xl text-white font-bold">Admin Login Page </h2>
+				<h2 className="text-4xl text-white font-bold px-4 text-center">
+					ePaathShala <br /> Internal Admin Login Page
+				</h2>
 			</div>
 
 			{/* right */}

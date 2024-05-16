@@ -1,8 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import TabsNavbar from "./TabsNavbar.jsx";
-
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -22,9 +20,8 @@ import { MdDeleteOutline } from "react-icons/md";
 function StudentTab() {
 	return (
 		<Card className="w-4/5 p-3">
-			<TabsNavbar tabName="Students" />
-			<Divider></Divider>
-			<CardBody>
+			<CardHeader className="justify-between">
+				<h1 className="font-bold uppercase">Students</h1>
 				<div className="flex justify-end gap-3">
 					<Dropdown>
 						<DropdownTrigger>
@@ -50,7 +47,10 @@ function StudentTab() {
 						</Button>
 					</Link>
 				</div>
-				<table className="my-3">
+			</CardHeader>
+			<Divider></Divider>
+			<CardBody>
+				<table>
 					<thead className="">
 						<tr className="flex justify-between  p-2 bg-danger-100 rounded-lg">
 							<td className="w-1/6">Name</td>

@@ -1,7 +1,5 @@
 import React from "react";
 
-import TabsNavbar from "./TabsNavbar.jsx";
-
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -13,7 +11,9 @@ import { today, getLocalTimeZone } from "@internationalized/date";
 function DashBoardTab() {
 	return (
 		<Card shadow="none" className="w-4/5 p-3 ">
-			<TabsNavbar tabName="Dashboard" />
+			<CardHeader>
+				<h1 className="font-bold uppercase">Dashboard</h1>
+			</CardHeader>
 			<Divider></Divider>
 			<CardBody>
 				<div className="flex justify-around my-2">
