@@ -32,7 +32,7 @@ const studentSchema = new mongoose.Schema({
 		required: true,
 	},
 	password: {
-		type: string,
+		type: String,
 		required: true,
 	},
 	role: {
@@ -49,25 +49,17 @@ const studentSchema = new mongoose.Schema({
 		ref: "branch",
 		required: true,
 	},
-	subjects: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "subject",
-		},
-	],
 	college: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "admin",
 		required: true,
 	},
-	attendance: {
-		type: [
-			{
-				date: Date,
-				isPresent: Boolean,
-			},
-		],
-	},
+	attendance: [
+		{
+			date: Date,
+			status: Boolean,
+		},
+	],
 	result: [
 		{
 			subjectName: {

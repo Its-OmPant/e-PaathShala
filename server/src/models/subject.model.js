@@ -22,10 +22,12 @@ const subjectSchema = new mongoose.Schema({
 	taughtBy: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "teacher",
+		required: true,
 	},
 	college: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "admin",
+		required: true,
 	},
 });
 

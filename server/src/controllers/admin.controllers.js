@@ -1,6 +1,10 @@
 // DB models
 import { Admin } from "../models/admin.model.js";
 import { Course } from "../models/course.model.js";
+import { Teacher } from "../models/teacher.model.js";
+import { Subject } from "../models/subject.model.js";
+import { Branch } from "../models/branch.model.js";
+import { Student } from "../models/student.model.js";
 
 // utilities
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -101,6 +105,58 @@ const adminLogin = asyncHandler(async (req, res) => {
 	);
 });
 
+// 					********* 	STUDENT RELATED CONTROLLERS *********
+
+const createStudent = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const { fullName, email, gender, dateOfBirth, password, courseId, branchId } =
+		req.body;
+
+	if (
+		!fullName ||
+		!email ||
+		!gender ||
+		!dateOfBirth ||
+		!password ||
+		!courseId ||
+		!branchId
+	) {
+		return res.status(400).json(new ApiError(400, "All Fields are required"));
+	}
+
+	const isStudentExists = await Student.findOne({ email });
+
+	if (isStudentExists) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Student with email already exists"));
+	}
+
+	const newStudent = await Student.create({
+		fullName,
+		email,
+		gender,
+		dateOfBirth,
+		password,
+		course: courseId,
+		branch: branchId,
+		college: admin_id,
+	});
+
+	if (!newStudent) {
+		return res.status(500).json(new ApiError(500, "Student Creation Failed"));
+	}
+
+	const createdStudent = await Student.findById(newStudent._id).select(
+		"-password"
+	);
+
+	return res
+		.status(200)
+		.json(new ApiResponse(201, createdStudent, "Student Created Successfully"));
+});
+
 // 					********* 	COURSE RELATED CONTROLLERS *********
 
 const createCourse = asyncHandler(async (req, res) => {
@@ -137,4 +193,93 @@ const createCourse = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(201, course, "New Course Created Successfully"));
 });
 
-export { adminLogin, createCourse };
+// 					********* 	TEACHER RELATED CONTROLLERS *********
+
+const createTeacher = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+	const { fullName, email, gender, password } = req.body;
+
+	if (!fullName || !email || !gender || !password) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "All Fields are required", false));
+	}
+
+	const isTeacherExist = await Teacher.findOne({ email, college: admin_id });
+
+	if (isTeacherExist) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Teacher with Email Already Exist", false));
+	}
+
+	const newTeacher = await Teacher.create({
+		fullName,
+		email,
+		gender,
+		password,
+		college: admin_id,
+	});
+
+	if (!newTeacher) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Server Error :: Teacher Creation Failed"));
+	}
+	const teacher = await Teacher.findById(newTeacher._id).select("-password");
+
+	return res
+		.status(200)
+		.json(new ApiResponse(201, teacher, "Teacher Added successfully"));
+});
+
+// 					********* 	SUBJECT RELATED CONTROLLERS *********
+
+const createSubject = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const { name, code, courseId, branchId, teacherId } = req.body;
+
+	if (!name || !code || !courseId || !branchId || !teacherId) {
+		return res.status(400).json(new ApiError(400, "All Fields are required"));
+	}
+
+	const isSubjectExists = await Subject.findOne({ name, college: admin_id });
+	if (isSubjectExists) {
+		return res.status(400).json(new ApiError(400, "Subject Already Exists"));
+	}
+
+	const newSubject = await Subject.create({
+		name,
+		code,
+		course: courseId,
+		branch: branchId,
+		taughtBy: teacherId,
+		college: admin_id,
+	});
+
+	if (!newSubject) {
+		return res.status(500).json(new ApiError(500, "Subject Creation Failed"));
+	}
+
+	const branch = await Branch.findById(branchId);
+	branch.subjects.push(newSubject._id);
+	await branch.save();
+
+	const teacher = await Teacher.findById(teacherId);
+	teacher.teachSubjects.push(newSubject._id);
+	teacher.teachCourses.push(courseId);
+	await teacher.save();
+
+	return res
+		.status(200)
+		.json(new ApiResponse(201, newSubject, "Subject Created Successfully"));
+});
+
+export {
+	adminLogin,
+	createCourse,
+	createTeacher,
+	createSubject,
+	createStudent,
+};

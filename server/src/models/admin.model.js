@@ -16,7 +16,7 @@ const adminSchema = new Schema(
 			type: String,
 			default: "12345678",
 		},
-		schoolName: {
+		college: {
 			type: String,
 			required: true,
 			unique: true,

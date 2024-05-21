@@ -19,6 +19,10 @@ const teacherSchema = new mongoose.Schema({
 		type: String,
 		default: "",
 	},
+	password: {
+		type: String,
+		required: true,
+	},
 	role: {
 		type: String,
 		default: "teacher",
@@ -35,19 +39,17 @@ const teacherSchema = new mongoose.Schema({
 			ref: "subject",
 		},
 	],
-	school: {
+	college: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "admin",
 		required: true,
 	},
-	attendance: {
-		type: [
-			{
-				date: Date,
-				isPresent: Boolean,
-			},
-		],
-	},
+	attendance: [
+		{
+			date: Date,
+			status: Boolean,
+		},
+	],
 });
 
 export const Teacher = new mongoose.model("teacher", teacherSchema);
