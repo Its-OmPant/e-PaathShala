@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const teacherSchema = new mongoose.Schema({
 	fullName: {
@@ -18,6 +19,12 @@ const teacherSchema = new mongoose.Schema({
 	profileImage: {
 		type: String,
 		default: "",
+	},
+	contactNo: {
+		type: String,
+		required: true,
+		minLength: 10,
+		maxLength: 10,
 	},
 	password: {
 		type: String,
@@ -51,5 +58,18 @@ const teacherSchema = new mongoose.Schema({
 		},
 	],
 });
+
+teacherSchema.methods.generateToken = async function () {
+	return jwt.sign(
+		{
+			_id: this._id,
+			role: this.role,
+		},
+		process.env.JWT_TOKEN_SECRET_KEY,
+		{
+			expiresIn: process.env.JWT_TOKEN_EXPIRY,
+		}
+	);
+};
 
 export const Teacher = new mongoose.model("teacher", teacherSchema);

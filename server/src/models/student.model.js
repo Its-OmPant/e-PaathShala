@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
 
 const studentSchema = new mongoose.Schema({
 	fullName: {
@@ -30,6 +31,12 @@ const studentSchema = new mongoose.Schema({
 	dateOfBirth: {
 		type: Date,
 		required: true,
+	},
+	contactNo: {
+		type: String,
+		required: true,
+		minLength: 10,
+		maxLength: 10,
 	},
 	password: {
 		type: String,
@@ -70,5 +77,18 @@ const studentSchema = new mongoose.Schema({
 		},
 	],
 });
+
+studentSchema.methods.generateToken = async function () {
+	return jwt.sign(
+		{
+			_id: this._id,
+			role: this.role,
+		},
+		process.env.JWT_TOKEN_SECRET_KEY,
+		{
+			expiresIn: process.env.JWT_TOKEN_EXPIRY,
+		}
+	);
+};
 
 export const Student = new mongoose.model("student", studentSchema);

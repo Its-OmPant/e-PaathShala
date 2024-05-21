@@ -20,7 +20,7 @@ app.use(cookieParser());
 
 // routes import
 
-import router from "./routes/main.router.js";
+import router from "./routes/index.js";
 
 // routes declaration
 

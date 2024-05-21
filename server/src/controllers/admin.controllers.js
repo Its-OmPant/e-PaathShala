@@ -110,8 +110,16 @@ const adminLogin = asyncHandler(async (req, res) => {
 const createStudent = asyncHandler(async (req, res) => {
 	const admin_id = req.user_id;
 
-	const { fullName, email, gender, dateOfBirth, password, courseId, branchId } =
-		req.body;
+	const {
+		fullName,
+		email,
+		gender,
+		dateOfBirth,
+		contactNo,
+		password,
+		courseId,
+		branchId,
+	} = req.body;
 
 	if (
 		!fullName ||
@@ -119,6 +127,7 @@ const createStudent = asyncHandler(async (req, res) => {
 		!gender ||
 		!dateOfBirth ||
 		!password ||
+		!contactNo ||
 		!courseId ||
 		!branchId
 	) {
@@ -138,6 +147,7 @@ const createStudent = asyncHandler(async (req, res) => {
 		email,
 		gender,
 		dateOfBirth,
+		contactNo,
 		password,
 		course: courseId,
 		branch: branchId,
@@ -155,6 +165,32 @@ const createStudent = asyncHandler(async (req, res) => {
 	return res
 		.status(200)
 		.json(new ApiResponse(201, createdStudent, "Student Created Successfully"));
+});
+
+const getAllStudents = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const result = await Student.find({ college: admin_id })
+		.populate({
+			path: "course",
+			select: "name -_id",
+		})
+		.populate({
+			path: "branch",
+			select: "name -_id",
+		})
+		.select(
+			"-password -fatherName -motherName -role -college -attendance -result"
+		);
+
+	if (!result) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Fetching Students Failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, result, "Fetched All Students"));
 });
 
 // 					********* 	COURSE RELATED CONTROLLERS *********
@@ -197,9 +233,9 @@ const createCourse = asyncHandler(async (req, res) => {
 
 const createTeacher = asyncHandler(async (req, res) => {
 	const admin_id = req.user_id;
-	const { fullName, email, gender, password } = req.body;
+	const { fullName, email, gender, contactNo, password } = req.body;
 
-	if (!fullName || !email || !gender || !password) {
+	if (!fullName || !email || !gender || !contactNo || !password) {
 		return res
 			.status(400)
 			.json(new ApiError(400, "All Fields are required", false));
@@ -213,10 +249,16 @@ const createTeacher = asyncHandler(async (req, res) => {
 			.json(new ApiError(400, "Teacher with Email Already Exist", false));
 	}
 
+	const isContactExists = await Teacher.findOne({ contactNo });
+	if (isContactExists) {
+		return res.status(400).json(new ApiError(400, "Contact already is in use"));
+	}
+
 	const newTeacher = await Teacher.create({
 		fullName,
 		email,
 		gender,
+		contactNo,
 		password,
 		college: admin_id,
 	});
@@ -226,11 +268,32 @@ const createTeacher = asyncHandler(async (req, res) => {
 			.status(500)
 			.json(new ApiError(500, "Server Error :: Teacher Creation Failed"));
 	}
+
 	const teacher = await Teacher.findById(newTeacher._id).select("-password");
 
 	return res
 		.status(200)
 		.json(new ApiResponse(201, teacher, "Teacher Added successfully"));
+});
+
+const getAllTeachers = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const result = await Teacher.find({ college: admin_id })
+		.populate({
+			path: "teachCourses",
+			select: "name -_id",
+		})
+		.select("-password -role -teachSubjects -attendance -college");
+
+	if (!result) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Fetching Teachers Failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, result, "Fetched All Teachers"));
 });
 
 // 					********* 	SUBJECT RELATED CONTROLLERS *********
@@ -282,4 +345,6 @@ export {
 	createTeacher,
 	createSubject,
 	createStudent,
+	getAllStudents,
+	getAllTeachers,
 };
