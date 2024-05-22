@@ -60,7 +60,6 @@ function StudentTab() {
 			autoClose: 2000,
 			closeOnClick: true,
 			position: "bottom-right",
-			theme: "colored",
 		});
 	};
 

@@ -40,4 +40,21 @@ const teacherLogin = asyncHandler(async (req, res) => {
 	);
 });
 
-export { teacherLogin };
+const getTeacherById = asyncHandler(async (req, res) => {
+	const id = req.params.id;
+
+	const teacher = await Teacher.findById(id)
+		.populate({ path: "teachCourses", select: "name" })
+		.populate({ path: "teachSubjects", select: "name" })
+		.populate({ path: "college", select: "college" })
+		.select("-password -role ");
+
+	if (!teacher) {
+		return res.status(400).json(new ApiError(400, "Teacher with ID Not Found"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, teacher, "Teacher Found Successfully"));
+});
+
+export { teacherLogin, getTeacherById };

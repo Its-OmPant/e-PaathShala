@@ -352,7 +352,9 @@ const createSubject = asyncHandler(async (req, res) => {
 
 	const teacher = await Teacher.findById(teacherId);
 	teacher.teachSubjects.push(newSubject._id);
-	teacher.teachCourses.push(courseId);
+	if (teacher.teachCourses.includes(courseId) === false) {
+		teacher.teachCourses.push(courseId);
+	}
 	await teacher.save();
 
 	return res

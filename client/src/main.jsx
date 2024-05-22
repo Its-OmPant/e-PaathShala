@@ -42,7 +42,9 @@ import NoticeTab from "./pages/AdminPages/NoticeTab.jsx";
 import DigitalLibraryTab from "./pages/AdminPages/DigitalLibraryTab.jsx";
 
 import AddNewStudent from "./pages/AdminPages/AddNewStudent.jsx";
+import AddNewTeacher from "./pages/AdminPages/AddNewTeacher.jsx";
 import StudentProfilePage from "./pages/AdminPages/StudentProfilePage.jsx";
+import TeacherProfilePage from "./pages/AdminPages/TeacherProfilePage.jsx";
 
 // Student Dashboard Pages
 
@@ -99,8 +101,11 @@ const router = createBrowserRouter(
 					<Route path="add" element={<AddNewStudent />} />
 					<Route path=":id" element={<StudentProfilePage />} />
 				</Route>
-				{/* <Route path="students/add" element={<AddNewStudent />} /> */}
-				<Route path="teachers" element={<TeacherTab />} />
+				<Route path="teachers">
+					<Route path="" element={<TeacherTab />} />
+					<Route path="add" element={<AddNewTeacher />} />
+					<Route path=":id" element={<TeacherProfilePage />} />
+				</Route>
 				<Route path="courses" element={<CourseTab />} />
 				<Route path="notices" element={<NoticeTab />} />
 				<Route path="digital-library" element={<DigitalLibraryTab />} />
