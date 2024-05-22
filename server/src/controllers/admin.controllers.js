@@ -93,6 +93,7 @@ const adminLogin = asyncHandler(async (req, res) => {
 		new ApiResponse(
 			200,
 			{
+				id: admin._id,
 				fullName: admin.fullName,
 				email: admin.email,
 				schoolName: admin.schoolName,
@@ -229,6 +230,26 @@ const createCourse = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(201, course, "New Course Created Successfully"));
 });
 
+const getAllCourses = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const result = await Course.find({ college: admin_id })
+		.populate({
+			path: "branches",
+			select: "name",
+		})
+		.select("-college");
+
+	if (!result) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Fetching Courses Failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, result, "Fetched All Courses"));
+});
+
 // 					********* 	TEACHER RELATED CONTROLLERS *********
 
 const createTeacher = asyncHandler(async (req, res) => {
@@ -347,4 +368,5 @@ export {
 	createStudent,
 	getAllStudents,
 	getAllTeachers,
+	getAllCourses,
 };

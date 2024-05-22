@@ -40,4 +40,30 @@ const studentLogin = asyncHandler(async (req, res) => {
 	);
 });
 
-export { studentLogin };
+const getStudentById = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+
+	if (!id) {
+		return res.status(400).json(new ApiError(400, "Id is required"));
+	}
+
+	const student = await Student.findById(id)
+		.populate({
+			path: "course",
+			select: "name -_id",
+		})
+		.populate({
+			path: "branch",
+			select: "name -_id",
+		})
+		.select("-password -role -college");
+
+	if (!student) {
+		return res.status(400).json(new ApiError(400, "Student with ID Not Found"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, student, "Student Found Successfully"));
+});
+
+export { studentLogin, getStudentById };

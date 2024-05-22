@@ -5,6 +5,7 @@ import {
 	createStudent,
 	createSubject,
 	createTeacher,
+	getAllCourses,
 	getAllStudents,
 	getAllTeachers,
 } from "../controllers/admin.controllers.js";
@@ -28,6 +29,7 @@ router.route("/students/all").get(verifyJWT, getAllStudents);
 
 //                  ************* COURSE RELATED ROUTES *************
 router.route("/courses/create").post(verifyJWT, createCourse);
+router.route("/courses/all").get(verifyJWT, getAllCourses);
 
 //                  ************* TEACHER RELATED ROUTES *************
 router.route("/teachers/create").post(verifyJWT, createTeacher);

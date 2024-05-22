@@ -91,7 +91,11 @@ function InternalAdminDashboard() {
 									src: user.profileImage,
 								}}
 							/>
-							<Button color="danger" variant="ghost" className="w-full">
+							<Button
+								onClick={logoutSession}
+								color="danger"
+								variant="ghost"
+								className="w-full">
 								Logout
 							</Button>
 						</CardFooter>
