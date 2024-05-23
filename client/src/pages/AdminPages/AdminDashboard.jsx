@@ -113,14 +113,16 @@ function AdminDashboard() {
 						</NavLink>
 					</CardBody>
 					<CardFooter className="flex-col gap-3 items-start">
-						<User
-							className="justify-start gap-4 "
-							name={user.fullName}
-							description={user.email}
-							avatarProps={{
-								src: user.profileImage,
-							}}
-						/>
+						<NavLink to="profile">
+							<User
+								className="justify-start gap-4 "
+								name={user.fullName}
+								description={user.email}
+								avatarProps={{
+									src: user.profileImage,
+								}}
+							/>
+						</NavLink>
 						<Button
 							onClick={logoutSession}
 							color="danger"
