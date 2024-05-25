@@ -1,6 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
 
+import { useSelector } from "react-redux";
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Image } from "@nextui-org/image";
@@ -11,6 +14,57 @@ import { MdArrowBack } from "react-icons/md";
 import { MdOutlineRefresh } from "react-icons/md";
 
 function CourseBranches() {
+	const params = useParams();
+	const user = useSelector((state) => state.auth.user);
+	const courseId = params.id;
+
+	const [courseDetails, setCourseDetails] = useState([
+		{
+			branches: [],
+			name: "",
+			coverImage: "",
+		},
+	]);
+
+	const [selectedBranch, setSelectedBranch] = useState(null);
+
+	const getCourseDetails = async (e) => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/courses/${courseId}`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+
+			if (response.ok) {
+				const result = await response.json();
+				console.log(result.data[0]);
+				setCourseDetails(result.data[0]);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+
+	useEffect(() => {
+		getCourseDetails();
+	}, []);
+
+	const selectBranch = (e) => {
+		const branch = courseDetails.branches.find((b) => b._id === e.target.id);
+		setSelectedBranch(branch);
+	};
+
+	const refresh = () => {
+		getCourseDetails();
+		toast.success("Reloaded", toastOptions);
+	};
+
 	return (
 		<Card className="w-4/5 p-3">
 			<CardHeader className="gap-3 justify-between">
@@ -21,7 +75,7 @@ function CourseBranches() {
 					<h1>Course Details</h1>
 				</div>
 				<div className="flex justify-end gap-3">
-					<Button color="secondary" isIconOnly>
+					<Button onClick={refresh} color="secondary" isIconOnly>
 						<MdOutlineRefresh size={18} />
 					</Button>
 					<Link to="branch/add">
@@ -43,36 +97,56 @@ function CourseBranches() {
 						<Image
 							width={300}
 							alt="NextUI hero Image"
-							src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
+							src={courseDetails.coverImage}
 						/>
 						<CardFooter className="flex-col items-start">
 							<h2 className="text-center w-full font-bold">
-								Bachelors Of Technology
+								{courseDetails.name}
 							</h2>
 							<p className="my-3">Available Branches</p>
 							<div className="w-full pr-3 flex flex-col gap-3 overflow-auto overflow-x-hidden">
-								<div className="p-3 rounded-md bg-white">Computer Science</div>
-								<div className="p-3 rounded-md bg-white">Electrical</div>
-								<div className="p-3 rounded-md bg-white">Mechanical</div>
+								{courseDetails.branches?.map((b) => (
+									<Button
+										onClick={selectBranch}
+										key={b._id}
+										id={b._id}
+										className="p-3 rounded-md bg-white">
+										{b.name}
+									</Button>
+								))}
 							</div>
 						</CardFooter>
 					</CardBody>
 				</Card>
+
 				{/* Right Card */}
-				<Card shadow="none" className="bg-slate-200 w-3/4">
-					<CardBody>
-						<h1 className="text-lg font-semibold text-center my-2">
-							Computer Science Subjects
-						</h1>
-						<div className="grid grid-cols-3 gap-3 my-4">
-							<div className="p-3 rounded-md bg-white">Compiler Design</div>
-							<div className="p-3 rounded-md bg-white">Theory Of Autometa</div>
-							<div className="p-3 rounded-md bg-white">C Programming</div>
-							<div className="p-3 rounded-md bg-white">Logics with Python </div>
-							<div className="p-3 rounded-md bg-white">Web Technologies </div>
-						</div>
-					</CardBody>
-				</Card>
+				{selectedBranch ? (
+					<Card shadow="none" className="bg-slate-200 w-3/4">
+						<CardBody>
+							<h1 className="text-lg font-semibold text-center my-2">
+								{selectedBranch.name} Subjects
+							</h1>
+
+							{selectedBranch.subjects?.length > 0 ? (
+								selectedBranch.subjects?.map((b) => (
+									<div className="grid grid-cols-3 gap-3 my-4">
+										<div className="p-3 rounded-md bg-white">{b.name}</div>
+									</div>
+								))
+							) : (
+								<h1 className="text-center my-10 text-red-500">
+									No Subjects Found
+								</h1>
+							)}
+						</CardBody>
+					</Card>
+				) : (
+					<Card shadow="none" className="bg-slate-200 w-3/4">
+						<CardBody>
+							<h1>Please select a branch to see all subjects</h1>
+						</CardBody>
+					</Card>
+				)}
 			</CardBody>
 		</Card>
 	);

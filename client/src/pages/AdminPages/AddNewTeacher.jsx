@@ -60,7 +60,7 @@ function AddNewTeacher() {
 				const result = await response.json();
 				// console.log(result);
 				toast.success("Teacher Added Successfully", toastOptions);
-				navigator("/admin/teacher");
+				navigator("/admin/teachers");
 			} else {
 				const err = await response.json();
 				toast.error(err.message, toastOptions);

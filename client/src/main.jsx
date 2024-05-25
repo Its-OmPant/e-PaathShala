@@ -44,6 +44,8 @@ import DigitalLibraryTab from "./pages/AdminPages/DigitalLibraryTab.jsx";
 import AddNewStudent from "./pages/AdminPages/AddNewStudent.jsx";
 import AddNewTeacher from "./pages/AdminPages/AddNewTeacher.jsx";
 import AddNewCourse from "./pages/AdminPages/AddNewCourse.jsx";
+import AddNewBranch from "./pages/AdminPages/AddNewBranch.jsx";
+import AddNewSubject from "./pages/AdminPages/AddNewSubject.jsx";
 
 import StudentProfilePage from "./pages/AdminPages/StudentProfilePage.jsx";
 import TeacherProfilePage from "./pages/AdminPages/TeacherProfilePage.jsx";
@@ -115,6 +117,8 @@ const router = createBrowserRouter(
 					<Route path="" element={<CourseTab />} />
 					<Route path="add" element={<AddNewCourse />} />
 					<Route path=":id" element={<CourseBranches />} />
+					<Route path=":id/branch/add" element={<AddNewBranch />} />
+					<Route path=":id/subject/add" element={<AddNewSubject />} />
 				</Route>
 				<Route path="notices" element={<NoticeTab />} />
 				<Route path="digital-library" element={<DigitalLibraryTab />} />

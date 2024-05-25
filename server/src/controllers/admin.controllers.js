@@ -275,7 +275,7 @@ const getCourseDetailsById = asyncHandler(async (req, res) => {
 		college: admin_id,
 	}).populate({
 		path: "branches",
-		select: "name",
+		select: "name subjects",
 	});
 
 	if (!course) {
@@ -357,9 +357,7 @@ const getAllTeachers = asyncHandler(async (req, res) => {
 // 					********* 	SUBJECT RELATED CONTROLLERS *********
 
 const createSubject = asyncHandler(async (req, res) => {
-	const admin_id = req.user_id;
-
-	const { name, code, courseId, branchId, teacherId } = req.body;
+	const { name, code, courseId, branchId, teacherId, admin_id } = req.body;
 
 	if (!name || !code || !courseId || !branchId || !teacherId) {
 		return res.status(400).json(new ApiError(400, "All Fields are required"));
