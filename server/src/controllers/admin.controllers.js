@@ -10,6 +10,7 @@ import { Student } from "../models/student.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { uploadOnCloudinary } from "../utils/Cloudinary.js";
 
 // no need for direct admin registration
 // const adminRegister = asyncHandler(async (req, res) => {
@@ -197,13 +198,13 @@ const getAllStudents = asyncHandler(async (req, res) => {
 // 					********* 	COURSE RELATED CONTROLLERS *********
 
 const createCourse = asyncHandler(async (req, res) => {
-	const admin_id = req.user_id;
-	const { name } = req.body;
+	// const admin_id = req.user_id;
+	const { name, admin_id } = req.body;
 
 	if (!name) {
 		return res
 			.status(400)
-			.json(new ApiError(400, "All fields are required", false));
+			.json(new ApiError(400, "Name field is required", false));
 	}
 
 	const isCourseExists = await Course.findOne({ name, college: admin_id });
@@ -214,8 +215,23 @@ const createCourse = asyncHandler(async (req, res) => {
 			.json(new ApiError(400, "Course already exists", false));
 	}
 
+	let coverImageLocalPath;
+
+	if (req.file && req.file.path) {
+		coverImageLocalPath = req.file.path;
+	}
+
+	const coverImageObject = await uploadOnCloudinary(coverImageLocalPath);
+
+	if (!coverImageObject && !coverImageObject?.url) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Image  Upload Failed. Please Retry!!"));
+	}
+
 	const course = await Course.create({
 		name,
+		coverImage: coverImageObject.url,
 		college: admin_id,
 	});
 
@@ -248,6 +264,27 @@ const getAllCourses = asyncHandler(async (req, res) => {
 	return res
 		.status(200)
 		.json(new ApiResponse(200, result, "Fetched All Courses"));
+});
+
+const getCourseDetailsById = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+	const { courseId } = req.params;
+
+	const course = await Course.find({
+		_id: courseId,
+		college: admin_id,
+	}).populate({
+		path: "branches",
+		select: "name",
+	});
+
+	if (!course) {
+		return res.status(404).json(new ApiError(404, "Course with ID Not found"));
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, course, "Course Found Successfully"));
 });
 
 // 					********* 	TEACHER RELATED CONTROLLERS *********
@@ -333,12 +370,25 @@ const createSubject = asyncHandler(async (req, res) => {
 		return res.status(400).json(new ApiError(400, "Subject Already Exists"));
 	}
 
+	let coverImageLocalPath;
+
+	if (req.file && req.file.path) {
+		coverImageLocalPath = req.file.path;
+	}
+
+	const coverImageObject = await uploadOnCloudinary(coverImageLocalPath);
+
+	if (!coverImageObject && !coverImageObject?.url) {
+		return res.status(400).json(new ApiError(400, "Image not Uploaded"));
+	}
+
 	const newSubject = await Subject.create({
 		name,
 		code,
 		course: courseId,
 		branch: branchId,
 		taughtBy: teacherId,
+		coverImage: coverImageObject.url,
 		college: admin_id,
 	});
 
@@ -371,4 +421,5 @@ export {
 	getAllStudents,
 	getAllTeachers,
 	getAllCourses,
+	getCourseDetailsById,
 };

@@ -94,9 +94,9 @@ const mainAdminLogin = asyncHandler(async (req, res) => {
 
 // controller for new school admin creation
 const newSchoolAdminRegister = asyncHandler(async (req, res) => {
-	const { fullName, email, schoolName } = req.body;
+	const { fullName, email, college } = req.body;
 
-	if (!fullName || !email || !schoolName) {
+	if (!fullName || !email || !college) {
 		return res
 			.status(400)
 			.json(new ApiError(400, "All Fields are required", false));
@@ -110,7 +110,7 @@ const newSchoolAdminRegister = asyncHandler(async (req, res) => {
 			.json(new ApiError(400, "Email Already Exists", false));
 	}
 
-	const isSchoolExists = await Admin.findOne({ schoolName });
+	const isSchoolExists = await Admin.findOne({ college });
 
 	if (isSchoolExists) {
 		return res
@@ -121,7 +121,7 @@ const newSchoolAdminRegister = asyncHandler(async (req, res) => {
 	const admin = await Admin.create({
 		fullName,
 		email,
-		schoolName,
+		college,
 	});
 
 	const createdAdmin = await Admin.findById(admin?._id).select("-password");
@@ -161,15 +161,15 @@ const newSchoolAdminRegister = asyncHandler(async (req, res) => {
 
 // controller to save user data to register in subscription model
 const saveNewAdminToRegister = asyncHandler(async (req, res) => {
-	const { fullName, email, schoolName } = req.body;
+	const { fullName, email, college } = req.body;
 
-	if (!fullName || !email || !schoolName) {
+	if (!fullName || !email || !college) {
 		res.status(400).json(new ApiError(400, "All Fields are Required", false));
 	}
 
 	// checking if user is already exist in subscription
 	const isAlreadyRegistered = await Subscription.findOne({
-		$or: [{ email }, { schoolName }],
+		$or: [{ email }, { college }],
 	});
 
 	if (isAlreadyRegistered) {
@@ -187,7 +187,7 @@ const saveNewAdminToRegister = asyncHandler(async (req, res) => {
 			.json(new ApiError(400, "Email Already Exists", false));
 	}
 
-	const isSchoolExists = await Admin.findOne({ schoolName });
+	const isSchoolExists = await Admin.findOne({ college });
 
 	if (isSchoolExists) {
 		return res
@@ -195,7 +195,7 @@ const saveNewAdminToRegister = asyncHandler(async (req, res) => {
 			.json(new ApiError(404, "School Name Already Exists", false));
 	}
 
-	const temp_admin = await Subscription.create({ fullName, email, schoolName });
+	const temp_admin = await Subscription.create({ fullName, email, college });
 
 	if (!temp_admin) {
 		return res

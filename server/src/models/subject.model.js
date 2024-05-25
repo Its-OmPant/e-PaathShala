@@ -19,6 +19,10 @@ const subjectSchema = new mongoose.Schema({
 		ref: "branch",
 		required: true,
 	},
+	coverImage: {
+		type: String,
+		required: true,
+	},
 	taughtBy: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "teacher",

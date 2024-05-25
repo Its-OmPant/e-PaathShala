@@ -31,7 +31,7 @@ function DashboardNewRequest() {
 	const [rowData, setRowData] = useState({
 		fullName: "",
 		email: "",
-		schoolName: "",
+		college: "",
 	});
 
 	const toastOptions = {
@@ -157,10 +157,10 @@ function DashboardNewRequest() {
 									/>
 									<Input
 										autoFocus
-										label="School Name"
+										label="College Name"
 										placeholder="Enter School Name"
 										variant="bordered"
-										value={rowData.schoolName}
+										value={rowData.college}
 										readOnly
 									/>
 								</ModalBody>
@@ -184,7 +184,7 @@ function DashboardNewRequest() {
 							<tr className="flex justify-between  p-2 bg-pink-300 rounded-md">
 								<td className="w-1/5">Name</td>
 								<td className="w-1/5">Email</td>
-								<td className="w-1/5">School Name</td>
+								<td className="w-1/5">College Name</td>
 								<td className="w-1/5">Is registered</td>
 								<td className="w-1/5">Actions</td>
 							</tr>
@@ -196,7 +196,7 @@ function DashboardNewRequest() {
 									className="flex justify-between text-slate-700 hover:bg-slate-100 py-2 px-2 my-2 rounded-md">
 									<td className="w-1/5">{d.fullName}</td>
 									<td className="w-1/5">{d.email}</td>
-									<td className="w-1/5">{d.schoolName}</td>
+									<td className="w-1/5">{d.college}</td>
 									<td className="w-1/5">{d.isRegistered}</td>
 									<td className="w-1/5">
 										<button

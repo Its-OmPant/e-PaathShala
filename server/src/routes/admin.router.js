@@ -8,10 +8,12 @@ import {
 	getAllCourses,
 	getAllStudents,
 	getAllTeachers,
+	getCourseDetailsById,
 } from "../controllers/admin.controllers.js";
 
 // middlewares
 import { verifyJWT } from "../middleware/auth.middleware.js";
+import { multerUploader } from "../middleware/multer.middleware.js";
 
 const router = express.Router();
 
@@ -28,14 +30,19 @@ router.route("/students/create").post(verifyJWT, createStudent);
 router.route("/students/all").get(verifyJWT, getAllStudents);
 
 //                  ************* COURSE RELATED ROUTES *************
-router.route("/courses/create").post(verifyJWT, createCourse);
+router
+	.route("/courses/create")
+	.post(multerUploader.single("coverImage"), createCourse);
 router.route("/courses/all").get(verifyJWT, getAllCourses);
+router.route("/courses/:courseId").get(verifyJWT, getCourseDetailsById);
 
 //                  ************* TEACHER RELATED ROUTES *************
 router.route("/teachers/create").post(verifyJWT, createTeacher);
 router.route("/teachers/all").get(verifyJWT, getAllTeachers);
 
 //                  ************* SUBJECT RELATED ROUTES *************
-router.route("/subjects/create").post(verifyJWT, createSubject);
+router
+	.route("/subjects/create")
+	.post(verifyJWT, multerUploader.single("coverImage"), createSubject);
 
 export default router;

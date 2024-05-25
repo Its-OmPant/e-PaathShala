@@ -89,7 +89,7 @@ function DashboardSubscribersList() {
 									className="flex justify-between text-slate-700 hover:bg-slate-100 py-2 px-2 my-2 rounded-md">
 									<td className="w-1/5">{d.fullName}</td>
 									<td className="w-1/5">{d.email}</td>
-									<td className="w-1/5">{d.schoolName}</td>
+									<td className="w-1/5">{d.college}</td>
 									<td className="w-1/5">{d.createdAt.slice(0, 10)}</td>
 								</tr>
 							))}

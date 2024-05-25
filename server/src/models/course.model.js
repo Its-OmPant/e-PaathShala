@@ -9,6 +9,10 @@ const courseSchema = new mongoose.Schema({
 		ref: "admin",
 		required: true,
 	},
+	coverImage: {
+		type: String,
+		required: true,
+	},
 	branches: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

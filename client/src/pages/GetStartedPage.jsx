@@ -25,7 +25,7 @@ function GetStartedPage() {
 	const [formData, setFormData] = useState({
 		fullName: "",
 		email: "",
-		schoolName: "",
+		college: "",
 	});
 
 	const [tnc, setTnc] = useState(false);
@@ -36,7 +36,8 @@ function GetStartedPage() {
 
 	const submitFormData = async (e) => {
 		e.preventDefault();
-		if (!formData.fullName || !formData.email || !formData.schoolName) {
+
+		if (!formData.fullName || !formData.email || !formData.college) {
 			toast.error("All Fields are required!", toastOptions);
 			return;
 		}
@@ -104,8 +105,8 @@ function GetStartedPage() {
 						color="primary"
 						className="w-full my-4"
 						isRequired
-						name="schoolName"
-						value={formData.schoolName}
+						name="college"
+						value={formData.college}
 						onChange={handleInput}
 					/>
 					<Input

@@ -28,7 +28,7 @@ function Navbar() {
 				{user ? (
 					<>
 						{user.role != "mainAdmin" ? (
-							<NavLink to={user.role}>Dashboard </NavLink>
+							<NavLink to={`/${user.role}`}>Dashboard </NavLink>
 						) : (
 							""
 						)}

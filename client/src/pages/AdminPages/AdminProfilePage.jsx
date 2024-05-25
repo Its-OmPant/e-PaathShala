@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 // nextUI Components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
@@ -11,6 +11,7 @@ import { FaRegUser } from "react-icons/fa";
 import { MdArrowBack } from "react-icons/md";
 
 function AdminProfilePage() {
+	const navigate = useNavigate();
 	const params = useParams();
 	const adminId = params.id;
 	const [adminData, setAdminData] = useState();
@@ -46,12 +47,14 @@ function AdminProfilePage() {
 	// 	getAdminProfileData();
 	// }, []);
 
+	const goBack = () => {
+		navigate(-1);
+	};
 	return (
 		<Card className="w-4/5 p-3">
 			<CardHeader className="gap-3">
-				<Link to="/admin">
-					<MdArrowBack />
-				</Link>
+				<MdArrowBack size={22} onClick={goBack} />
+
 				<h1>Admin Profile</h1>
 			</CardHeader>
 			<CardBody className="items-center">

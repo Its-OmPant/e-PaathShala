@@ -1,6 +1,8 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
 
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
@@ -12,13 +14,58 @@ import { Button, Avatar } from "@nextui-org/react";
 // icons
 import { MdOutlineRefresh } from "react-icons/md";
 
+import NoFound from "../../assets/no_data.jpg";
+
 function CourseTab() {
+	const user = useSelector((state) => state.auth.user);
+
+	const [courses, setCourses] = useState([]);
+
+	const getAllCourses = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/courses/all`,
+				{
+					method: "GET",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `${user.token}`,
+					},
+				}
+			);
+
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				// console.log(result);
+				setCourses(result.data);
+			} else {
+				const error = await response.json();
+				toast.error(
+					error.message || "Something Unexpected happened",
+					toastOptions
+				);
+			}
+		} catch (error) {
+			console.log("CustomError:: ", error);
+		}
+	};
+
+	const refresh = () => {
+		getAllCourses();
+		toast.success("Refreshed", toastOptions);
+	};
+
+	useEffect(() => {
+		getAllCourses();
+	}, []);
+
 	return (
 		<Card className="w-4/5 p-3">
 			<CardHeader className="justify-between">
 				<h1 className="font-bold uppercase">Courses</h1>
 				<div className="flex justify-end gap-3">
-					<Button color="secondary" isIconOnly>
+					<Button onClick={refresh} color="secondary" isIconOnly>
 						<MdOutlineRefresh size={18} />
 					</Button>
 					<Link to="add">
@@ -29,39 +76,30 @@ function CourseTab() {
 				</div>
 			</CardHeader>
 			<Divider></Divider>
-			<div className="grid grid-cols-4 gap-4 my-3">
-				<Link to="1">
-					<Card>
-						<CardBody>
-							<Image
-								isZoomed
-								width={300}
-								alt="NextUI hero Image"
-								src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-							/>
-						</CardBody>
-						<CardFooter className="pt-0 justify-center">
-							<h2 className="font-bold ">Bachelors of Technology</h2>
-						</CardFooter>
-					</Card>
-				</Link>
-
-				<Link to="2">
-					<Card>
-						<CardBody>
-							<Image
-								isZoomed
-								width={300}
-								alt="NextUI hero Image"
-								src="https://nextui-docs-v2.vercel.app/images/hero-card-complete.jpeg"
-							/>
-						</CardBody>
-						<CardFooter className="pt-0 justify-center">
-							<h2 className="font-bold ">Bachelors of Science </h2>
-						</CardFooter>
-					</Card>
-				</Link>
-			</div>
+			{courses.length > 0 ? (
+				<div className="grid grid-cols-4 gap-4 my-3">
+					{courses.map((c) => (
+						<Link to={c._id} key={c._id}>
+							<Card>
+								<Image
+									isZoomed
+									width={300}
+									alt="Course Image"
+									src={c.coverImage}
+								/>
+								<CardFooter className="pt-0 justify-center">
+									<h2 className="font-bold ">{c.name}</h2>
+								</CardFooter>
+							</Card>
+						</Link>
+					))}
+				</div>
+			) : (
+				<div className="flex flex-col justify-center h-full items-center">
+					<h2 className="text-xl text-red-500">No Courses Found</h2>
+					<img src={NoFound} width={300} alt="No Data Available" />
+				</div>
+			)}
 		</Card>
 	);
 }
