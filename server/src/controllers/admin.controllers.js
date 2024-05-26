@@ -276,6 +276,10 @@ const getCourseDetailsById = asyncHandler(async (req, res) => {
 	}).populate({
 		path: "branches",
 		select: "name subjects",
+		populate: {
+			path: "subjects",
+			select: "name code",
+		},
 	});
 
 	if (!course) {
@@ -354,6 +358,25 @@ const getAllTeachers = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, result, "Fetched All Teachers"));
 });
 
+const getListOfTeacherNames = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	if (!admin_id) {
+		return res.status(400).json(new ApiError(400, "College ID Not Provided"));
+	}
+
+	const teachers = await Teacher.find({ college: admin_id }).select("fullName");
+
+	if (!teachers) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Teacher Fetching failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, teachers, "Teachers Fetched Successfully"));
+});
+
 // 					********* 	SUBJECT RELATED CONTROLLERS *********
 
 const createSubject = asyncHandler(async (req, res) => {
@@ -377,7 +400,9 @@ const createSubject = asyncHandler(async (req, res) => {
 	const coverImageObject = await uploadOnCloudinary(coverImageLocalPath);
 
 	if (!coverImageObject && !coverImageObject?.url) {
-		return res.status(400).json(new ApiError(400, "Image not Uploaded"));
+		return res
+			.status(500)
+			.json(new ApiError(500, "Image not Uploaded!! Please Retry"));
 	}
 
 	const newSubject = await Subject.create({
@@ -410,6 +435,27 @@ const createSubject = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(201, newSubject, "Subject Created Successfully"));
 });
 
+// 					********* 	BRANCH RELATED CONTROLLERS *********
+
+const getListOfBranchesByCourseId = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+	const { courseID } = req.params;
+
+	const branches = await Branch.find({
+		inCourse: courseID,
+		college: admin_id,
+	}).select("name");
+
+	if (!branches) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Branch Fetching Failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, branches, "Branches fetched successfully"));
+});
+
 export {
 	adminLogin,
 	createCourse,
@@ -420,4 +466,6 @@ export {
 	getAllTeachers,
 	getAllCourses,
 	getCourseDetailsById,
+	getListOfBranchesByCourseId,
+	getListOfTeacherNames,
 };

@@ -43,7 +43,7 @@ function CourseBranches() {
 
 			if (response.ok) {
 				const result = await response.json();
-				console.log(result.data[0]);
+				// console.log(result.data[0]);
 				setCourseDetails(result.data[0]);
 			}
 		} catch (error) {
@@ -127,12 +127,19 @@ function CourseBranches() {
 								{selectedBranch.name} Subjects
 							</h1>
 
+							{/*  */}
+
+							{/*  */}
+
 							{selectedBranch.subjects?.length > 0 ? (
-								selectedBranch.subjects?.map((b) => (
-									<div className="grid grid-cols-3 gap-3 my-4">
-										<div className="p-3 rounded-md bg-white">{b.name}</div>
-									</div>
-								))
+								<div className="grid grid-cols-3 gap-3 my-4">
+									{selectedBranch.subjects?.map((s) => (
+										<div key={s._id} className="p-3 rounded-md bg-white">
+											<h2> Name: {s.name}</h2>
+											<h2> Code: {s.code}</h2>
+										</div>
+									))}
+								</div>
 							) : (
 								<h1 className="text-center my-10 text-red-500">
 									No Subjects Found

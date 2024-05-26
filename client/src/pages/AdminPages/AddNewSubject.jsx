@@ -16,11 +16,16 @@ function AddNewSubject() {
 	const course_id = params.id;
 
 	const user = useSelector((state) => state.auth.user);
+
 	const [formData, setFormData] = useState({
 		name: "",
 		code: "",
+		branchId: "",
 		teacherId: "",
 	});
+
+	const [branches, setBranches] = useState();
+	const [teachers, setTeachers] = useState();
 
 	const [coverImage, setCoverImage] = useState();
 
@@ -32,12 +37,111 @@ function AddNewSubject() {
 		setCoverImage(e.target.files[0]);
 	};
 
-	const submitForm = async (e) => {};
+	const getBranches = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/branches/${course_id}`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				setBranches(result.data);
+			} else {
+				const err = await response.json();
+				console.log(err);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+	const getTeachers = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/teachers/list`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				setTeachers(result.data);
+			} else {
+				const err = await response.json();
+				console.log(err);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+
+	const submitForm = async (e) => {
+		e.preventDefault();
+		console.log(formData);
+		console.log(coverImage);
+		if (
+			!formData.name ||
+			!formData.code ||
+			!formData.branchId ||
+			!formData.teacherId ||
+			!coverImage
+		) {
+			toast.error("All Fields are required", toastOptions);
+			return;
+		}
+
+		const formdataObject = new FormData();
+		formdataObject.append("name", formData.name);
+		formdataObject.append("code", formData.code);
+		formdataObject.append("branchId", formData.branchId);
+		formdataObject.append("teacherId", formData.teacherId);
+		formdataObject.append("coverImage", coverImage);
+		formdataObject.append("courseId", course_id);
+		formdataObject.append("admin_id", user.id);
+
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/subjects/create`,
+				{
+					method: "POST",
+					body: formdataObject,
+				}
+			);
+			console.log(response);
+
+			if (response.ok) {
+				const result = await response.json();
+				console.log(result);
+				toast.success("Subject Added Successfully", toastOptions);
+				navigator(-1);
+			} else {
+				const err = await response.json();
+				toast.error(err.message, toastOptions);
+				return;
+			}
+		} catch (error) {
+			console.log("customError:: ", error);
+		}
+	};
+
+	useEffect(() => {
+		getBranches();
+		getTeachers();
+	}, []);
 
 	return (
 		<Card className="w-4/5 p-3">
 			<CardHeader className="gap-3">
-				<Link to="/admin/teachers">
+				<Link to={`/admin/courses/${course_id}`}>
 					<MdArrowBack />
 				</Link>
 				<h1>Add New Subject</h1>
@@ -80,19 +184,37 @@ function AddNewSubject() {
 					<div className="flex gap-3">
 						<Select
 							isRequired
-							name="branch"
+							name="branchId"
+							value={formData.branchId}
+							onChange={handleInputChange}
 							label="Select Branch"
 							color="secondary">
-							<SelectItem>Computer Science</SelectItem>
-							<SelectItem>Information Technology</SelectItem>
+							{branches && branches.length > 0 ? (
+								branches.map((b) => (
+									<SelectItem key={b._id} value={b._id}>
+										{b.name}
+									</SelectItem>
+								))
+							) : (
+								<SelectItem>No Branch Found</SelectItem>
+							)}
 						</Select>
 						<Select
 							isRequired
-							name="teacher"
+							name="teacherId"
+							value={formData.teacherId}
+							onChange={handleInputChange}
 							label="Select Teacher"
 							color="secondary">
-							<SelectItem>Amit Mishra</SelectItem>
-							<SelectItem>Saurabh Diwedi</SelectItem>
+							{teachers && teachers.length > 0 ? (
+								teachers.map((t) => (
+									<SelectItem key={t._id} value={t._id}>
+										{t.fullName}
+									</SelectItem>
+								))
+							) : (
+								<SelectItem>No Teachers Found</SelectItem>
+							)}
 						</Select>
 					</div>
 

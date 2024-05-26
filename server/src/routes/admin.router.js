@@ -8,7 +8,9 @@ import {
 	getAllCourses,
 	getAllStudents,
 	getAllTeachers,
+	getListOfBranchesByCourseId,
 	getCourseDetailsById,
+	getListOfTeacherNames,
 } from "../controllers/admin.controllers.js";
 
 // middlewares
@@ -39,10 +41,14 @@ router.route("/courses/:courseId").get(verifyJWT, getCourseDetailsById);
 //                  ************* TEACHER RELATED ROUTES *************
 router.route("/teachers/create").post(verifyJWT, createTeacher);
 router.route("/teachers/all").get(verifyJWT, getAllTeachers);
+router.route("/teachers/list").get(verifyJWT, getListOfTeacherNames);
 
 //                  ************* SUBJECT RELATED ROUTES *************
 router
 	.route("/subjects/create")
-	.post(verifyJWT, multerUploader.single("coverImage"), createSubject);
+	.post(multerUploader.single("coverImage"), createSubject);
+
+//                  ************* BRANCH RELATED ROUTES *************
+router.route("/branches/:courseID").get(verifyJWT, getListOfBranchesByCourseId);
 
 export default router;
