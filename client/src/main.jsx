@@ -38,6 +38,7 @@ import DashBoardTab from "./pages/AdminPages/DashBoardTab.jsx";
 import StudentTab from "./pages/AdminPages/StudentTab.jsx";
 import TeacherTab from "./pages/AdminPages/TeacherTab.jsx";
 import CourseTab from "./pages/AdminPages/CourseTab.jsx";
+import SubjectsTab from "./pages/AdminPages/SubjectsTab.jsx";
 import NoticeTab from "./pages/AdminPages/NoticeTab.jsx";
 import DigitalLibraryTab from "./pages/AdminPages/DigitalLibraryTab.jsx";
 
@@ -120,6 +121,7 @@ const router = createBrowserRouter(
 					<Route path=":id/branch/add" element={<AddNewBranch />} />
 					<Route path=":id/subject/add" element={<AddNewSubject />} />
 				</Route>
+				<Route path="subjects" element={<SubjectsTab />} />
 				<Route path="notices" element={<NoticeTab />} />
 				<Route path="digital-library" element={<DigitalLibraryTab />} />
 				<Route path="profile" element={<AdminProfilePage />} />

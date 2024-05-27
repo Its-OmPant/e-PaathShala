@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
@@ -6,9 +8,110 @@ import { Divider } from "@nextui-org/divider";
 import { Avatar } from "@nextui-org/avatar";
 import { Calendar } from "@nextui-org/calendar";
 
+// images
+import studentImage from "../../assets/student.png";
+import teacherImage from "../../assets/teacher.png";
+import courseImage from "../../assets/course.png";
+import subjectImage from "../../assets/subject.png";
+
 import { today, getLocalTimeZone } from "@internationalized/date";
 
 function DashBoardTab() {
+	const user = useSelector((state) => state.auth.user);
+
+	const [totalStudents, setTotalStudents] = useState();
+	const [totalTeachers, setTotalTeachers] = useState();
+	const [totalCourses, setTotalCourses] = useState();
+	const [totalSubjects, setTotalSubjects] = useState();
+
+	const getStudentCount = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/students/count`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				setTotalStudents(result.data);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+	const getCoursesCount = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/courses/count`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				setTotalCourses(result.data);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+	const getSubjectsCount = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/subjects/count`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				setTotalSubjects(result.data);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+	const getTeachersCount = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/teachers/count`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+			// console.log(response);
+			if (response.ok) {
+				const result = await response.json();
+				setTotalTeachers(result.data);
+			}
+		} catch (error) {
+			console.log("CustomError :: ", error);
+		}
+	};
+
+	useEffect(() => {
+		getStudentCount();
+		getCoursesCount();
+		getTeachersCount();
+		getSubjectsCount();
+	}, []);
+
 	return (
 		<Card shadow="none" className="w-4/5 p-3 ">
 			<CardHeader>
@@ -17,52 +120,63 @@ function DashBoardTab() {
 			<Divider></Divider>
 			<CardBody>
 				<div className="flex justify-around my-2">
-					<div className="p-2 w-1/4 mx-3 flex  justify-center gap-3 border-1 border-black/80 py-4 rounded">
-						<Avatar showFallback size="lg"></Avatar>
-						<div className="text-center">
+					<Link
+						to="/admin/students"
+						className="p-2 w-1/4 mx-3 flex  justify-center gap-3  bg-purple-300/70 py-4 rounded">
+						<img src={studentImage} alt="" className="w-[80px] h-[80px]" />
+						<div className="flex flex-col justify-center items-center">
 							<h3>Students</h3>
-							<h2 className="text-lg font-bold">2000</h2>
+							<h2 className="text-lg font-bold">{totalStudents || "N/A"}</h2>
 						</div>
-					</div>
-					<div className="p-2 w-1/4 mx-3 flex  justify-center gap-3 border-1 border-black/80 py-4 rounded">
-						<Avatar showFallback size="lg"></Avatar>
-						<div className="text-center">
+					</Link>
+
+					<Link
+						to="/admin/teachers"
+						className="p-2 w-1/4 mx-3 flex  justify-center gap-3  bg-green-300/70 py-4 rounded">
+						<img src={teacherImage} alt="" className="w-[80px] h-[80px]" />
+						<div className="flex flex-col justify-center items-center">
 							<h3>Faculties</h3>
-							<h2 className="text-lg font-bold">45</h2>
+							<h2 className="text-lg font-bold">{totalTeachers || "N/A"}</h2>
 						</div>
-					</div>
-					<div className="p-2 w-1/4 mx-3 flex  justify-center gap-3 border-1 border-black/80 py-4 rounded">
-						<Avatar showFallback size="lg"></Avatar>
-						<div className="text-center">
+					</Link>
+
+					<Link
+						to="/admin/courses"
+						className="p-2 w-1/4 mx-3 flex  justify-center gap-3  bg-red-300/70 py-4 rounded">
+						<img src={courseImage} alt="" className="w-[80px] h-[80px]" />
+						<div className="flex flex-col justify-center items-center">
 							<h3>Courses</h3>
-							<h2 className="text-lg font-bold">15</h2>
+							<h2 className="text-lg font-bold">{totalCourses || "N/A"}</h2>
 						</div>
-					</div>
-					<div className="p-2 w-1/4 mx-3 flex  justify-center gap-3 border-1 border-black/80 py-4 rounded">
-						<Avatar showFallback size="lg"></Avatar>
-						<div className="text-center">
-							<h3>Staff</h3>
-							<h2 className="text-lg font-bold">23</h2>
+					</Link>
+
+					<Link
+						to="/admin/subjects"
+						className="p-2 w-1/4 mx-3 flex  justify-center gap-3 bg-teal-300/70 py-4 rounded ">
+						<img src={subjectImage} alt="" className="w-[80px] h-[80px]" />
+						<div className="flex flex-col justify-center items-center">
+							<h3> Subjects</h3>
+							<h2 className="text-lg font-bold">{totalSubjects || "N/A"}</h2>
 						</div>
-					</div>
+					</Link>
 				</div>
 
 				<div className="flex gap-2">
 					{/* left  */}
 					<div className="w-3/4">
-						<h1>Dashboard</h1>
-						<Card shadow="none" className="w-full h-96 my-3 bg-pink-100">
+						<h3 className="text-lg font-semibold my-2">Dashboard</h3>
+						<Card shadow="none" className="w-full h-96 my-3 bg-slate-100">
 							hello
 						</Card>
 					</div>
 
 					{/* right */}
 					<div className="1/4 text-center">
-						<h3>Events Calendar</h3>
+						<h3 className="text-lg font-semibold my-2">Events Calendar</h3>
 						<Calendar
 							isReadOnly={true}
 							value={today(getLocalTimeZone())}
-							className="my-3 mx-3 bg-yellow-100"></Calendar>
+							className="mt-1 mx-3 bg-yellow-100"></Calendar>
 						<h3>Latest Notice</h3>
 						<Card shadow="none" className="my-2 bg-sky-200/80 mx-3 py-2 px-4">
 							<h2 className="font-bold text-slate-800">Notice Headline</h2>

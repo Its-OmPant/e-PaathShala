@@ -18,8 +18,9 @@ import { MdDashboard } from "react-icons/md";
 import { FaAtlas, FaUserGraduate } from "react-icons/fa";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaBookAtlas, FaBookOpen } from "react-icons/fa6";
-import { AiFillNotification } from "react-icons/ai";
+import { FaCalendarDays } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
+import { FaCompassDrafting } from "react-icons/fa6";
 
 function AdminDashboard() {
 	const user = useSelector((state) => state.auth.user);
@@ -64,7 +65,7 @@ function AdminDashboard() {
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaUserGraduate size={21} className="text-sky-800" />
+							<FaUserGraduate size={21} className="text-pink-800" />
 							Students
 						</NavLink>
 
@@ -75,7 +76,7 @@ function AdminDashboard() {
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaChalkboardTeacher size={21} className="text-sky-800" />
+							<FaChalkboardTeacher size={21} className="text-green-800" />
 							Teachers
 						</NavLink>
 
@@ -86,8 +87,19 @@ function AdminDashboard() {
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaBookOpen size={21} className="text-sky-800" />
+							<FaBookOpen size={21} className="text-orange-800" />
 							Courses
+						</NavLink>
+
+						<NavLink
+							to="subjects"
+							className={({ isActive }) =>
+								isActive
+									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+							}>
+							<FaCompassDrafting size={21} className="text-yellow-800" />
+							Subjects
 						</NavLink>
 
 						<NavLink
@@ -97,7 +109,7 @@ function AdminDashboard() {
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<AiFillNotification size={21} className="text-sky-800" />
+							<FaCalendarDays size={21} className="text-fuchsia-800" />
 							Notices
 						</NavLink>
 
@@ -108,7 +120,7 @@ function AdminDashboard() {
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaBookAtlas size={21} className="text-sky-800" />
+							<FaBookAtlas size={21} className="text-slate-800" />
 							Digital Library
 						</NavLink>
 					</CardBody>

@@ -195,6 +195,41 @@ const getAllStudents = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, result, "Fetched All Students"));
 });
 
+const getTotalStudentCount = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const studentCount = await Student.countDocuments({ college: admin_id });
+
+	if (!studentCount) {
+		return res
+			.status(500)
+			.json(
+				new ApiError(500, "Student Count fetching Failed due to server error")
+			);
+	}
+	return res
+		.status(200)
+		.json(
+			new ApiResponse(200, studentCount, "Student Count Fetched Successfully")
+		);
+});
+
+const deleteStudentById = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+	const { studentId } = req.params;
+
+	const student = await Student.findByIdAndDelete(studentId);
+
+	if (!student) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Student with id not found."));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, null, "Student Deleted Successfully"));
+});
+
 // 					********* 	COURSE RELATED CONTROLLERS *********
 
 const createCourse = asyncHandler(async (req, res) => {
@@ -291,6 +326,25 @@ const getCourseDetailsById = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, course, "Course Found Successfully"));
 });
 
+const getTotalCourseCount = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const courseCount = await Course.countDocuments({ college: admin_id });
+
+	if (!courseCount) {
+		return res
+			.status(500)
+			.json(
+				new ApiError(500, "Course Count fetching Failed due to server error")
+			);
+	}
+	return res
+		.status(200)
+		.json(
+			new ApiResponse(200, courseCount, "Course Count Fetched Successfully")
+		);
+});
+
 // 					********* 	TEACHER RELATED CONTROLLERS *********
 
 const createTeacher = asyncHandler(async (req, res) => {
@@ -377,6 +431,44 @@ const getListOfTeacherNames = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, teachers, "Teachers Fetched Successfully"));
 });
 
+const getTotalTeacherCount = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const teacherCount = await Teacher.countDocuments({ college: admin_id });
+
+	if (!teacherCount) {
+		return res
+			.status(500)
+			.json(
+				new ApiError(500, "Teacher Count fetching Failed due to server error")
+			);
+	}
+	return res
+		.status(200)
+		.json(
+			new ApiResponse(200, teacherCount, "Teacher Count Fetched Successfully")
+		);
+});
+
+const deleteTeacherById = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+	const { teacherId } = req.params;
+
+	const teacher = await Teacher.findByIdAndDelete(teacherId);
+
+	if (!teacher) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Teacher with id not found."));
+	}
+
+	await Subject.updateMany({ taughtBy: teacherId }, { taughtBy: null });
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, null, "Teacher Deleted Successfully"));
+});
+
 // 					********* 	SUBJECT RELATED CONTROLLERS *********
 
 const createSubject = asyncHandler(async (req, res) => {
@@ -435,6 +527,25 @@ const createSubject = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(201, newSubject, "Subject Created Successfully"));
 });
 
+const getTotalSubjectCount = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const subjectCount = await Subject.countDocuments({ college: admin_id });
+
+	if (!subjectCount) {
+		return res
+			.status(500)
+			.json(
+				new ApiError(500, "Subject Count fetching Failed due to server error")
+			);
+	}
+	return res
+		.status(200)
+		.json(
+			new ApiResponse(200, subjectCount, "Subject Count Fetched Successfully")
+		);
+});
+
 // 					********* 	BRANCH RELATED CONTROLLERS *********
 
 const getListOfBranchesByCourseId = asyncHandler(async (req, res) => {
@@ -468,4 +579,10 @@ export {
 	getCourseDetailsById,
 	getListOfBranchesByCourseId,
 	getListOfTeacherNames,
+	getTotalStudentCount,
+	getTotalTeacherCount,
+	getTotalCourseCount,
+	getTotalSubjectCount,
+	deleteStudentById,
+	deleteTeacherById,
 };

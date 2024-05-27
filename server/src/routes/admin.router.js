@@ -11,6 +11,12 @@ import {
 	getListOfBranchesByCourseId,
 	getCourseDetailsById,
 	getListOfTeacherNames,
+	getTotalStudentCount,
+	getTotalCourseCount,
+	getTotalTeacherCount,
+	deleteStudentById,
+	deleteTeacherById,
+	getTotalSubjectCount,
 } from "../controllers/admin.controllers.js";
 
 // middlewares
@@ -30,23 +36,34 @@ router.route("/login").post(adminLogin);
 //                  ************* STUDENT RELATED ROUTES *************
 router.route("/students/create").post(verifyJWT, createStudent);
 router.route("/students/all").get(verifyJWT, getAllStudents);
+router.route("/students/count").get(verifyJWT, getTotalStudentCount);
+router
+	.route("/students/delete/:studentId")
+	.delete(verifyJWT, deleteStudentById);
 
 //                  ************* COURSE RELATED ROUTES *************
 router
 	.route("/courses/create")
 	.post(multerUploader.single("coverImage"), createCourse);
 router.route("/courses/all").get(verifyJWT, getAllCourses);
+router.route("/courses/count").get(verifyJWT, getTotalCourseCount);
 router.route("/courses/:courseId").get(verifyJWT, getCourseDetailsById);
 
 //                  ************* TEACHER RELATED ROUTES *************
 router.route("/teachers/create").post(verifyJWT, createTeacher);
 router.route("/teachers/all").get(verifyJWT, getAllTeachers);
 router.route("/teachers/list").get(verifyJWT, getListOfTeacherNames);
+router.route("/teachers/count").get(verifyJWT, getTotalTeacherCount);
+router
+	.route("/teachers/delete/:teacherId")
+	.delete(verifyJWT, deleteTeacherById);
 
 //                  ************* SUBJECT RELATED ROUTES *************
 router
 	.route("/subjects/create")
 	.post(multerUploader.single("coverImage"), createSubject);
+
+router.route("/subjects/count").get(verifyJWT, getTotalSubjectCount);
 
 //                  ************* BRANCH RELATED ROUTES *************
 router.route("/branches/:courseID").get(verifyJWT, getListOfBranchesByCourseId);
