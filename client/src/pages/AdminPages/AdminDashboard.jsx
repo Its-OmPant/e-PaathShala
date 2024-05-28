@@ -34,7 +34,7 @@ function AdminDashboard() {
 	};
 	let content;
 
-	if (user) {
+	if (user && user.role === "admin") {
 		content = (
 			<div className="bg-sky-300 p-4 flex w-full min-h-screen max-h-screen gap-3">
 				<Card className="w-1/5 p-3">

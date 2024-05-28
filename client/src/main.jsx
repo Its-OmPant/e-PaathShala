@@ -67,6 +67,11 @@ import StudentDigitalLibraryTab from "./pages/StudentPages/StudentDigitalLibrary
 import StudentLiveClassTab from "./pages/StudentPages/StudentLiveClassTab.jsx";
 import StudentSubjectsTab from "./pages/StudentPages/StudentSubjectsTab.jsx";
 
+// Teacher Dashboard Pages
+
+import TeacherDashboard from "./pages/TeacherPages/TeacherDashboard.jsx";
+import TeacherHomePage from "./pages/TeacherPages/TeacherHomePage.jsx";
+
 import {
 	Route,
 	RouterProvider,
@@ -141,6 +146,12 @@ const router = createBrowserRouter(
 				<Route path="attendance" element={<StudentAttendanceTab />} />
 				<Route path="subjects" element={<StudentSubjectsTab />} />
 				<Route path="digital-library" element={<StudentDigitalLibraryTab />} />
+			</Route>
+
+			{/* Teacher Routes */}
+
+			<Route path="/teacher" element={<TeacherDashboard />}>
+				<Route path="" element={<TeacherHomePage />} />
 			</Route>
 		</Route>,
 	])

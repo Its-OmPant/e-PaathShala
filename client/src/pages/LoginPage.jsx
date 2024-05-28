@@ -73,7 +73,7 @@ function LoginPage() {
 					body: JSON.stringify(formData),
 				}
 			);
-
+			// console.log(response);
 			if (response.ok) {
 				const data = await response.json();
 				// console.log(data);
@@ -149,9 +149,9 @@ function LoginPage() {
 								<PiStudentFill size={32} />
 								Student
 							</CustomRadio>
-							<CustomRadio value="faculty">
+							<CustomRadio value="teacher">
 								<PiChalkboardTeacher size={32} />
-								Faculty
+								Teacher
 							</CustomRadio>
 							<CustomRadio value="admin">
 								<FaUserShield size={32} />
