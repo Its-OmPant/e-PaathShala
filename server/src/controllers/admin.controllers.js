@@ -546,6 +546,34 @@ const getTotalSubjectCount = asyncHandler(async (req, res) => {
 		);
 });
 
+const getAllSubjects = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+
+	const subjects = await Subject.find({ college: admin_id }).populate([
+		{
+			path: "course",
+			select: "name",
+		},
+		{
+			path: "branch",
+			select: "name",
+		},
+		{
+			path: "taughtBy",
+			select: "fullName",
+		},
+	]);
+
+	if (!subjects) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Subjects Fetching failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, subjects, "Subjects Fetched Successfully"));
+});
+
 // 					********* 	BRANCH RELATED CONTROLLERS *********
 
 const getListOfBranchesByCourseId = asyncHandler(async (req, res) => {
@@ -576,6 +604,7 @@ export {
 	getAllStudents,
 	getAllTeachers,
 	getAllCourses,
+	getAllSubjects,
 	getCourseDetailsById,
 	getListOfBranchesByCourseId,
 	getListOfTeacherNames,

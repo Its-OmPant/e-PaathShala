@@ -121,8 +121,8 @@ function StudentTab() {
 						<tbody>
 							{data.map((d) => (
 								<tr
-									className="flex justify-between text-slate-700 hover:bg-slate-100 py-2 px-2 my-2 rounded-md"
-									key={d._id}>
+									key={d._id}
+									className="flex justify-between text-slate-700 hover:bg-slate-100 py-2 px-2 my-2 rounded-md">
 									<td className="w-[60px]">
 										<Avatar
 											showFallback
@@ -143,12 +143,6 @@ function StudentTab() {
 													<FaRegEye />
 												</button>
 											</Link>
-										</Tooltip>
-
-										<Tooltip offset={10} content="Delete">
-											<button className="mx-2 bg-pink-600 text-white p-2 rounded-full">
-												<MdDeleteOutline />
-											</button>
 										</Tooltip>
 									</td>
 								</tr>

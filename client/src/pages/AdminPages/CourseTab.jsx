@@ -81,11 +81,10 @@ function CourseTab() {
 					{courses.map((c) => (
 						<Link to={c._id} key={c._id}>
 							<Card>
-								<Image
-									isZoomed
-									width={300}
+								<img
 									alt="Course Image"
 									src={c.coverImage}
+									className="w-[300px] h-[200px]"
 								/>
 								<CardFooter className="pt-0 justify-center">
 									<h2 className="font-bold ">{c.name}</h2>

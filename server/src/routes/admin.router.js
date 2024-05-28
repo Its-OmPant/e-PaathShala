@@ -17,6 +17,7 @@ import {
 	deleteStudentById,
 	deleteTeacherById,
 	getTotalSubjectCount,
+	getAllSubjects,
 } from "../controllers/admin.controllers.js";
 
 // middlewares
@@ -64,6 +65,7 @@ router
 	.post(multerUploader.single("coverImage"), createSubject);
 
 router.route("/subjects/count").get(verifyJWT, getTotalSubjectCount);
+router.route("/subjects/all").get(verifyJWT, getAllSubjects);
 
 //                  ************* BRANCH RELATED ROUTES *************
 router.route("/branches/:courseID").get(verifyJWT, getListOfBranchesByCourseId);

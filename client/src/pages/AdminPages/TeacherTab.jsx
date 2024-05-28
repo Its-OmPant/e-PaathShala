@@ -120,12 +120,6 @@ function TeacherTab() {
 												</button>
 											</Link>
 										</Tooltip>
-
-										<Tooltip offset={10} content="Delete">
-											<button className="mx-1 bg-pink-600 text-white p-2 rounded-full">
-												<MdDeleteOutline />
-											</button>
-										</Tooltip>
 									</td>
 								</tr>
 							))}
