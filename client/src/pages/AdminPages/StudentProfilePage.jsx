@@ -35,7 +35,7 @@ function StudentProfilePage() {
 	const getStudentProfile = async () => {
 		try {
 			const response = await fetch(
-				`${import.meta.env.VITE_API_BASE_URL}/student/profile/${studentId}`,
+				`${import.meta.env.VITE_API_BASE_URL}/admin/students/${studentId}`,
 				{
 					method: "GET",
 					headers: {

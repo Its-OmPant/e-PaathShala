@@ -1,10 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
 
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem, Button } from "@nextui-org/react";
+import { Select, SelectItem } from "@nextui-org/react";
+import {
+	Modal,
+	ModalContent,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+	useDisclosure,
+} from "@nextui-org/react";
 
 // icons
 import { MdArrowBack } from "react-icons/md";
@@ -12,6 +25,9 @@ import { MdArrowBack } from "react-icons/md";
 import AboutImg from "../../assets/about.jpg";
 
 function SubjectDetails() {
+	const user = useSelector((state) => state.auth.user);
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	const itemClasses = {
 		base: "",
 		title: "font-normal text-md",
@@ -20,15 +36,140 @@ function SubjectDetails() {
 		content: "text-small",
 	};
 
+	const params = useParams();
+	const subjectId = params.subjectId;
+
+	const [allTeachers, setAllTeachers] = useState();
+
+	const [selectedTeacher, setSelectedTeacher] = useState(null);
+
+	const getAllTeacherNames = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/teachers/list`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
+
+			if (response.ok) {
+				const result = await response.json();
+				setAllTeachers(result.data);
+			}
+		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
+			console.log("CustomError :: ", error);
+		}
+	};
+
+	const handleTeacherSelect = (e) => {
+		setSelectedTeacher(e.target.value);
+	};
+
+	const openModalAndGetTeachers = () => {
+		getAllTeacherNames();
+		onOpen();
+	};
+
+	const changeTeacher = async () => {
+		if (!selectedTeacher) {
+			toast.error("Teacher is required", toastOptions);
+			return;
+		}
+
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/subjects/${subjectId}`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${user.token}`,
+					},
+					body: JSON.stringify({ teacherId: selectedTeacher }),
+				}
+			);
+
+			if (response.ok) {
+				const result = await response.json();
+				if (result.status) {
+					toast.success("Teacher Changed Successfully", toastOptions);
+				} else {
+					throw result.message;
+				}
+			}
+		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
+			console.log("CustomError :: ", error);
+		}
+	};
+
 	return (
 		<Card className="w-4/5 p-3">
-			<CardHeader>
+			<CardHeader className="justify-between">
 				<div className="flex gap-3 items-center">
 					<Link to="/admin/subjects">
-						<MdArrowBack />
+						<MdArrowBack size={22} />
 					</Link>
-					<h1>Subject Details</h1>
+					<h1 className="font-semibold text-lg">Subject Details</h1>
 				</div>
+				<Button
+					color="secondary"
+					variant="ghost"
+					onClick={openModalAndGetTeachers}>
+					Change Teacher
+				</Button>
+				<Modal
+					size="md"
+					isOpen={isOpen}
+					onClose={onClose}
+					isDismissable={false}
+					backdrop="blur"
+					scrollBehavior="inside"
+					className="min-h-[220px]">
+					<ModalContent>
+						{(onClose) => (
+							<>
+								<ModalHeader className="flex flex-col gap-1">
+									Choose Subject Teacher
+								</ModalHeader>
+								<ModalBody>
+									<Select
+										name="teacherId"
+										value={selectedTeacher}
+										onChange={handleTeacherSelect}
+										label={
+											allTeachers?.length > 0
+												? "Select a Teacher"
+												: "No Teachers Found. Please add some before .."
+										}>
+										{allTeachers?.map((t) => (
+											<SelectItem key={t._id} value={t._id}>
+												{t.fullName}
+											</SelectItem>
+										))}
+									</Select>
+								</ModalBody>
+								<ModalFooter>
+									<Button color="danger" variant="light" onPress={onClose}>
+										Cancel
+									</Button>
+									<Button
+										color="primary"
+										onPress={() => {
+											changeTeacher();
+											onClose();
+										}}>
+										Change
+									</Button>
+								</ModalFooter>
+							</>
+						)}
+					</ModalContent>
+				</Modal>
 			</CardHeader>
 			<Divider></Divider>
 			<CardBody className="flex-row">
@@ -48,7 +189,7 @@ function SubjectDetails() {
 
 				{/* right div */}
 				<div className="w-3/12 mx-2 overflow-auto">
-					<h1 className="bg-blue-100 text-lg p-2 rounded-md mb-2 text-center">
+					<h1 className="bg-teal-200 text-lg p-2 rounded-md mb-2 text-center">
 						Lectures
 					</h1>
 					<Accordion variant="splitted" itemClasses={itemClasses}>
@@ -131,6 +272,44 @@ function SubjectDetails() {
 							</div>
 							<div className="bg-slate-100 p-2 my-2  rounded-md">
 								Video Name
+							</div>
+						</AccordionItem>
+					</Accordion>
+					<h1 className="bg-pink-200 text-lg p-2 rounded-md my-2 text-center">
+						Assignments
+					</h1>
+					<Accordion variant="splitted" itemClasses={itemClasses}>
+						<AccordionItem key="1" aria-label="Accordion 1" title="Chapter 1">
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment 1
+							</div>
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment 2
+							</div>
+						</AccordionItem>
+						<AccordionItem key="2" aria-label="Accordion 2" title="Chapter 2">
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment
+							</div>
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment
+							</div>
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment
+							</div>
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment
+							</div>
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment
+							</div>
+						</AccordionItem>
+						<AccordionItem key="3" aria-label="Accordion 3" title="Chapter 3">
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment 1
+							</div>
+							<div className="bg-slate-100 p-2 my-2  rounded-md">
+								Assignment 2
 							</div>
 						</AccordionItem>
 					</Accordion>

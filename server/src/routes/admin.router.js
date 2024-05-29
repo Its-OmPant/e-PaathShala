@@ -18,6 +18,10 @@ import {
 	deleteTeacherById,
 	getTotalSubjectCount,
 	getAllSubjects,
+	getAdminProfileDetails,
+	getStudentById,
+	getTeacherById,
+	changeSubjectTeacher,
 } from "../controllers/admin.controllers.js";
 
 // middlewares
@@ -33,11 +37,13 @@ const router = express.Router();
 
 //                  ************* ADMIN RELATED ROUTES *************
 router.route("/login").post(adminLogin);
+router.route("/profile").get(verifyJWT, getAdminProfileDetails);
 
 //                  ************* STUDENT RELATED ROUTES *************
 router.route("/students/create").post(verifyJWT, createStudent);
 router.route("/students/all").get(verifyJWT, getAllStudents);
 router.route("/students/count").get(verifyJWT, getTotalStudentCount);
+router.route("/students/:id").get(getStudentById);
 router
 	.route("/students/delete/:studentId")
 	.delete(verifyJWT, deleteStudentById);
@@ -55,6 +61,7 @@ router.route("/teachers/create").post(verifyJWT, createTeacher);
 router.route("/teachers/all").get(verifyJWT, getAllTeachers);
 router.route("/teachers/list").get(verifyJWT, getListOfTeacherNames);
 router.route("/teachers/count").get(verifyJWT, getTotalTeacherCount);
+router.route("/teachers/:id").get(getTeacherById);
 router
 	.route("/teachers/delete/:teacherId")
 	.delete(verifyJWT, deleteTeacherById);
@@ -66,6 +73,7 @@ router
 
 router.route("/subjects/count").get(verifyJWT, getTotalSubjectCount);
 router.route("/subjects/all").get(verifyJWT, getAllSubjects);
+router.route("/subjects/:subjectId").post(verifyJWT, changeSubjectTeacher);
 
 //                  ************* BRANCH RELATED ROUTES *************
 router.route("/branches/:courseID").get(verifyJWT, getListOfBranchesByCourseId);

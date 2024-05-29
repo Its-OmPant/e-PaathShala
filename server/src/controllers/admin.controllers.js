@@ -107,6 +107,21 @@ const adminLogin = asyncHandler(async (req, res) => {
 	);
 });
 
+const getAdminProfileDetails = asyncHandler(async (req, res) => {
+	const adminId = req.user_id;
+
+	const admin = await Admin.findById(adminId).select("-role -password");
+
+	if (!admin) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Admin Data fetch failed due to server error"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, admin, "Admin details fetched Successfully"));
+});
+
 // 					********* 	STUDENT RELATED CONTROLLERS *********
 
 const createStudent = asyncHandler(async (req, res) => {
@@ -212,6 +227,32 @@ const getTotalStudentCount = asyncHandler(async (req, res) => {
 		.json(
 			new ApiResponse(200, studentCount, "Student Count Fetched Successfully")
 		);
+});
+
+const getStudentById = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+
+	if (!id) {
+		return res.status(400).json(new ApiError(400, "Id is required"));
+	}
+
+	const student = await Student.findById(id)
+		.populate({
+			path: "course",
+			select: "name -_id",
+		})
+		.populate({
+			path: "branch",
+			select: "name -_id",
+		})
+		.select("-password -role -college");
+
+	if (!student) {
+		return res.status(400).json(new ApiError(400, "Student with ID Not Found"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, student, "Student Found Successfully"));
 });
 
 const deleteStudentById = asyncHandler(async (req, res) => {
@@ -450,6 +491,23 @@ const getTotalTeacherCount = asyncHandler(async (req, res) => {
 		);
 });
 
+const getTeacherById = asyncHandler(async (req, res) => {
+	const id = req.params.id;
+
+	const teacher = await Teacher.findById(id)
+		.populate({ path: "teachCourses", select: "name" })
+		.populate({ path: "teachSubjects", select: "name" })
+		.populate({ path: "college", select: "college" })
+		.select("-password -role ");
+
+	if (!teacher) {
+		return res.status(400).json(new ApiError(400, "Teacher with ID Not Found"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, teacher, "Teacher Found Successfully"));
+});
+
 const deleteTeacherById = asyncHandler(async (req, res) => {
 	const admin_id = req.user_id;
 	const { teacherId } = req.params;
@@ -574,6 +632,46 @@ const getAllSubjects = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, subjects, "Subjects Fetched Successfully"));
 });
 
+const changeSubjectTeacher = asyncHandler(async (req, res) => {
+	const admin_id = req.user_id;
+	const { subjectId } = req.params;
+	const { teacherId } = req.body;
+
+	if (!subjectId || !teacherId) {
+		return res.status(400).json(new ApiError(400, "All Fields are required"));
+	}
+
+	const subject = await Subject.findById(subjectId);
+	const teacher = await Teacher.findById(teacherId);
+
+	if (!subject) {
+		return res.status(400).json(new ApiError(400, "Subject With Id not Found"));
+	}
+
+	if (!teacher) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Invalid Teacher, Teacher doesn't Exist "));
+	}
+
+	subject.taughtBy = teacherId;
+
+	if (!teacher.teachCourses.includes(subject.course)) {
+		teacher.teachCourses.push(subject.course);
+	}
+
+	if (!teacher.teachSubjects.includes(subject._id)) {
+		teacher.teachSubjects.push(subject._id);
+	}
+
+	await subject.save();
+	await teacher.save();
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, null, "Subject Teacher Updated Successfully"));
+});
+
 // 					********* 	BRANCH RELATED CONTROLLERS *********
 
 const getListOfBranchesByCourseId = asyncHandler(async (req, res) => {
@@ -601,10 +699,13 @@ export {
 	createTeacher,
 	createSubject,
 	createStudent,
+	getAdminProfileDetails,
 	getAllStudents,
 	getAllTeachers,
 	getAllCourses,
 	getAllSubjects,
+	getStudentById,
+	getTeacherById,
 	getCourseDetailsById,
 	getListOfBranchesByCourseId,
 	getListOfTeacherNames,
@@ -614,4 +715,5 @@ export {
 	getTotalSubjectCount,
 	deleteStudentById,
 	deleteTeacherById,
+	changeSubjectTeacher,
 };

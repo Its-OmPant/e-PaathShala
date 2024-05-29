@@ -36,7 +36,7 @@ function TeacherProfilePage() {
 	const getTeacherProfile = async () => {
 		try {
 			const response = await fetch(
-				`${import.meta.env.VITE_API_BASE_URL}/teacher/profile/${teacherId}`,
+				`${import.meta.env.VITE_API_BASE_URL}/admin/teachers/${teacherId}`,
 				{
 					method: "GET",
 					headers: {

@@ -61,36 +61,36 @@ function TeacherDashboard() {
 						</NavLink>
 
 						<NavLink
-							to="subjects"
+							to="students"
 							className={({ isActive }) =>
 								isActive
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<IoLogoReact size={21} className="text-sky-800" />
-							Subjects
+							Students
 						</NavLink>
 
 						<NavLink
-							to="live-classes"
+							to="Subjects"
 							className={({ isActive }) =>
 								isActive
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<FaChalkboardTeacher size={21} className="text-sky-800" />
-							Live Classes
+							Subjects
 						</NavLink>
 
 						<NavLink
-							to="chat-groups"
+							to="Chat-rooms"
 							className={({ isActive }) =>
 								isActive
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<TiMessages size={21} className="text-sky-800" />
-							Chat Groups
+							Chat Rooms
 						</NavLink>
 
 						<NavLink
@@ -116,14 +116,16 @@ function TeacherDashboard() {
 						</NavLink>
 					</CardBody>
 					<CardFooter className="flex-col gap-3 items-start">
-						<User
-							className="justify-start gap-4 "
-							name={user?.fullName || "user name"}
-							description={user?.email || "user email"}
-							avatarProps={{
-								src: user?.profileImage,
-							}}
-						/>
+						<NavLink to="profile">
+							<User
+								className="justify-start gap-4 "
+								name={user?.fullName || "user name"}
+								description={user?.email || "user email"}
+								avatarProps={{
+									src: user?.profileImage,
+								}}
+							/>
+						</NavLink>
 						<Button
 							color="danger"
 							variant="ghost"

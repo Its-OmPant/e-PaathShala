@@ -114,14 +114,16 @@ function StudentDashboard() {
 						</NavLink>
 					</CardBody>
 					<CardFooter className="flex-col gap-3 items-start">
-						<User
-							className="justify-start gap-4 "
-							name="Jane Doe"
-							description="Product Designer"
-							avatarProps={{
-								src: "https://i.pravatar.cc/150?u=a04258114e29026702d",
-							}}
-						/>
+						<NavLink to="profile">
+							<User
+								className="justify-start gap-4 "
+								name={user?.fullName || "username"}
+								description={user?.email || "user email"}
+								avatarProps={{
+									src: user?.profileImage,
+								}}
+							/>
+						</NavLink>
 						<Button
 							color="danger"
 							variant="ghost"

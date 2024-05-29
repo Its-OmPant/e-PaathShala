@@ -40,30 +40,29 @@ const studentLogin = asyncHandler(async (req, res) => {
 	);
 });
 
-const getStudentById = asyncHandler(async (req, res) => {
-	const { id } = req.params;
+const getStudentProfileDetails = asyncHandler(async (req, res) => {
+	const studentId = req.user_id;
 
-	if (!id) {
-		return res.status(400).json(new ApiError(400, "Id is required"));
-	}
-
-	const student = await Student.findById(id)
-		.populate({
-			path: "course",
-			select: "name -_id",
-		})
-		.populate({
-			path: "branch",
-			select: "name -_id",
-		})
-		.select("-password -role -college");
+	const student = await Student.findById(studentId)
+		.populate([
+			{ path: "course", select: "name" },
+			{ path: "branch", select: "name" },
+			{ path: "college", select: "college" },
+		])
+		.select("-role -password -attendance -result");
 
 	if (!student) {
-		return res.status(400).json(new ApiError(400, "Student with ID Not Found"));
+		return res
+			.status(500)
+			.json(
+				new ApiError(500, "Student Details Fetching Failed due to server error")
+			);
 	}
 	return res
 		.status(200)
-		.json(new ApiResponse(200, student, "Student Found Successfully"));
+		.json(
+			new ApiResponse(200, student, "Student Details Fetched Successfully")
+		);
 });
 
-export { studentLogin, getStudentById };
+export { studentLogin, getStudentProfileDetails };

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+import { useSelector } from "react-redux";
 
 // nextUI Components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
@@ -11,41 +13,39 @@ import { FaRegUser } from "react-icons/fa";
 import { MdArrowBack } from "react-icons/md";
 
 function AdminProfilePage() {
+	const user = useSelector((state) => state.auth.user);
+
 	const navigate = useNavigate();
-	const params = useParams();
-	const adminId = params.id;
 	const [adminData, setAdminData] = useState();
 
-	// const getAdminProfileData = async () => {
-	// 	try {
-	// 		const response = await fetch(
-	// 			`${import.meta.env.VITE_API_BASE_URL}/admin/profile/${adminId}`,
-	// 			{
-	// 				method: "GET",
-	// 				headers: {
-	// 					"Content-type": "application/json",
-	// 				},
-	// 			}
-	// 		);
+	const getAdminProfileData = async () => {
+		try {
+			const response = await fetch(
+				`${import.meta.env.VITE_API_BASE_URL}/admin/profile`,
+				{
+					method: "GET",
+					headers: {
+						"Content-type": "application/json",
+						Authorization: `Bearer ${user.token}`,
+					},
+				}
+			);
 
-	// 		console.log(response);
-	// 		if (response.ok) {
-	// 			const data = await response.json();
-	// 			console.log(data);
-	// 			setAdminData(data.data);
-	// 		} else {
-	// 			const err = await response.json();
-	// 			console.log(err);
-	// 			return;
-	// 		}
-	// 	} catch (error) {
-	// 		console.log("customError :: ", error);
-	// 	}
-	// };
+			if (response.ok) {
+				const data = await response.json();
+				setAdminData(data.data);
+			} else {
+				const err = await response.json();
+				console.log(err);
+			}
+		} catch (error) {
+			console.log("customError :: ", error);
+		}
+	};
 
-	// useEffect(() => {
-	// 	getAdminProfileData();
-	// }, []);
+	useEffect(() => {
+		getAdminProfileData();
+	}, []);
 
 	const goBack = () => {
 		navigate(-1);
@@ -64,9 +64,24 @@ function AdminProfilePage() {
 						fallback={<FaRegUser size={45} />}
 						className="w-[140px] h-[140px] bg-blue-200"></Avatar>
 					<div className="w-4/5 grid gap-4 my-3">
-						<Input type="text" label="Admin Name" color="primary"></Input>
-						<Input type="email" label="Email" color="primary"></Input>
-						<Input type="text" label="College" color="primary"></Input>
+						<Input
+							type="text"
+							label="Admin Name"
+							color="primary"
+							value={adminData?.fullName || "N/A"}
+						/>
+						<Input
+							type="email"
+							label="Email"
+							color="primary"
+							value={adminData?.email || "N/A"}
+						/>
+						<Input
+							type="text"
+							label="College"
+							color="primary"
+							value={adminData?.college || "N/A"}
+						/>
 					</div>
 				</div>
 			</CardBody>
