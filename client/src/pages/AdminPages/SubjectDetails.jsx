@@ -10,6 +10,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
 import { Accordion, AccordionItem, Button } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
+import { Tabs, Tab } from "@nextui-org/tabs";
 import {
 	Modal,
 	ModalContent,
@@ -21,6 +22,8 @@ import {
 
 // icons
 import { MdArrowBack } from "react-icons/md";
+import { BiSolidVideos } from "react-icons/bi";
+import { FaFileAlt } from "react-icons/fa";
 
 import AboutImg from "../../assets/about.jpg";
 
@@ -189,130 +192,160 @@ function SubjectDetails() {
 
 				{/* right div */}
 				<div className="w-3/12 mx-2 overflow-auto">
-					<h1 className="bg-teal-200 text-lg p-2 rounded-md mb-2 text-center">
-						Lectures
-					</h1>
-					<Accordion variant="splitted" itemClasses={itemClasses}>
-						<AccordionItem key="1" aria-label="Accordion 1" title="Chapter 1">
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-						</AccordionItem>
-						<AccordionItem key="2" aria-label="Accordion 2" title="Chapter 2">
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-						</AccordionItem>
-						<AccordionItem key="3" aria-label="Accordion 3" title="Chapter 3">
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Video Name
-							</div>
-						</AccordionItem>
-					</Accordion>
-					<h1 className="bg-pink-200 text-lg p-2 rounded-md my-2 text-center">
-						Assignments
-					</h1>
-					<Accordion variant="splitted" itemClasses={itemClasses}>
-						<AccordionItem key="1" aria-label="Accordion 1" title="Chapter 1">
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment 1
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment 2
-							</div>
-						</AccordionItem>
-						<AccordionItem key="2" aria-label="Accordion 2" title="Chapter 2">
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment
-							</div>
-						</AccordionItem>
-						<AccordionItem key="3" aria-label="Accordion 3" title="Chapter 3">
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment 1
-							</div>
-							<div className="bg-slate-100 p-2 my-2  rounded-md">
-								Assignment 2
-							</div>
-						</AccordionItem>
-					</Accordion>
+					<Tabs size="lg" color="primary">
+						<Tab
+							title={
+								<div className="flex items-center space-x-2">
+									<BiSolidVideos size="20" />
+									<span>Lectures</span>
+								</div>
+							}>
+							<Accordion variant="splitted" itemClasses={itemClasses}>
+								<AccordionItem
+									key="1"
+									aria-label="Accordion 1"
+									title="Chapter 1">
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+								</AccordionItem>
+								<AccordionItem
+									key="2"
+									aria-label="Accordion 2"
+									title="Chapter 2">
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+								</AccordionItem>
+								<AccordionItem
+									key="3"
+									aria-label="Accordion 3"
+									title="Chapter 3">
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Video Name
+									</div>
+								</AccordionItem>
+							</Accordion>
+						</Tab>
+						<Tab
+							title={
+								<div className="flex items-center space-x-2">
+									<FaFileAlt />
+									<span>Assignments</span>
+								</div>
+							}>
+							<Accordion variant="splitted" itemClasses={itemClasses}>
+								<AccordionItem
+									key="1"
+									aria-label="Accordion 1"
+									title="Chapter 1">
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment 1
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment 2
+									</div>
+								</AccordionItem>
+								<AccordionItem
+									key="2"
+									aria-label="Accordion 2"
+									title="Chapter 2">
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment
+									</div>
+								</AccordionItem>
+								<AccordionItem
+									key="3"
+									aria-label="Accordion 3"
+									title="Chapter 3">
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment 1
+									</div>
+									<div className="bg-slate-100 p-2 my-2  rounded-md">
+										Assignment 2
+									</div>
+								</AccordionItem>
+							</Accordion>
+						</Tab>
+					</Tabs>
 				</div>
 			</CardBody>
 		</Card>

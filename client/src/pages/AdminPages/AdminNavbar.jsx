@@ -22,7 +22,7 @@ import { FaCalendarDays } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 import { FaCompassDrafting } from "react-icons/fa6";
 
-function AdminDashboard() {
+function AdminNavbar() {
 	const user = useSelector((state) => state.auth.user);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -157,4 +157,4 @@ function AdminDashboard() {
 	return content;
 }
 
-export default AdminDashboard;
+export default AdminNavbar;

@@ -1,5 +1,7 @@
 import React from "react";
 
+import Resource from "../../components/Resource";
+
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import {
@@ -13,8 +15,6 @@ import {
 } from "@nextui-org/react";
 import { Divider } from "@nextui-org/divider";
 import { Input } from "@nextui-org/input";
-
-import BookImg from "../../assets/bookImage.jpg";
 
 function DigitalLibraryTab() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -70,14 +70,8 @@ function DigitalLibraryTab() {
 			<Divider></Divider>
 			<CardBody>
 				<div className="grid grid-cols-5">
-					<div className="m-2 bg-slate-200 px-2 py-1 rounded-md ">
-						<img
-							src={BookImg}
-							alt=""
-							className="w-[200px] h-[260px] rounded-md"
-						/>
-						<p className="text-center text-md">Resource Name</p>
-					</div>
+					<Resource resName="C Programming" />
+					<Resource resName="Java Development Handbook" />
 				</div>
 			</CardBody>
 		</Card>

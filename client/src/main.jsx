@@ -31,7 +31,7 @@ import DashboardSubscribersList from "./pages/InternalAdminPages/DashboardSubscr
 
 // Admin Dashboard Pages
 
-import AdminDashboard from "./pages/AdminPages/AdminDashboard.jsx";
+import AdminNavbar from "./pages/AdminPages/AdminNavbar.jsx";
 import AdminHomePage from "./pages/AdminPages/AdminHomePage.jsx";
 
 import DashBoardTab from "./pages/AdminPages/DashBoardTab.jsx";
@@ -57,7 +57,7 @@ import SubjectDetails from "./pages/AdminPages/SubjectDetails.jsx";
 
 // Student Dashboard Pages
 
-import StudentDashboard from "./pages/StudentPages/StudentDashboard.jsx";
+import StudentNavbar from "./pages/StudentPages/StudentNavbar.jsx";
 import StudentHomePage from "./pages/StudentPages/StudentHomePage.jsx";
 
 import StudentDashBoardTab from "./pages/StudentPages/StudentDashBoardTab.jsx";
@@ -70,8 +70,15 @@ import StudentProfileTab from "./pages/StudentPages/StudentProfileTab.jsx";
 
 // Teacher Dashboard Pages
 
-import TeacherDashboard from "./pages/TeacherPages/TeacherDashboard.jsx";
+import TeacherNavbar from "./pages/TeacherPages/TeacherNavbar.jsx";
 import TeacherHomePage from "./pages/TeacherPages/TeacherHomePage.jsx";
+
+import TeacherDashboardTab from "./pages/TeacherPages/TeacherDashboardTab.jsx";
+import TeacherStudentsTab from "./pages/TeacherPages/TeacherStudentsTab.jsx";
+import TeacherSubjectTab from "./pages/TeacherPages/TeacherSubjectTab.jsx";
+import TeacherChatroomTab from "./pages/TeacherPages/TeacherChatroomTab.jsx";
+import TeacherAttendanceTab from "./pages/TeacherPages/TeacherAttendanceTab.jsx";
+import TeacherDigitalLibraryTab from "./pages/TeacherPages/TeacherDigitalLibraryTab.jsx";
 import TeacherProfileTab from "./pages/TeacherPages/TeacherProfileTab.jsx";
 
 import {
@@ -109,7 +116,7 @@ const router = createBrowserRouter(
 			</Route>
 
 			{/* Admin Routes */}
-			<Route path="/admin" element={<AdminDashboard />}>
+			<Route path="/admin" element={<AdminNavbar />}>
 				<Route path="" element={<AdminHomePage />} />
 				<Route path="dashboard" element={<DashBoardTab />} />
 				<Route path="students">
@@ -140,7 +147,7 @@ const router = createBrowserRouter(
 
 			{/* Student Routes */}
 
-			<Route path="/student" element={<StudentDashboard />}>
+			<Route path="/student" element={<StudentNavbar />}>
 				<Route path="" element={<StudentHomePage />} />
 				<Route path="dashboard" element={<StudentDashBoardTab />} />
 				<Route path="live-classes" element={<StudentLiveClassTab />} />
@@ -153,8 +160,14 @@ const router = createBrowserRouter(
 
 			{/* Teacher Routes */}
 
-			<Route path="/teacher" element={<TeacherDashboard />}>
+			<Route path="/teacher" element={<TeacherNavbar />}>
 				<Route path="" element={<TeacherHomePage />} />
+				<Route path="dashboard" element={<TeacherDashboardTab />} />
+				<Route path="students" element={<TeacherStudentsTab />} />
+				<Route path="subjects" element={<TeacherSubjectTab />} />
+				<Route path="chatrooms" element={<TeacherChatroomTab />} />
+				<Route path="attendance" element={<TeacherAttendanceTab />} />
+				<Route path="digital-library" element={<TeacherDigitalLibraryTab />} />
 				<Route path="profile" element={<TeacherProfileTab />} />
 			</Route>
 		</Route>,

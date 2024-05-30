@@ -23,7 +23,7 @@ import { TiMessages } from "react-icons/ti";
 import { FaChartPie } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 
-function TeacherDashboard() {
+function TeacherNavbar() {
 	const user = useSelector((state) => state.auth.user);
 
 	const dispatch = useDispatch();
@@ -72,7 +72,7 @@ function TeacherDashboard() {
 						</NavLink>
 
 						<NavLink
-							to="Subjects"
+							to="subjects"
 							className={({ isActive }) =>
 								isActive
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
@@ -83,7 +83,7 @@ function TeacherDashboard() {
 						</NavLink>
 
 						<NavLink
-							to="Chat-rooms"
+							to="chatrooms"
 							className={({ isActive }) =>
 								isActive
 									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
@@ -147,4 +147,4 @@ function TeacherDashboard() {
 
 	return content;
 }
-export default TeacherDashboard;
+export default TeacherNavbar;

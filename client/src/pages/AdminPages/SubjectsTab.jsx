@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+import SubjectCard from "../../components/SubjectCard";
+
 import { useSelector } from "react-redux";
 
 // next UI components
@@ -53,22 +55,14 @@ function SubjectsTab() {
 				<CardBody className="grid grid-cols-4 gap-4">
 					{subjects.map((s) => (
 						<Link to={s._id} key={s._id}>
-							<div className="bg-blue-200 p-2 rounded-md hover:scale-105 transition-all">
-								<img
-									src={s.coverImage}
-									alt=""
-									className="w-[280px] h-[170px] rounded-md"
-								/>
-								<div className="flex justify-between items-center px-2 py-1">
-									<h1 className="text-center font-semibold text-lg truncate">
-										{s.name}
-									</h1>
-									<h3>{s.code}</h3>
-								</div>
-								<p>Course: {s.course.name}</p>
-								<p>Branch: {s.branch.name}</p>
-								<p>Taught By: {s.taughtBy?.fullName || "N/A"}</p>
-							</div>
+							<SubjectCard
+								coverImageUrl={s.coverImage}
+								subjectName={s.name}
+								subjectCode={s.code}
+								courseName={s.course.name}
+								branchName={s.branch.name}
+								teacherName={s.taughtBy?.fullName || "N/A"}
+							/>
 						</Link>
 					))}
 				</CardBody>

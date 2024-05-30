@@ -45,7 +45,7 @@ function TeacherProfileTab() {
 	return (
 		<Card className="w-4/5 p-3 ">
 			<CardHeader>
-				<h1 className="text-lg uppercase font-bold">Student Profile</h1>
+				<h1 className="text-lg uppercase font-bold">Your Profile</h1>
 			</CardHeader>
 			<Divider />
 			<CardBody>

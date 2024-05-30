@@ -9,6 +9,12 @@ const subjectSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	content: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "chapter",
+		},
+	],
 	course: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "course",

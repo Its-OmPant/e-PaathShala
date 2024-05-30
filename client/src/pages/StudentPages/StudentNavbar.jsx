@@ -22,7 +22,7 @@ import { TiMessages } from "react-icons/ti";
 import { FaChartPie } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
 
-function StudentDashboard() {
+function StudentNavbar() {
 	const user = useSelector((state) => state.auth.user);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -146,4 +146,4 @@ function StudentDashboard() {
 	return content;
 }
 
-export default StudentDashboard;
+export default StudentNavbar;
