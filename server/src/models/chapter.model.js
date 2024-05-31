@@ -5,6 +5,10 @@ const chapterSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	chapterNo: {
+		type: Number,
+		required: true,
+	},
 	lectures: [
 		{
 			type: mongoose.Schema.Types.ObjectId,

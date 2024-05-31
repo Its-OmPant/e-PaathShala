@@ -24,6 +24,7 @@ import {
 	changeSubjectTeacher,
 } from "../controllers/admin.controllers.js";
 
+import { getSubjectDetailsById } from "../controllers/subject.controllers.js";
 // middlewares
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import { multerUploader } from "../middleware/multer.middleware.js";
@@ -73,6 +74,7 @@ router
 
 router.route("/subjects/count").get(verifyJWT, getTotalSubjectCount);
 router.route("/subjects/all").get(verifyJWT, getAllSubjects);
+router.route("/subjects/:subjectId").get(verifyJWT, getSubjectDetailsById);
 router.route("/subjects/:subjectId").post(verifyJWT, changeSubjectTeacher);
 
 //                  ************* BRANCH RELATED ROUTES *************

@@ -1,6 +1,7 @@
 // DB MODELS
 import { Teacher } from "../models/teacher.model.js";
 import { Subject } from "../models/subject.model.js";
+import { Chapter } from "../models/chapter.model.js";
 
 // Utilities
 import { ApiError } from "../utils/ApiError.js";
@@ -206,6 +207,62 @@ const getStudentsByCourseAndBranch = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, students, "Students fetched Successfully"));
 });
 
+const createChapter = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	if (user_role !== "teacher") {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Only Teacher Can add Chapters"));
+	}
+
+	const { subjectId } = req.params;
+	const { chapterName, chapterNo } = req.body;
+
+	if (!chapterName || !chapterNo) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Chapter name and number both are required"));
+	}
+
+	const subject = await Subject.findById(subjectId);
+
+	if (!subject) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Invalid Subject Id, Subject Not Exists"));
+	}
+
+	const isChapterExist = await Chapter.findOne({
+		chapterNo,
+		subject: subjectId,
+	});
+
+	if (isChapterExist) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Chapter Number already exist"));
+	}
+
+	const chapter = await Chapter.create({
+		chapterName,
+		chapterNo,
+		subject: subjectId,
+	});
+
+	if (!chapter) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Chapter Creation Failed due to server error"));
+	}
+
+	subject.content.push(chapter);
+	await subject.save();
+	return res
+		.status(200)
+		.json(new ApiResponse(200, chapter, "Chapter Created Successfully"));
+});
+
 export {
 	teacherLogin,
 	getTeacherProfileDetails,
@@ -213,4 +270,5 @@ export {
 	getListOfCourseTeaches,
 	getListOfBranchTeachesByCourseId,
 	getStudentsByCourseAndBranch,
+	createChapter,
 };
