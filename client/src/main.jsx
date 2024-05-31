@@ -81,6 +81,8 @@ import TeacherAttendanceTab from "./pages/TeacherPages/TeacherAttendanceTab.jsx"
 import TeacherDigitalLibraryTab from "./pages/TeacherPages/TeacherDigitalLibraryTab.jsx";
 import TeacherProfileTab from "./pages/TeacherPages/TeacherProfileTab.jsx";
 
+import TeacherSubjectDetailsPage from "./pages/TeacherPages/TeacherSubjectDetailsPage.jsx";
+
 import {
 	Route,
 	RouterProvider,
@@ -164,7 +166,10 @@ const router = createBrowserRouter(
 				<Route path="" element={<TeacherHomePage />} />
 				<Route path="dashboard" element={<TeacherDashboardTab />} />
 				<Route path="students" element={<TeacherStudentsTab />} />
-				<Route path="subjects" element={<TeacherSubjectTab />} />
+				<Route path="subjects">
+					<Route path="" element={<TeacherSubjectTab />} />
+					<Route path=":subjectId" element={<TeacherSubjectDetailsPage />} />
+				</Route>
 				<Route path="chatrooms" element={<TeacherChatroomTab />} />
 				<Route path="attendance" element={<TeacherAttendanceTab />} />
 				<Route path="digital-library" element={<TeacherDigitalLibraryTab />} />

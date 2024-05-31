@@ -17,6 +17,7 @@ export const verifyJWT = async (req, res, next) => {
 		);
 
 		req.user_id = decryptedToken._id;
+		req.user_role = decryptedToken.role;
 		next();
 	} catch (error) {
 		console.log("Auth Middleware Error :: ", error);
