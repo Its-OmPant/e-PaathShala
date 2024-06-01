@@ -8,6 +8,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Student } from "../models/student.model.js";
+import { Lecture } from "../models/lecture.model.js";
 
 const teacherLogin = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
@@ -263,6 +264,97 @@ const createChapter = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, chapter, "Chapter Created Successfully"));
 });
 
+const getListOfChaptersInSubject = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	const { subjectId } = req.params;
+
+	const chapters = await Subject.findById(subjectId)
+		.populate({ path: "content", select: "chapterName chapterNo" })
+		.select("name content");
+
+	if (!chapters) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Chapters fetching failed due to server error"));
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, chapters, "Chapters Fetched Successfully"));
+});
+
+// const isLectureNoExists = asyncHandler(async (req, res) => {
+// 	const { subjectId, chapterId, lectureNo } = req.body;
+
+// 	if (!subjectId || !chapterId || !lectureNo) {
+// 		return res.status(400).json(new ApiError(400, "All Fields are required"));
+// 	}
+
+// 	const subject = await Subject.findById(subjectId)
+// 		.populate({
+// 			path: "content",
+// 			select: "chapterNo lectures",
+// 		})
+// 		.select("content");
+
+// 	// console.log(subject);
+
+// 	if (!subject) {
+// 		return res.status(400).json("Subject Or Chapter not found");
+// 	}
+
+// 	const chapter = subject.content?.filter((ch) => ch._id == chapterId);
+
+// 	const isLectureExists = chapter.lectures?.filter(
+// 		(lec) => lec.lectureNo == lectureNo
+// 	);
+
+// 	console.log(chapter);
+// 	console.log(isLectureExists);
+
+// 	res.send("Hello");
+// });
+
+const createLecture = asyncHandler(async (req, res) => {
+	const { videoUrl, lectureName, lectureNo, chapterId } = req.body;
+
+	if (!videoUrl) {
+		return res.status(400).json(new ApiError(400, "Video Url not Found"));
+	}
+
+	if (!lectureName || !lectureNo) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Lecture name and number both are required"));
+	}
+
+	const chapter = await Chapter.findById(chapterId);
+
+	if (!chapter) {
+		return res.status(400).json(new ApiError(400, "Invalid Chpter Id"));
+	}
+
+	const lecture = await Lecture.create({
+		lectureName,
+		lectureNo,
+		fileUrl: videoUrl,
+	});
+
+	if (!lecture) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Lecture Creation Failed due to server error"));
+	}
+
+	chapter.lectures.push(lecture._id);
+	await chapter.save();
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, null, "Lecture created successfully"));
+});
+
 export {
 	teacherLogin,
 	getTeacherProfileDetails,
@@ -271,4 +363,6 @@ export {
 	getListOfBranchTeachesByCourseId,
 	getStudentsByCourseAndBranch,
 	createChapter,
+	getListOfChaptersInSubject,
+	createLecture,
 };

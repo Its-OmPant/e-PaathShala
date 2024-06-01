@@ -49,6 +49,12 @@ function TeacherSubjectDetailsPage() {
 	const subjectId = params.subjectId;
 
 	const [subjectDetails, setSubjectDetails] = useState();
+	const [chapterDetails, setChapterDetails] = useState({
+		chapterNo: 0,
+		chapterName: "",
+	});
+
+	const [selectedLecture, setSelectedLecture] = useState(null);
 
 	const getSubjectDetails = async () => {
 		try {
@@ -71,11 +77,6 @@ function TeacherSubjectDetailsPage() {
 			console.log("Custom Error :: ", error);
 		}
 	};
-
-	const [chapterDetails, setChapterDetails] = useState({
-		chapterNo: 0,
-		chapterName: "",
-	});
 
 	const handleInputChange = (e) => {
 		setChapterDetails({ ...chapterDetails, [e.target.name]: e.target.value });
@@ -140,9 +141,11 @@ function TeacherSubjectDetailsPage() {
 					<Button color="warning" variant="solid" onClick={onOpen}>
 						Create Chapters
 					</Button>
-					<Button color="success" variant="solid">
-						Add Lecture
-					</Button>
+					<Link to="lecture/add">
+						<Button color="success" variant="solid">
+							Add Lecture
+						</Button>
+					</Link>
 					<Button color="secondary" variant="solid">
 						Add Assignment
 					</Button>
@@ -198,11 +201,26 @@ function TeacherSubjectDetailsPage() {
 			<Divider></Divider>
 			<CardBody className="flex-row">
 				{/* left div */}
-				<div className="w-9/12 ">
-					<img
-						src={subjectDetails?.coverImage || ""}
-						className="w-full h-[450px] rounded-md"
-					/>
+				<div className="w-9/12">
+					{selectedLecture ? (
+						<div className="relative bg-slate-200 rounded-md">
+							<button
+								className="absolute top-2 right-2 z-10 bg-red-500 px-2 rounded-md text-white font-bold"
+								onClick={() => {
+									setSelectedLecture(null);
+								}}>
+								X
+							</button>
+							<video controls className="w-full h-[450px] rounded-md">
+								<source src={selectedLecture?.fileUrl} />
+							</video>
+						</div>
+					) : (
+						<img
+							src={subjectDetails?.coverImage || ""}
+							className="w-full h-[450px] rounded-md"
+						/>
+					)}
 					<div className="p-2">
 						<div className="flex justify-between">
 							<h1 className="text-lg font-bold">
@@ -243,8 +261,15 @@ function TeacherSubjectDetailsPage() {
 											{ch.lectures?.length ? (
 												<div>
 													{ch.lectures.map((l) => (
-														<div className="bg-slate-100 p-2 my-2  rounded-md">
-															Video Name
+														<div
+															onClick={() => {
+																setSelectedLecture(l);
+															}}
+															key={l._id}
+															className="bg-slate-100 p-2 my-2  rounded-md hover:bg-slate-200">
+															{`${l.lectureNo} ${
+																l.lectureName || "Chapter name"
+															}`}
 														</div>
 													))}
 												</div>

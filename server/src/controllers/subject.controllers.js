@@ -18,6 +18,11 @@ const getSubjectDetailsById = asyncHandler(async (req, res) => {
 		{ path: "branch", select: "name" },
 		{
 			path: "content",
+			populate: [
+				{
+					path: "lectures",
+				},
+			],
 		},
 		{ path: "taughtBy", select: "fullName" },
 	]);

@@ -1,7 +1,9 @@
 import express from "express";
 import {
 	createChapter,
+	createLecture,
 	getListOfBranchTeachesByCourseId,
+	getListOfChaptersInSubject,
 	getListOfCourseTeaches,
 	getStudentsByCourseAndBranch,
 	getTeacherProfileDetails,
@@ -24,11 +26,19 @@ router.route("/subjects/:subjectId").get(verifyJWT, getSubjectDetailsById);
 router
 	.route("/subjects/:subjectId/chapters/create")
 	.post(verifyJWT, createChapter);
+
+router
+	.route("/subjects/:subjectId/chapters/all")
+	.get(verifyJWT, getListOfChaptersInSubject);
+
 router.route("/courses/teaches").get(verifyJWT, getListOfCourseTeaches);
 router
 	.route("/branches/teaches")
 	.post(verifyJWT, getListOfBranchTeachesByCourseId);
 
 router.route("/students").post(verifyJWT, getStudentsByCourseAndBranch);
+
+// router.route("/lecture/exists").post(isLectureNoExists);
+router.route("/lecture/create").post(createLecture);
 
 export default router;

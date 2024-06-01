@@ -7,8 +7,11 @@ import contactRouter from "./contact.router.js";
 import courseRouter from "./course.router.js";
 import studentRouter from "./student.router.js";
 import teacherRouter from "./teacher.router.js";
+import { generateSignature } from "../controllers/api.controllers.js";
 
 const router = express.Router();
+
+router.route("/api/sign-upload").post(generateSignature);
 
 router.use("/internal/admin", mainAdminRouter);
 router.use("/admin", adminRouter);

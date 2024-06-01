@@ -1,8 +1,12 @@
 import mongoose from "mongoose";
 
 const lectureSchema = new mongoose.Schema({
-	title: {
+	lectureName: {
 		type: String,
+		required: true,
+	},
+	lectureNo: {
+		type: Number,
 		required: true,
 	},
 	fileUrl: {
