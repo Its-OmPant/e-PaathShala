@@ -32,7 +32,7 @@ function AddNewCourse() {
 
 	const submitData = async (e) => {
 		e.preventDefault();
-		console.log(file);
+		// console.log(file);
 
 		if (!formData.name || !file) {
 			toast.error("All Fields are Required", toastOptions);

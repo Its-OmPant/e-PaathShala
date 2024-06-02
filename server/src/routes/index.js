@@ -7,6 +7,7 @@ import contactRouter from "./contact.router.js";
 import courseRouter from "./course.router.js";
 import studentRouter from "./student.router.js";
 import teacherRouter from "./teacher.router.js";
+import libraryRouter from "./library.router.js";
 import { generateSignature } from "../controllers/api.controllers.js";
 
 const router = express.Router();
@@ -19,5 +20,6 @@ router.use("/contact", contactRouter);
 router.use("/course", courseRouter);
 router.use("/student", studentRouter);
 router.use("/teacher", teacherRouter);
+router.use("/library", libraryRouter);
 
 export default router;

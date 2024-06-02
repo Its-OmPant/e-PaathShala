@@ -5,6 +5,7 @@ import { Teacher } from "../models/teacher.model.js";
 import { Subject } from "../models/subject.model.js";
 import { Branch } from "../models/branch.model.js";
 import { Student } from "../models/student.model.js";
+import { Library } from "../models/library.model.js";
 
 // utilities
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -100,6 +101,7 @@ const adminLogin = asyncHandler(async (req, res) => {
 				schoolName: admin.schoolName,
 				profileImage: admin.profileImage,
 				role: admin.role,
+				college: admin._id,
 				token,
 			},
 			"Logged In Successfully"
@@ -693,6 +695,46 @@ const getListOfBranchesByCourseId = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, branches, "Branches fetched successfully"));
 });
 
+// 					********* 	LIBRARY RELATED CONTROLLERS *********
+
+const addResource = asyncHandler(async (req, res) => {
+	const { name, file_url, admin_id } = req.body;
+
+	if (!name || !file_url || !admin_id) {
+		return res.status(400).json(new ApiError(400, "All fields are required"));
+	}
+
+	if (!req.file && !req.file?.path) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "Image Upload Failed, Please Retry"));
+	}
+
+	let localImagePath = req.file?.path;
+	const imageObject = await uploadOnCloudinary(localImagePath);
+
+	if (!imageObject && !imageObject?.url) {
+		return res
+			.status(500)
+			.json(new ApiError(500, "Image not Uploaded!! Please Retry"));
+	}
+
+	const resource = await Library.create({
+		name,
+		file_url,
+		image_url: imageObject.url,
+		college: admin_id,
+	});
+
+	if (!resource) {
+		return res.status(500).json(new ApiError(500, "Resource Creation failed"));
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, null, "Resource added successfully"));
+});
+
 export {
 	adminLogin,
 	createCourse,
@@ -716,4 +758,5 @@ export {
 	deleteStudentById,
 	deleteTeacherById,
 	changeSubjectTeacher,
+	addResource,
 };

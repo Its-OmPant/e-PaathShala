@@ -22,6 +22,7 @@ import {
 	getStudentById,
 	getTeacherById,
 	changeSubjectTeacher,
+	addResource,
 } from "../controllers/admin.controllers.js";
 
 import { getSubjectDetailsById } from "../controllers/subject.controllers.js";
@@ -79,5 +80,10 @@ router.route("/subjects/:subjectId").post(verifyJWT, changeSubjectTeacher);
 
 //                  ************* BRANCH RELATED ROUTES *************
 router.route("/branches/:courseID").get(verifyJWT, getListOfBranchesByCourseId);
+
+//                  ************* LIBRARY RELATED ROUTES *************
+router
+	.route("/library/resource/create")
+	.post(multerUploader.single("image"), addResource);
 
 export default router;

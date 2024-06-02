@@ -39,6 +39,7 @@ const teacherLogin = asyncHandler(async (req, res) => {
 			email: teacher.email,
 			profileImage: teacher.profileImage,
 			role: teacher.role,
+			college: teacher.college,
 			token,
 		})
 	);

@@ -5,11 +5,11 @@ const librarySchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	description: {
+	file_url: {
 		type: String,
 		required: true,
 	},
-	url: {
+	image_url: {
 		type: String,
 		required: true,
 	},

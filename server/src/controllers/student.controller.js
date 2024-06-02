@@ -35,6 +35,7 @@ const studentLogin = asyncHandler(async (req, res) => {
 			email: student.email,
 			profileImage: student.profileImage,
 			role: student.role,
+			college: student.college,
 			token,
 		})
 	);

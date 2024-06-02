@@ -15,11 +15,10 @@ import CustomRadio from "../components/CustomRadio";
 
 // Images
 import LoginImage from "../assets/login.jpg";
+import studentImage from "../assets/student.png";
+import teacherImage from "../assets/teacher.png";
+import adminImage from "../assets/admin.png";
 
-// icons
-import { FaUserShield } from "react-icons/fa6";
-import { PiStudentFill } from "react-icons/pi";
-import { PiChalkboardTeacher } from "react-icons/pi";
 import { toast } from "react-toastify";
 import { toastOptions } from "../Constants.js";
 
@@ -93,10 +92,10 @@ function LoginPage() {
 	};
 
 	return (
-		<div className="min-h-screen bg-slate-300 py-2">
+		<div className=" bg-slate-300 py-2">
 			<Navbar />
 
-			<div className="my-4 mx-8 flex justify-between bg-white rounded-md p-4">
+			<div className="mt-4 mx-8 flex justify-between bg-white rounded-md">
 				<div className="w-1/2">
 					<h3 className="text-xl text-center font-bold text-slate-800 my-4">
 						Login
@@ -141,20 +140,19 @@ function LoginPage() {
 						<RadioGroup
 							isRequired
 							orientation="horizontal"
-							label="Account Type"
+							label="Select Account Type"
 							value={accountType}
-							onChange={handleAccountTypeChange}
-							description="Select your account type">
+							onChange={handleAccountTypeChange}>
 							<CustomRadio value="student">
-								<PiStudentFill size={32} />
-								Student
+								<img src={studentImage} alt="studentImage" width={60} />
+								Students
 							</CustomRadio>
 							<CustomRadio value="teacher">
-								<PiChalkboardTeacher size={32} />
+								<img src={teacherImage} alt="studentImage" width={60} />
 								Teacher
 							</CustomRadio>
 							<CustomRadio value="admin">
-								<FaUserShield size={32} />
+								<img src={adminImage} alt="studentImage" width={60} />
 								Admin
 							</CustomRadio>
 						</RadioGroup>
