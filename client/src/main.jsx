@@ -64,9 +64,10 @@ import StudentDashBoardTab from "./pages/StudentPages/StudentDashBoardTab.jsx";
 import StudentAttendanceTab from "./pages/StudentPages/StudentAttendanceTab.jsx";
 import StudentChatGroupsTab from "./pages/StudentPages/StudentChatGroupsTab.jsx";
 import StudentDigitalLibraryTab from "./pages/StudentPages/StudentDigitalLibraryTab.jsx";
-import StudentLiveClassTab from "./pages/StudentPages/StudentLiveClassTab.jsx";
 import StudentSubjectsTab from "./pages/StudentPages/StudentSubjectsTab.jsx";
 import StudentProfileTab from "./pages/StudentPages/StudentProfileTab.jsx";
+
+import StudentSubjectDetailsPage from "./pages/StudentPages/StudentSubjectDetailsPage.jsx";
 
 // Teacher Dashboard Pages
 
@@ -153,10 +154,12 @@ const router = createBrowserRouter(
 			<Route path="/student" element={<StudentNavbar />}>
 				<Route path="" element={<StudentHomePage />} />
 				<Route path="dashboard" element={<StudentDashBoardTab />} />
-				<Route path="live-classes" element={<StudentLiveClassTab />} />
 				<Route path="chat-groups" element={<StudentChatGroupsTab />} />
 				<Route path="attendance" element={<StudentAttendanceTab />} />
-				<Route path="subjects" element={<StudentSubjectsTab />} />
+				<Route path="subjects">
+					<Route path="" element={<StudentSubjectsTab />} />
+					<Route path=":subjectId" element={<StudentSubjectDetailsPage />} />
+				</Route>
 				<Route path="digital-library" element={<StudentDigitalLibraryTab />} />
 				<Route path="profile" element={<StudentProfileTab />} />
 			</Route>

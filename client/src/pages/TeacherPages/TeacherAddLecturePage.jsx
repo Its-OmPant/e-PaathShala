@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { Card, CardHeader, CardBody, Input, Button } from "@nextui-org/react";
 import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 
+import { RotatingLines } from "react-loader-spinner";
+
 // icons
 import { MdArrowBack } from "react-icons/md";
 
@@ -155,6 +157,7 @@ function TeacherAddLecturePage() {
 			if (response.ok) {
 				const data = await response.json();
 				toast.success(data.message, toastOptions);
+				navigate(-1);
 			} else {
 				const err = await response.json();
 				toast.error(
@@ -164,8 +167,8 @@ function TeacherAddLecturePage() {
 			}
 			// Reset states
 			setVideo(null);
-			console.log("File upload success!");
 			setLoading(false);
+			navigate(-1);
 		} catch (error) {
 			console.error(error);
 		}
@@ -177,25 +180,47 @@ function TeacherAddLecturePage() {
 
 	return (
 		<Card className="w-4/5 p-3">
-			<CardHeader className="gap-3">
-				<MdArrowBack
-					size={20}
-					onClick={() => {
-						navigate(-1);
-					}}
-				/>
-				<h1 className="text-lg font-bold uppercase tracking-wide">
-					Add Lecture
-				</h1>
+			<CardHeader className="gap-3 justify-between">
+				<div className="flex gap-3">
+					<MdArrowBack
+						size={20}
+						onClick={() => {
+							navigate(-1);
+						}}
+					/>
+					<h1 className="text-lg font-bold uppercase tracking-wide">
+						Add Lecture
+					</h1>
+				</div>
+				<Button color="danger" className="my-2 py-2 " onClick={handleSubmit}>
+					Create Lecture
+				</Button>
 			</CardHeader>
-			<CardBody>
-				<Card className="w-3/5 bg-blue-200 h-full mx-auto p-4" shadow="none">
+			<CardBody className="overflow-y-auto">
+				<div className=" w-[100px] h-[100px] absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] z-10">
+					{loading ? (
+						<RotatingLines
+							visible={true}
+							height="96"
+							width="96"
+							color="grey"
+							strokeWidth="5"
+							animationDuration="0.75"
+							ariaLabel="rotating-lines-loading"
+							wrapperStyle={{}}
+							wrapperClass=""
+						/>
+					) : (
+						<p></p>
+					)}
+				</div>
+				<div className="w-3/5 h-full mx-auto p-4 " shadow="none">
 					{video ? (
 						<video className="h-[280px] w-full" controls>
 							<source src={URL.createObjectURL(video)} />
 						</video>
 					) : (
-						<div className="w-full h-[280px] rounded-md bg-white"></div>
+						<div className="w-full rounded-md bg-white"></div>
 					)}
 
 					<div className="flex gap-6 justify-center my-4">
@@ -252,11 +277,7 @@ function TeacherAddLecturePage() {
 						value={userInput.lectureName}
 						onChange={handleUserInputChange}
 					/>
-
-					<Button color="danger" className="my-2" onClick={handleSubmit}>
-						Create Lecture
-					</Button>
-				</Card>
+				</div>
 			</CardBody>
 		</Card>
 	);

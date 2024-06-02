@@ -65,4 +65,42 @@ const getStudentProfileDetails = asyncHandler(async (req, res) => {
 		);
 });
 
-export { studentLogin, getStudentProfileDetails };
+const getStudentSubjects = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	if (user_role !== "student") {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You are not authorized as student"));
+	}
+
+	const student = await Student.findById(user_id)
+		.populate({
+			path: "branch",
+			select: "subjects",
+			populate: {
+				path: "subjects",
+				select: "name code course branch taughtBy coverImage",
+				populate: [
+					{
+						path: "course",
+						select: "name",
+					},
+					{ path: "branch", select: "name" },
+					{ path: "taughtBy", select: "fullName" },
+				],
+			},
+		})
+		.select("branch");
+
+	const subjects = student.branch.subjects;
+
+	if (!subjects) {
+		return res.status(500).jsno(new ApiError(500, "Subjects not found "));
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, subjects, "Subjects fetched successfully"));
+});
+export { studentLogin, getStudentProfileDetails, getStudentSubjects };

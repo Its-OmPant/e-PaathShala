@@ -11,14 +11,6 @@ import { Divider } from "@nextui-org/divider";
 import { Accordion, AccordionItem, Button } from "@nextui-org/react";
 import { Select, SelectItem } from "@nextui-org/react";
 import { Tabs, Tab } from "@nextui-org/tabs";
-import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
-	useDisclosure,
-} from "@nextui-org/react";
 
 // icons
 import { MdArrowBack } from "react-icons/md";
@@ -27,10 +19,8 @@ import { FaFileAlt } from "react-icons/fa";
 
 import AboutImg from "../../assets/about.jpg";
 
-function SubjectDetails() {
+function StudentSubjectDetailsPage() {
 	const user = useSelector((state) => state.auth.user);
-
-	const { isOpen, onOpen, onClose } = useDisclosure();
 	const itemClasses = {
 		base: "p-2",
 		title: "font-normal text-md",
@@ -42,75 +32,8 @@ function SubjectDetails() {
 	const params = useParams();
 	const subjectId = params.subjectId;
 
-	const [allTeachers, setAllTeachers] = useState();
-
-	const [selectedTeacher, setSelectedTeacher] = useState(null);
 	const [subjectDetails, setSubjectDetails] = useState();
 	const [selectedLecture, setSelectedLecture] = useState(null);
-
-	const getAllTeacherNames = async () => {
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_BASE_URL}/admin/teachers/list`,
-				{
-					method: "GET",
-					headers: {
-						Authorization: `Bearer ${user.token}`,
-					},
-				}
-			);
-
-			if (response.ok) {
-				const result = await response.json();
-				setAllTeachers(result.data);
-			}
-		} catch (error) {
-			toast.error("Something Unexpected Occured", toastOptions);
-			console.log("CustomError :: ", error);
-		}
-	};
-
-	const handleTeacherSelect = (e) => {
-		setSelectedTeacher(e.target.value);
-	};
-
-	const openModalAndGetTeachers = () => {
-		getAllTeacherNames();
-		onOpen();
-	};
-
-	const changeTeacher = async () => {
-		if (!selectedTeacher) {
-			toast.error("Teacher is required", toastOptions);
-			return;
-		}
-
-		try {
-			const response = await fetch(
-				`${import.meta.env.VITE_API_BASE_URL}/admin/subjects/${subjectId}`,
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${user.token}`,
-					},
-					body: JSON.stringify({ teacherId: selectedTeacher }),
-				}
-			);
-
-			if (response.ok) {
-				const result = await response.json();
-				if (result.status) {
-					toast.success("Teacher Changed Successfully", toastOptions);
-				} else {
-					throw result.message;
-				}
-			}
-		} catch (error) {
-			toast.error("Something Unexpected Occured", toastOptions);
-			console.log("CustomError :: ", error);
-		}
-	};
 
 	const getSubjectDetails = async () => {
 		try {
@@ -142,65 +65,11 @@ function SubjectDetails() {
 		<Card className="w-4/5 p-3">
 			<CardHeader className="justify-between">
 				<div className="flex gap-3 items-center">
-					<Link to="/admin/subjects">
+					<Link to="/student/subjects">
 						<MdArrowBack size={22} />
 					</Link>
 					<h1 className="font-semibold text-lg">Subject Details</h1>
 				</div>
-				<Button
-					color="secondary"
-					variant="ghost"
-					onClick={openModalAndGetTeachers}>
-					Change Teacher
-				</Button>
-				<Modal
-					size="md"
-					isOpen={isOpen}
-					onClose={onClose}
-					isDismissable={false}
-					backdrop="blur"
-					scrollBehavior="inside"
-					className="min-h-[220px]">
-					<ModalContent>
-						{(onClose) => (
-							<>
-								<ModalHeader className="flex flex-col gap-1">
-									Choose Subject Teacher
-								</ModalHeader>
-								<ModalBody>
-									<Select
-										name="teacherId"
-										value={selectedTeacher}
-										onChange={handleTeacherSelect}
-										label={
-											allTeachers?.length > 0
-												? "Select a Teacher"
-												: "No Teachers Found. Please add some before .."
-										}>
-										{allTeachers?.map((t) => (
-											<SelectItem key={t._id} value={t._id}>
-												{t.fullName}
-											</SelectItem>
-										))}
-									</Select>
-								</ModalBody>
-								<ModalFooter>
-									<Button color="danger" variant="light" onPress={onClose}>
-										Cancel
-									</Button>
-									<Button
-										color="primary"
-										onPress={() => {
-											changeTeacher();
-											onClose();
-										}}>
-										Change
-									</Button>
-								</ModalFooter>
-							</>
-						)}
-					</ModalContent>
-				</Modal>
 			</CardHeader>
 
 			<Divider></Divider>
@@ -340,4 +209,4 @@ function SubjectDetails() {
 	);
 }
 
-export default SubjectDetails;
+export default StudentSubjectDetailsPage;

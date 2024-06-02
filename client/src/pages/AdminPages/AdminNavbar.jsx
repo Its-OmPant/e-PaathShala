@@ -62,7 +62,7 @@ function AdminNavbar() {
 							to="students"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-pink-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<FaUserGraduate size={21} className="text-pink-800" />
@@ -73,7 +73,7 @@ function AdminNavbar() {
 							to="teachers"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-green-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<FaChalkboardTeacher size={21} className="text-green-800" />
@@ -84,7 +84,7 @@ function AdminNavbar() {
 							to="courses"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-orange-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<FaBookOpen size={21} className="text-orange-800" />
@@ -95,10 +95,10 @@ function AdminNavbar() {
 							to="subjects"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-fuchsia-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaCompassDrafting size={21} className="text-yellow-800" />
+							<FaCompassDrafting size={21} className="text-fuchsia-800" />
 							Subjects
 						</NavLink>
 
@@ -106,10 +106,10 @@ function AdminNavbar() {
 							to="notices"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-cyan-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaCalendarDays size={21} className="text-fuchsia-800" />
+							<FaCalendarDays size={21} className="text-cyan-800" />
 							Notices
 						</NavLink>
 
@@ -117,7 +117,7 @@ function AdminNavbar() {
 							to="digital-library"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-slate-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
 							<FaBookAtlas size={21} className="text-slate-800" />

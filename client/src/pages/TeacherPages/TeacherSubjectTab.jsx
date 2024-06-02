@@ -11,23 +11,11 @@ import { Select, SelectItem } from "@nextui-org/react";
 
 import NoFound from "../../assets/no_data.jpg";
 
+import { toast } from "react-toastify";
+import { toastOptions } from "../../Constants.js";
+
 function TeacherSubjectTab() {
 	const user = useSelector((state) => state.auth.user);
-
-	const s = {
-		coverImage: "",
-		name: "Demo Subject",
-		code: "DEMO520",
-		course: {
-			name: "Demo Course",
-		},
-		branch: {
-			name: "Demo Branch",
-		},
-		taughtBy: {
-			fullName: "Demo Teacher",
-		},
-	};
 
 	const [allSubjects, setAllSubjects] = useState();
 
@@ -47,6 +35,9 @@ function TeacherSubjectTab() {
 			if (response.ok) {
 				const result = await response.json();
 				setAllSubjects(result.data);
+			} else {
+				const err = await response.json();
+				toast.error(err.message, toastOptions);
 			}
 		} catch (error) {
 			console.log("Custom Error:: ", error);

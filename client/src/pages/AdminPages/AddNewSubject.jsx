@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
+import { RotatingLines } from "react-loader-spinner";
+
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -16,6 +18,8 @@ function AddNewSubject() {
 	const course_id = params.id;
 
 	const user = useSelector((state) => state.auth.user);
+
+	const [loading, setLoading] = useState(false);
 
 	const [formData, setFormData] = useState({
 		name: "",
@@ -109,6 +113,7 @@ function AddNewSubject() {
 		formdataObject.append("admin_id", user.id);
 
 		try {
+			setLoading(true);
 			const response = await fetch(
 				`${import.meta.env.VITE_API_BASE_URL}/admin/subjects/create`,
 				{
@@ -121,6 +126,7 @@ function AddNewSubject() {
 			if (response.ok) {
 				const result = await response.json();
 				console.log(result);
+				setLoading(false);
 				toast.success("Subject Added Successfully", toastOptions);
 				navigator(-1);
 			} else {
@@ -128,8 +134,10 @@ function AddNewSubject() {
 				toast.error(err.message, toastOptions);
 				return;
 			}
+			setLoading(false);
 		} catch (error) {
 			console.log("customError:: ", error);
+			setLoading(false);
 		}
 	};
 
@@ -147,6 +155,23 @@ function AddNewSubject() {
 				<h1>Add New Subject</h1>
 			</CardHeader>
 			<CardBody>
+				<div className=" w-[100px] h-[100px] absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] z-10">
+					{loading ? (
+						<RotatingLines
+							visible={true}
+							height="96"
+							width="96"
+							color="grey"
+							strokeWidth="5"
+							animationDuration="0.75"
+							ariaLabel="rotating-lines-loading"
+							wrapperStyle={{}}
+							wrapperClass=""
+						/>
+					) : (
+						<p></p>
+					)}
+				</div>
 				<form action="" className="w-1/2 mx-auto flex flex-col gap-5">
 					{coverImage ? (
 						<img src={URL.createObjectURL(coverImage)} />

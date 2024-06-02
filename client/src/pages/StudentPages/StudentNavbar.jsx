@@ -17,7 +17,6 @@ import { User, Button } from "@nextui-org/react";
 import { MdDashboard } from "react-icons/md";
 import { FaChalkboardTeacher } from "react-icons/fa";
 import { FaBookAtlas } from "react-icons/fa6";
-import { IoLogoReact } from "react-icons/io5";
 import { TiMessages } from "react-icons/ti";
 import { FaChartPie } from "react-icons/fa6";
 import { MdLogout } from "react-icons/md";
@@ -62,32 +61,21 @@ function StudentNavbar() {
 							to="subjects"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-pink-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<IoLogoReact size={21} className="text-sky-800" />
+							<FaChalkboardTeacher size={21} className="text-pink-800" />
 							Subjects
-						</NavLink>
-
-						<NavLink
-							to="live-classes"
-							className={({ isActive }) =>
-								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
-									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
-							}>
-							<FaChalkboardTeacher size={21} className="text-sky-800" />
-							Live Classes
 						</NavLink>
 
 						<NavLink
 							to="chat-groups"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-green-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<TiMessages size={21} className="text-sky-800" />
+							<TiMessages size={21} className="text-green-800" />
 							Chat Groups
 						</NavLink>
 
@@ -95,10 +83,10 @@ function StudentNavbar() {
 							to="attendance"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-yellow-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaChartPie size={21} className="text-sky-800" />
+							<FaChartPie size={21} className="text-yellow-800" />
 							Attendance
 						</NavLink>
 
@@ -106,10 +94,10 @@ function StudentNavbar() {
 							to="digital-library"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-slate-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaBookAtlas size={21} className="text-sky-800" />
+							<FaBookAtlas size={21} className="text-slate-800" />
 							Digital Library
 						</NavLink>
 					</CardBody>

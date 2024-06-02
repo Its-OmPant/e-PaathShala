@@ -64,10 +64,10 @@ function TeacherNavbar() {
 							to="students"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-pink-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<IoLogoReact size={21} className="text-sky-800" />
+							<IoLogoReact size={21} className="text-pink-800" />
 							Students
 						</NavLink>
 
@@ -75,10 +75,10 @@ function TeacherNavbar() {
 							to="subjects"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-green-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaChalkboardTeacher size={21} className="text-sky-800" />
+							<FaChalkboardTeacher size={21} className="text-green-800" />
 							Subjects
 						</NavLink>
 
@@ -86,10 +86,10 @@ function TeacherNavbar() {
 							to="chatrooms"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-yellow-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<TiMessages size={21} className="text-sky-800" />
+							<TiMessages size={21} className="text-yellow-800" />
 							Chat Rooms
 						</NavLink>
 
@@ -97,10 +97,10 @@ function TeacherNavbar() {
 							to="attendance"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-fuchsia-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaChartPie size={21} className="text-sky-800" />
+							<FaChartPie size={21} className="text-fuchsia-800" />
 							Attendance
 						</NavLink>
 
@@ -108,10 +108,10 @@ function TeacherNavbar() {
 							to="digital-library"
 							className={({ isActive }) =>
 								isActive
-									? "bg-sky-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
+									? "bg-slate-300 px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 									: "bg-white px-3 py-2 my-1.5 rounded-md flex items-center gap-3"
 							}>
-							<FaBookAtlas size={21} className="text-sky-800" />
+							<FaBookAtlas size={21} className="text-slate-800" />
 							Digital Library
 						</NavLink>
 					</CardBody>

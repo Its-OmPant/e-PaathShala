@@ -164,9 +164,11 @@ function DashBoardTab() {
 				<div className="flex gap-2">
 					{/* left  */}
 					<div className="w-3/4">
-						<h3 className="text-lg font-semibold my-2">Dashboard</h3>
+						<h3 className="text-lg font-semibold my-2">Attendance Report</h3>
 						<Card shadow="none" className="w-full h-96 my-3 bg-slate-100">
-							hello
+							<p className="text-red-500 text-center mt-16">
+								No Attendance Found
+							</p>
 						</Card>
 					</div>
 
