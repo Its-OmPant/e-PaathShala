@@ -84,6 +84,7 @@ import TeacherProfileTab from "./pages/TeacherPages/TeacherProfileTab.jsx";
 
 import TeacherSubjectDetailsPage from "./pages/TeacherPages/TeacherSubjectDetailsPage.jsx";
 import TeacherAddLecturePage from "./pages/TeacherPages/TeacherAddLecturePage.jsx";
+import TeacherChatPage from "./pages/TeacherPages/TeacherChatPage.jsx";
 
 import {
 	Route,
@@ -177,7 +178,10 @@ const router = createBrowserRouter(
 						<Route path="lecture/add" element={<TeacherAddLecturePage />} />
 					</Route>
 				</Route>
-				<Route path="chatrooms" element={<TeacherChatroomTab />} />
+				<Route path="chatrooms">
+					<Route path="" element={<TeacherChatroomTab />} />
+					<Route path="chat/:id" element={<TeacherChatPage />} />
+				</Route>
 				<Route path="attendance" element={<TeacherAttendanceTab />} />
 				<Route path="digital-library" element={<TeacherDigitalLibraryTab />} />
 				<Route path="profile" element={<TeacherProfileTab />} />

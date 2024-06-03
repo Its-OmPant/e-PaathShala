@@ -160,12 +160,21 @@ const getListOfBranchTeachesByCourseId = asyncHandler(async (req, res) => {
 	const selectedBranches = branches.teachSubjects.filter(
 		(b) => b.branch.inCourse == courseId
 	);
-	// console.log(selectedBranches);
+
+	const seenIds = new Set();
+	const uniqueData = [];
+
+	selectedBranches.forEach((entry) => {
+		const branchId = entry.branch._id;
+		if (!seenIds.has(branchId)) {
+			uniqueData.push(entry);
+			seenIds.add(branchId);
+		}
+	});
+
 	return res
 		.status(200)
-		.json(
-			new ApiResponse(200, selectedBranches, "Branches fetched Successfully")
-		);
+		.json(new ApiResponse(200, uniqueData, "Branches fetched Successfully"));
 });
 
 const getStudentsByCourseAndBranch = asyncHandler(async (req, res) => {
