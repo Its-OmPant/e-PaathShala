@@ -2,13 +2,14 @@
 import { Teacher } from "../models/teacher.model.js";
 import { Subject } from "../models/subject.model.js";
 import { Chapter } from "../models/chapter.model.js";
+import { Student } from "../models/student.model.js";
+import { Lecture } from "../models/lecture.model.js";
+import { Chat } from "../models/chat.model.js";
 
 // Utilities
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { Student } from "../models/student.model.js";
-import { Lecture } from "../models/lecture.model.js";
 
 const teacherLogin = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
@@ -35,6 +36,7 @@ const teacherLogin = asyncHandler(async (req, res) => {
 
 	res.status(200).json(
 		new ApiResponse(200, {
+			id: teacher._id,
 			fullName: teacher.fullName,
 			email: teacher.email,
 			profileImage: teacher.profileImage,
@@ -365,6 +367,116 @@ const createLecture = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, null, "Lecture created successfully"));
 });
 
+const getAllChatGroups = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	if (user_role !== "teacher") {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You are not authorized as Teacher"));
+	}
+
+	const teacher = await Teacher.findById(user_id).select("-password");
+
+	if (!teacher) {
+		return res.status(400).json(new ApiError(400, "Invalid Teacher Id"));
+	}
+
+	const chats = await Chat.find({
+		chatAdmin: teacher._id,
+		college: teacher.college,
+	}).select("chatName coverImage");
+
+	if (!chats) {
+		return res.status(500).json(new ApiError(500, "Chats Not found !!"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, chats, "Chats Fetched Successfully"));
+});
+
+const getChatDetailsById = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+	const { chatId } = req.params;
+
+	if (user_role !== "teacher") {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You are not authorized as Teacher"));
+	}
+
+	const chat = await Chat.findById(chatId)
+		.select("-college -subject")
+		.populate([
+			{ path: "chatAdmin", select: "fullName" },
+			{
+				path: "chatParticipents",
+				populate: { path: "_id" },
+				select: "fullName",
+			},
+		]);
+
+	if (!chat) {
+		return res.status(400).json(new ApiError(400, "Invalid Chat ID"));
+	}
+
+	if (chat.chatAdmin._id != user_id) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You do not have access to this chat"));
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, chat, "Chat Details Fetched successfully"));
+});
+
+const autoAddStudentsToChat = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	const { chatId } = req.params;
+
+	if (!chatId) {
+		return res.status(400).json(new ApiError(400, "Chat ID is Required"));
+	}
+
+	const chat = await Chat.findById(chatId).populate("subject");
+
+	if (chat.chatAdmin != user_id) {
+		return res
+			.status(400)
+			.json(
+				new ApiError(400, "You don't have access to modify chat, NOT AN ADMIN")
+			);
+	}
+
+	const courseId = chat.subject.course;
+	const branchId = chat.subject.branch;
+
+	let studentAddedCount = 0;
+	const allStudents = await Student.find({
+		course: courseId,
+		branch: branchId,
+	}).select(" _id");
+
+	allStudents.forEach((std) => {
+		const isPresent = chat.chatParticipents.findIndex((elem) =>
+			elem.equals(std._id)
+		);
+		if (isPresent < 0) {
+			studentAddedCount++;
+			chat.chatParticipents.push(std);
+		}
+	});
+
+	await chat.save();
+	res
+		.status(200)
+		.json(
+			new ApiResponse(200, null, `${studentAddedCount} Student added to chat`)
+		);
+});
+
 export {
 	teacherLogin,
 	getTeacherProfileDetails,
@@ -375,4 +487,7 @@ export {
 	createChapter,
 	getListOfChaptersInSubject,
 	createLecture,
+	getAllChatGroups,
+	getChatDetailsById,
+	autoAddStudentsToChat,
 };

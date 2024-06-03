@@ -31,6 +31,7 @@ const studentLogin = asyncHandler(async (req, res) => {
 
 	res.status(200).json(
 		new ApiResponse(200, {
+			id: student._id,
 			fullName: student.fullName,
 			email: student.email,
 			profileImage: student.profileImage,

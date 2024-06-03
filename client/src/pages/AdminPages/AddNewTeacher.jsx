@@ -67,6 +67,7 @@ function AddNewTeacher() {
 				return;
 			}
 		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
 			console.log("customError:: ", error);
 		}
 	};

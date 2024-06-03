@@ -136,6 +136,7 @@ function AddNewSubject() {
 			}
 			setLoading(false);
 		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
 			console.log("customError:: ", error);
 			setLoading(false);
 		}

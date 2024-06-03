@@ -1,7 +1,10 @@
 import express from "express";
 import {
+	autoAddStudentsToChat,
 	createChapter,
 	createLecture,
+	getAllChatGroups,
+	getChatDetailsById,
 	getListOfBranchTeachesByCourseId,
 	getListOfChaptersInSubject,
 	getListOfCourseTeaches,
@@ -40,5 +43,11 @@ router.route("/students").post(verifyJWT, getStudentsByCourseAndBranch);
 
 // router.route("/lecture/exists").post(isLectureNoExists);
 router.route("/lecture/create").post(createLecture);
+
+router.route("/chats/all/").get(verifyJWT, getAllChatGroups);
+router.route("/chats/:chatId").get(verifyJWT, getChatDetailsById);
+router
+	.route("/chats/:chatId/autoAddStudents")
+	.get(verifyJWT, autoAddStudentsToChat);
 
 export default router;

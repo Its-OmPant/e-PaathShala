@@ -65,6 +65,7 @@ function AddNewCourse() {
 				toast.error(error.message, toastOptions);
 			}
 		} catch (error) {
+			toast.error("Something Unexpected Occured", toastOptions);
 			console.log("CustomError :: ", error);
 		}
 	};

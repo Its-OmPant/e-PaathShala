@@ -180,7 +180,7 @@ const router = createBrowserRouter(
 				</Route>
 				<Route path="chatrooms">
 					<Route path="" element={<TeacherChatroomTab />} />
-					<Route path="chat/:id" element={<TeacherChatPage />} />
+					<Route path="chat/:chatId" element={<TeacherChatPage />} />
 				</Route>
 				<Route path="attendance" element={<TeacherAttendanceTab />} />
 				<Route path="digital-library" element={<TeacherDigitalLibraryTab />} />

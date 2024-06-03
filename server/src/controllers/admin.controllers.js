@@ -6,6 +6,7 @@ import { Subject } from "../models/subject.model.js";
 import { Branch } from "../models/branch.model.js";
 import { Student } from "../models/student.model.js";
 import { Library } from "../models/library.model.js";
+import { Chat } from "../models/chat.model.js";
 
 // utilities
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -581,6 +582,15 @@ const createSubject = asyncHandler(async (req, res) => {
 		teacher.teachCourses.push(courseId);
 	}
 	await teacher.save();
+
+	// creating a chat group
+	const chat = await Chat.create({
+		chatName: `${newSubject.name} chat group`,
+		chatAdmin: teacherId,
+		subject: newSubject._id,
+		coverImage: newSubject.coverImage,
+		college: admin_id,
+	});
 
 	return res
 		.status(200)
