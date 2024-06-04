@@ -93,7 +93,7 @@ function TeacherNavbar() {
 							Chat Rooms
 						</NavLink>
 
-						<NavLink
+						{/* <NavLink
 							to="attendance"
 							className={({ isActive }) =>
 								isActive
@@ -102,7 +102,7 @@ function TeacherNavbar() {
 							}>
 							<FaChartPie size={21} className="text-fuchsia-800" />
 							Attendance
-						</NavLink>
+						</NavLink> */}
 
 						<NavLink
 							to="digital-library"

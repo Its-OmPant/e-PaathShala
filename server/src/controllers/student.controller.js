@@ -1,5 +1,6 @@
 // DB MODELS
 import { Student } from "../models/student.model.js";
+import { Chat } from "../models/chat.model.js";
 
 // Utilities
 import { ApiError } from "../utils/ApiError.js";
@@ -105,4 +106,79 @@ const getStudentSubjects = asyncHandler(async (req, res) => {
 		.status(200)
 		.json(new ApiResponse(200, subjects, "Subjects fetched successfully"));
 });
-export { studentLogin, getStudentProfileDetails, getStudentSubjects };
+
+const getStudentsAllChatGroups = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	if (user_role !== "student") {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You are not authorized as Student"));
+	}
+
+	const student = await Student.findById(user_id).select("-password");
+
+	if (!student) {
+		return res.status(400).json(new ApiError(400, "Invalid Student Id"));
+	}
+
+	const chats = await Chat.find({
+		chatParticipents: { $elemMatch: { $eq: user_id } },
+		college: student.college,
+	}).select("chatName coverImage");
+
+	if (!chats) {
+		return res.status(500).json(new ApiError(500, "Chats Not found !!"));
+	}
+	return res
+		.status(200)
+		.json(new ApiResponse(200, chats, "Chats Fetched Successfully"));
+});
+
+const getStudentChatDetailsById = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+	const { chatId } = req.params;
+
+	if (user_role !== "student") {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You are not authorized as Student"));
+	}
+
+	const chat = await Chat.findById(chatId)
+		.select("-college -subject")
+		.populate([
+			{ path: "chatAdmin", select: "fullName" },
+			{
+				path: "chatParticipents",
+				populate: { path: "_id" },
+				select: "fullName",
+			},
+		]);
+
+	if (!chat) {
+		return res.status(400).json(new ApiError(400, "Invalid Chat ID"));
+	}
+
+	const studentIndex = chat.chatParticipents.findIndex((p) =>
+		p.equals(user_id)
+	);
+
+	if (studentIndex < 0) {
+		return res
+			.status(400)
+			.json(new ApiError(400, "You do not have access to this chat"));
+	}
+
+	return res
+		.status(200)
+		.json(new ApiResponse(200, chat, "Chat Details Fetched successfully"));
+});
+
+export {
+	studentLogin,
+	getStudentProfileDetails,
+	getStudentSubjects,
+	getStudentsAllChatGroups,
+	getStudentChatDetailsById,
+};

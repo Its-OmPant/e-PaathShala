@@ -68,6 +68,7 @@ import StudentSubjectsTab from "./pages/StudentPages/StudentSubjectsTab.jsx";
 import StudentProfileTab from "./pages/StudentPages/StudentProfileTab.jsx";
 
 import StudentSubjectDetailsPage from "./pages/StudentPages/StudentSubjectDetailsPage.jsx";
+import StudentChatPage from "./pages/StudentPages/StudentChatPage.jsx";
 
 // Teacher Dashboard Pages
 
@@ -155,7 +156,10 @@ const router = createBrowserRouter(
 			<Route path="/student" element={<StudentNavbar />}>
 				<Route path="" element={<StudentHomePage />} />
 				<Route path="dashboard" element={<StudentDashBoardTab />} />
-				<Route path="chat-groups" element={<StudentChatGroupsTab />} />
+				<Route path="chat-groups">
+					<Route path="" element={<StudentChatGroupsTab />} />
+					<Route path="chat/:chatId" element={<StudentChatPage />} />
+				</Route>
 				<Route path="attendance" element={<StudentAttendanceTab />} />
 				<Route path="subjects">
 					<Route path="" element={<StudentSubjectsTab />} />

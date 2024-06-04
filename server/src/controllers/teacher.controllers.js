@@ -473,7 +473,11 @@ const autoAddStudentsToChat = asyncHandler(async (req, res) => {
 	res
 		.status(200)
 		.json(
-			new ApiResponse(200, null, `${studentAddedCount} Student added to chat`)
+			new ApiResponse(
+				200,
+				{ studentAdded: studentAddedCount },
+				`${studentAddedCount} Student added to chat`
+			)
 		);
 });
 

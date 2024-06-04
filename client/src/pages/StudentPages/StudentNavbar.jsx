@@ -79,7 +79,7 @@ function StudentNavbar() {
 							Chat Groups
 						</NavLink>
 
-						<NavLink
+						{/* <NavLink
 							to="attendance"
 							className={({ isActive }) =>
 								isActive
@@ -88,7 +88,7 @@ function StudentNavbar() {
 							}>
 							<FaChartPie size={21} className="text-yellow-800" />
 							Attendance
-						</NavLink>
+						</NavLink> */}
 
 						<NavLink
 							to="digital-library"

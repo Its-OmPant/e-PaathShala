@@ -13,30 +13,19 @@ import {
 	Button,
 } from "@nextui-org/react";
 
-import {
-	Modal,
-	ModalContent,
-	ModalHeader,
-	ModalBody,
-	ModalFooter,
-	useDisclosure,
-} from "@nextui-org/modal";
-import { Tabs, Tab } from "@nextui-org/tabs";
-
 // icons
 import { MdArrowBack } from "react-icons/md";
 import { IoIosArrowDropdown } from "react-icons/io";
 import { IoIosArrowDropup } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 
-function TeacherChatPage() {
+function StudentChatPage() {
 	const user = useSelector((state) => state.auth.user);
 	const params = useParams();
 	const { chatId } = params;
 	const navigate = useNavigate();
 
 	const [isDivOpen, setIsDivOpen] = useState(false);
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 	const [chatDetails, setChatDetails] = useState();
 
@@ -79,7 +68,7 @@ function TeacherChatPage() {
 		}
 	};
 
-	// // fn to fetch all Messages
+	// fn to fetch all Messages
 	const fetchAllMessages = async () => {
 		try {
 			const response = await fetch(
@@ -104,15 +93,11 @@ function TeacherChatPage() {
 		}
 	};
 
-	useEffect(() => {
-		fetchAllMessages();
-	}, []);
-
 	// fn to get chat details
 	const getChatDetails = async () => {
 		try {
 			const response = await fetch(
-				`${import.meta.env.VITE_API_BASE_URL}/teacher/chats/${chatId}`,
+				`${import.meta.env.VITE_API_BASE_URL}/student/chats/${chatId}`,
 				{
 					method: "GET",
 					headers: {
@@ -135,42 +120,9 @@ function TeacherChatPage() {
 		}
 	};
 
-	// fn to add students to chat group
-	const autoAddStudents = async () => {
-		try {
-			const response = await fetch(
-				`${
-					import.meta.env.VITE_API_BASE_URL
-				}/teacher/chats/${chatId}/autoAddStudents`,
-				{
-					method: "GET",
-					headers: {
-						Authorization: `Bearer ${user.token}`,
-					},
-				}
-			);
-
-			console.log(response);
-			if (response.ok) {
-				const result = await response.json();
-				if (result?.data?.studentAdded > 0) {
-					getChatDetails();
-					toast.success(result.message, toastOptions);
-				} else {
-					toast.success("No new students added", toastOptions);
-				}
-			} else {
-				const err = await response.json();
-				toast.error(err.message, toastOptions);
-			}
-		} catch (error) {
-			toast.error("Something unexpected occured", toastOptions);
-			console.log("CustomError :: ", error);
-		}
-	};
-
 	useEffect(() => {
 		getChatDetails();
+		fetchAllMessages();
 	}, []);
 
 	return (
@@ -187,71 +139,6 @@ function TeacherChatPage() {
 						Chat Rooms tab
 					</h1>
 				</div>
-				<Button color="secondary" onClick={onOpen}>
-					Add Participents
-				</Button>
-				<Modal
-					isDismissable={false}
-					backdrop="blur"
-					isOpen={isOpen}
-					onOpenChange={onOpenChange}>
-					<ModalContent>
-						{(onClose) => (
-							<>
-								<ModalHeader className="flex flex-col gap-1">
-									Add Participents
-								</ModalHeader>
-								<ModalBody>
-									<Tabs aria-label="Options" fullWidth>
-										<Tab key="autoDetect" title="Auto Detect">
-											<Card>
-												<CardBody>
-													Auto Detect Feature will detect if there are any new
-													students added in the branch and adds them
-													automatically to the chat
-												</CardBody>
-											</Card>
-											<div className="flex justify-end gap-3 my-4">
-												<Button
-													color="danger"
-													variant="light"
-													onPress={onClose}>
-													Close
-												</Button>
-												<Button
-													color="primary"
-													onPress={() => {
-														autoAddStudents();
-														onClose();
-													}}>
-													Done
-												</Button>
-											</div>
-										</Tab>
-										<Tab key="addManually" title="Add Manually">
-											<Card>
-												<CardBody>
-													This feature will be available very soon
-												</CardBody>
-											</Card>
-											<div className="flex justify-end gap-3 my-4">
-												<Button
-													color="danger"
-													variant="light"
-													onPress={onClose}>
-													Close
-												</Button>
-												<Button isDisabled color="primary" onPress={onClose}>
-													Done
-												</Button>
-											</div>
-										</Tab>
-									</Tabs>
-								</ModalBody>
-							</>
-						)}
-					</ModalContent>
-				</Modal>
 			</CardHeader>
 			<CardBody className="flex-row gap-2">
 				{/* chat details */}
@@ -352,4 +239,4 @@ function TeacherChatPage() {
 	);
 }
 
-export default TeacherChatPage;
+export default StudentChatPage;
