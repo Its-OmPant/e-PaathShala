@@ -589,6 +589,7 @@ const createSubject = asyncHandler(async (req, res) => {
 		chatAdmin: teacherId,
 		subject: newSubject._id,
 		coverImage: newSubject.coverImage,
+		chatParticipents: [teacherId],
 		college: admin_id,
 	});
 

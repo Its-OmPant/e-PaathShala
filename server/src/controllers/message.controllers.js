@@ -49,10 +49,14 @@ const createNewMessage = asyncHandler(async (req, res) => {
 	await chat.save();
 
 	const msgToReturn = await Message.findById(message._id)
-		.select("content senderId senderType")
+		.select("content senderId senderType chatId")
 		.populate({
 			path: "senderId",
 			select: "fullName",
+		})
+		.populate({
+			path: "chatId",
+			select: "chatName chatParticipents",
 		});
 	return res
 		.status(200)
@@ -74,8 +78,11 @@ const fetchAllMessages = asyncHandler(async (req, res) => {
 		.select("chatMessages")
 		.populate({
 			path: "chatMessages",
-			select: "senderId content senderType",
-			populate: { path: "senderId", select: "fullName" },
+			select: "senderId content senderType chatId",
+			populate: [
+				{ path: "senderId", select: "fullName" },
+				{ path: "chatId", select: "chatName chatParticipents" },
+			],
 		});
 
 	if (!chatMessages) {
@@ -83,6 +90,7 @@ const fetchAllMessages = asyncHandler(async (req, res) => {
 			.status(500)
 			.json(new ApiError(500, "Message Fetching Failed due to server error"));
 	}
+
 	return res
 		.status(200)
 		.json(new ApiResponse(200, chatMessages, "Messages fetched successfully"));

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { toastOptions } from "../../Constants.js";
 
+import { useChatScroll } from "../../hooks/chatScrollHook.js";
+
 import {
 	Card,
 	CardHeader,
@@ -29,11 +31,18 @@ import { IoIosArrowDropdown } from "react-icons/io";
 import { IoIosArrowDropup } from "react-icons/io";
 import { IoSend } from "react-icons/io5";
 
+import io from "socket.io-client";
+
+const ENDPOINT = "http://localhost:8000";
+var socket;
+
 function TeacherChatPage() {
 	const user = useSelector((state) => state.auth.user);
 	const params = useParams();
 	const { chatId } = params;
 	const navigate = useNavigate();
+
+	const [socketConnected, setSocketConnected] = useState(false);
 
 	const [isDivOpen, setIsDivOpen] = useState(false);
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -44,6 +53,8 @@ function TeacherChatPage() {
 	const [messageInput, setMessageInput] = useState("");
 
 	const [allMessages, setAllMessages] = useState([]);
+
+	const ref = useChatScroll(allMessages); //for scrolling effect
 
 	const sendMessage = async (e) => {
 		e.preventDefault();
@@ -69,6 +80,7 @@ function TeacherChatPage() {
 			if (response.ok) {
 				const result = await response.json();
 				setAllMessages([...allMessages, result.data]);
+				socket.emit("new_message", result.data);
 				setMessageInput("");
 			} else {
 				const err = await response.json();
@@ -99,14 +111,12 @@ function TeacherChatPage() {
 				const err = await response.json();
 				toast.error(err.message, toastOptions);
 			}
+
+			socket.emit("join_chat", chatId);
 		} catch (error) {
 			console.log("CustomError :: ", error);
 		}
 	};
-
-	useEffect(() => {
-		fetchAllMessages();
-	}, []);
 
 	// fn to get chat details
 	const getChatDetails = async () => {
@@ -170,6 +180,23 @@ function TeacherChatPage() {
 	};
 
 	useEffect(() => {
+		socket = io(ENDPOINT);
+		socket.emit("configure", user);
+		socket.on("connection", () => setSocketConnected(true));
+	}, []);
+
+	useEffect(() => {
+		socket.on("new_message_receieved", (msg) => {
+			if (!chatId || chatId != msg.chatId._id) {
+				// show notifications
+			} else {
+				setAllMessages([...allMessages, msg]);
+			}
+		});
+	});
+
+	useEffect(() => {
+		fetchAllMessages();
 		getChatDetails();
 	}, []);
 
@@ -304,7 +331,7 @@ function TeacherChatPage() {
 				{/* chats */}
 				<div className="bg-gradient-to-br from-blue-100 via-purple-100 to-teal-100 w-3/4 h-full rounded-md relative overflow-y-auto">
 					{allMessages?.length > 0 ? (
-						<div className=" h-[480px] m-2 overflow-y-auto">
+						<div ref={ref} className=" h-[480px] m-2 overflow-y-auto">
 							{allMessages.map((msg) => (
 								<div
 									key={msg._id}
@@ -323,7 +350,7 @@ function TeacherChatPage() {
 							))}
 						</div>
 					) : (
-						<div className="my-6 mx-auto px-2 bg-purple-300 w-[140px] text-center rounded-md">
+						<div className="my-6 mx-auto  h-[450px] text-center rounded-md">
 							<p>no messages</p>
 						</div>
 					)}

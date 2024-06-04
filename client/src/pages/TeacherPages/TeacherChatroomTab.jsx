@@ -34,7 +34,7 @@ function TeacherChatroomTab() {
 
 			if (response.ok) {
 				const result = await response.json();
-				console.log(result);
+				// console.log(result);
 				setAllChats(result.data);
 			} else {
 				const err = await response.json();
