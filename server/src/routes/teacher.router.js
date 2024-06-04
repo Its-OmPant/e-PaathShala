@@ -9,6 +9,7 @@ import {
 	getListOfChaptersInSubject,
 	getListOfCourseTeaches,
 	getStudentsByCourseAndBranch,
+	getTeacherDashboardAnalytics,
 	getTeacherProfileDetails,
 	getTeacherSubjects,
 	teacherLogin,
@@ -22,6 +23,8 @@ const router = express.Router();
 
 router.route("/login").post(teacherLogin);
 router.route("/profile").get(verifyJWT, getTeacherProfileDetails);
+
+router.route("/dashboard").get(verifyJWT, getTeacherDashboardAnalytics);
 
 router.route("/subjects/all").get(verifyJWT, getTeacherSubjects);
 router.route("/subjects/:subjectId").get(verifyJWT, getSubjectDetailsById);

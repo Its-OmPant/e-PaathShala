@@ -102,7 +102,7 @@ function AdminNavbar() {
 							Subjects
 						</NavLink>
 
-						<NavLink
+						{/* <NavLink
 							to="notices"
 							className={({ isActive }) =>
 								isActive
@@ -111,7 +111,7 @@ function AdminNavbar() {
 							}>
 							<FaCalendarDays size={21} className="text-cyan-800" />
 							Notices
-						</NavLink>
+						</NavLink> */}
 
 						<NavLink
 							to="digital-library"

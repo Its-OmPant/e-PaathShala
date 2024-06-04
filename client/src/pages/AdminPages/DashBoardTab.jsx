@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+import { Chart as ChartJS } from "chart.js/auto";
+import { Bar, Doughnut, Line } from "react-chartjs-2";
+
 // next UI components
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
@@ -166,9 +169,44 @@ function DashBoardTab() {
 					<div className="w-3/4">
 						<h3 className="text-lg font-semibold my-2">Attendance Report</h3>
 						<Card shadow="none" className="w-full h-96 my-3 bg-slate-100">
-							<p className="text-red-500 text-center mt-16">
-								No Attendance Found
-							</p>
+							<div className="w-[90%] mx-auto">
+								<Bar
+									data={{
+										labels: [
+											"Jan",
+											"Feb",
+											"Mar",
+											"Apr",
+											"May",
+											"June",
+											"Jul",
+											"Aug",
+											"Sep",
+											"Oct",
+											"Nov",
+											"Dec",
+										],
+										datasets: [
+											{
+												label: "Total Attendance %",
+												data: [78, 60, 88, 69, 57, 92, 78, 60, 88, 69, 57, 92],
+												backgroundColor: "rgba(153, 131, 252,0.8)",
+												borderRadius: 5,
+												borderColor: "rgb(153, 131, 252)",
+												borderWidth: 2,
+											},
+											{
+												label: "Total Leaves %",
+												data: [22, 40, 12, 31, 43, 8, 22, 40, 12, 31, 43, 8],
+												backgroundColor: "rgba(255, 92, 184, 0.7)",
+												borderRadius: 5,
+												borderColor: "rgb(255, 92, 184)",
+												borderWidth: 2,
+											},
+										],
+									}}
+								/>
+							</div>
 						</Card>
 					</div>
 

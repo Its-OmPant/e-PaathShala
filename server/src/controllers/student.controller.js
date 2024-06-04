@@ -1,6 +1,7 @@
 // DB MODELS
 import { Student } from "../models/student.model.js";
 import { Chat } from "../models/chat.model.js";
+import { Library } from "../models/library.model.js";
 
 // Utilities
 import { ApiError } from "../utils/ApiError.js";
@@ -175,10 +176,36 @@ const getStudentChatDetailsById = asyncHandler(async (req, res) => {
 		.json(new ApiResponse(200, chat, "Chat Details Fetched successfully"));
 });
 
+const getStudentDashboardAnalytics = asyncHandler(async (req, res) => {
+	const { user_id, user_role } = req;
+
+	if (user_role !== "student") {
+		return res.status(400).json(new ApiError("Not Authorized as student"));
+	}
+
+	const student = await Student.findById(user_id)
+		.select("branch college")
+		.populate("branch");
+
+	const resource = await Library.find({
+		college: student.college,
+	}).countDocuments();
+
+	if (!student) {
+		return res.status(400).json(new ApiError("Invalid student ID"));
+	}
+	const data = {
+		subjects: student.branch.subjects.length,
+		resource,
+	};
+	return res.status(200).json(new ApiResponse(200, data, "Analytics fetched"));
+});
+
 export {
 	studentLogin,
 	getStudentProfileDetails,
 	getStudentSubjects,
 	getStudentsAllChatGroups,
 	getStudentChatDetailsById,
+	getStudentDashboardAnalytics,
 };
